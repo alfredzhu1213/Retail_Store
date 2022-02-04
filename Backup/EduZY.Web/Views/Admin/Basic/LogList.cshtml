@@ -1,0 +1,121 @@
+﻿@{
+    ViewBag.Title = "LogList";
+    Layout = "~/Views/Shared/_LayoutAdminPage.cshtml";
+    var UserPrivilege = ViewBag.UserPrivilege;
+    //var SysMenuPPid = ViewBag.SysMenuPPid as IEnumerable<EduZY.Model.tb_MenuPage>;  //导航菜单
+}
+
+@section Head{
+    <link href="/css/themes/@Common.PublicConst.TempCss/easyui.css" rel="stylesheet" type="text/css" />
+    <link href="/css/themes/icon.css" rel="stylesheet" type="text/css" />
+    <script src="/Scripts/jquery.easyui-1.3.6.min.js" type="text/javascript"></script>
+    <script src="/Scripts/easyui-lang-zh_CN.js" type="text/javascript"></script>
+}
+ @if (!UserPrivilege.Contains(EduZY.Web.BaseRightInfo.查询))
+ {
+<div id="tb" data-options="region:'center',title:'',iconCls:'icon-book'" style="padding: 10px;
+    height: auto;">
+    <!-------------------------------搜索框----------------------------------->
+    <fieldset style="border-width: 2px;border-style: solid; padding-bottom: 5px; border-color: #95B8E7">
+        <legend>信息查询</legend>
+        <form id="ffSearch" method="post">
+            <div style="margin-bottom: 5px">
+                <label for="txtName">
+                    &nbsp;&nbsp;关键字：
+                </label>
+                <input type="text" id="KeyWord" name="KeyWord" style="width: 100px" />&nbsp;&nbsp;&nbsp;
+               
+                <input id="Button1" type="button" value="查询" style=" cursor:pointer;" class="easyui-linkbutton1" onclick="search()" />
+
+            </div>
+
+        </form>
+    </fieldset>
+    <!-------------------------------详细信息展示表格----------------------------------->
+</div>
+ }
+<table id="dg" title="日志列表" class="easyui-datagrid" style="" url="/admin/Basic/GetOptLog"
+       toolbar="#toolbar" pagination="true" rownumbers="true" fitcolumns="true" singleselect="true">
+    <thead>
+        <tr>
+            <th field="LogTypeName" width="50">
+                日志类型
+            </th>
+            <th field="UserName" width="50">
+                操作者
+            </th>
+            <th field="RequestUrl" width="50">
+                请求页面
+            </th>
+            <th field="SourceUrl" width="50">
+                来路页面
+            </th>
+            <th field="PostData" width="50">
+                请求数据
+            </th>
+            <th field="IP" width="50">
+                IP
+            </th>
+            <th field="CreateDate" width="50" formatter="timeTransformation">
+                时间
+            </th>
+
+        </tr>
+    </thead>
+</table>
+<div id="toolbar" style="padding-bottom: 5px;">
+ @if (UserPrivilege.Contains(EduZY.Web.BaseRightInfo.新增))
+ {
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true" onclick="AddInfo()">添加</a>
+    <span class="datagrid-btn-separator"></span>
+ }
+                    
+
+ @if (UserPrivilege.Contains(EduZY.Web.BaseRightInfo.修改))
+ {
+    
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="UpdateInfo()">修改</a>
+    <span class="datagrid-btn-separator"></span>
+ }
+  @if (UserPrivilege.Contains(EduZY.Web.BaseRightInfo.删除))
+  {
+    
+    <a href="javascript:void(0)"  class="easyui-linkbutton" iconcls="icon-remove" plain="true" onclick="destroyUser()">
+        删除
+    </a>
+  }
+</div>
+
+<script type="text/javascript">
+    var url;
+    function search() {
+        $('#dg').datagrid('load', {
+            KeyWord: '' + $("#KeyWord").val() + ''
+        });
+    }
+
+    function destroyUser() {
+        var row = $('#dg').datagrid('getSelected');
+        if (row) {
+            $.messager.confirm('提示', '您确实要删除该条数据码?', function (r) {
+                if (r) {
+                    $.post('/admin/Basic/LogDel', { LogID: row.LogID }, function (result) {
+                        if (result.status == 1) {
+                            $('#dg').datagrid('reload');    // reload the user data
+                        } else {
+                            $.messager.show({    // show error message
+                                title: 'Error',
+                                msg: result.msg
+                            });
+                        }
+                    }, 'json');
+                }
+            });
+        }
+        else {
+            $.messager.alert("提示", "请选择你要删除的数据")
+        }
+        return false;
+    }
+</script>
+

@@ -1,0 +1,326 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="zhxy_resModel.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2008" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/02/edm/ssdl">
+  <EntityContainer Name="zhxy_resModelStoreContainer">
+    <EntitySet Name="tb_BasicRight" EntityType="zhxy_resModel.Store.tb_BasicRight" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="tb_Button" EntityType="zhxy_resModel.Store.tb_Button" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="tb_Doption" EntityType="zhxy_resModel.Store.tb_Doption" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="tb_Log" EntityType="zhxy_resModel.Store.tb_Log" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="tb_MenuPage" EntityType="zhxy_resModel.Store.tb_MenuPage" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="tb_MenuPage_Fun" EntityType="zhxy_resModel.Store.tb_MenuPage_Fun" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="tb_Moption" EntityType="zhxy_resModel.Store.tb_Moption" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="tb_Role" EntityType="zhxy_resModel.Store.tb_Role" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="tb_RoleBasicRight" EntityType="zhxy_resModel.Store.tb_RoleBasicRight" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="tb_RoleData_Right" EntityType="zhxy_resModel.Store.tb_RoleData_Right" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="tb_RoleMenu_Right" EntityType="zhxy_resModel.Store.tb_RoleMenu_Right" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="tb_UserData_Right" EntityType="zhxy_resModel.Store.tb_UserData_Right" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="tb_UserMenu_Right" EntityType="zhxy_resModel.Store.tb_UserMenu_Right" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="tb_UserRole" EntityType="zhxy_resModel.Store.tb_UserRole" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="View_SelectUserList" EntityType="zhxy_resModel.Store.View_SelectUserList" store:Type="Views" store:Schema="dbo" store:Name="View_SelectUserList">
+      <DefiningQuery>SELECT 
+      [View_SelectUserList].[UserID] AS [UserID], 
+      [View_SelectUserList].[UserName] AS [UserName], 
+      [View_SelectUserList].[Status] AS [Status], 
+      [View_SelectUserList].[RegStateDate] AS [RegStateDate], 
+      [View_SelectUserList].[RoleID] AS [RoleID], 
+      [View_SelectUserList].[TrueName] AS [TrueName], 
+      [View_SelectUserList].[Mobile] AS [Mobile], 
+      [View_SelectUserList].[Phone] AS [Phone], 
+      [View_SelectUserList].[QQ] AS [QQ], 
+      [View_SelectUserList].[EMail] AS [EMail], 
+      [View_SelectUserList].[Password] AS [Password], 
+      [View_SelectUserList].[Sex] AS [Sex], 
+      [View_SelectUserList].[ZhiCheng] AS [ZhiCheng], 
+      [View_SelectUserList].[BuMenId] AS [BuMenId]
+      FROM [dbo].[View_SelectUserList] AS [View_SelectUserList]</DefiningQuery>
+    </EntitySet>
+    <EntitySet Name="View_userlist" EntityType="zhxy_resModel.Store.View_userlist" store:Type="Views" store:Schema="dbo" store:Name="View_userlist">
+      <DefiningQuery>SELECT 
+      [View_userlist].[UserID] AS [UserID], 
+      [View_userlist].[UserName] AS [UserName], 
+      [View_userlist].[TrueName] AS [TrueName], 
+      [View_userlist].[RoleName] AS [RoleName], 
+      [View_userlist].[RoleID] AS [RoleID], 
+      [View_userlist].[Password] AS [Password], 
+      [View_userlist].[IsDelete] AS [IsDelete], 
+      [View_userlist].[RegStateDate] AS [RegStateDate], 
+      [View_userlist].[LastDate] AS [LastDate], 
+      [View_userlist].[UserSource] AS [UserSource], 
+      [View_userlist].[CreateUserID] AS [CreateUserID], 
+      [View_userlist].[Status] AS [Status], 
+      [View_userlist].[ActivationDate] AS [ActivationDate]
+      FROM [dbo].[View_userlist] AS [View_userlist]</DefiningQuery>
+    </EntitySet>
+  </EntityContainer>
+  <EntityType Name="tb_BasicRight">
+    <Key>
+      <PropertyRef Name="BasicRightID" />
+    </Key>
+    <Property Name="BasicRightID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="BasicRightName" Type="nvarchar" MaxLength="50" />
+    <Property Name="Description" Type="ntext" />
+    <Property Name="OjbectTypeID" Type="int" />
+    <Property Name="ObjectTypeName" Type="nvarchar" MaxLength="50" />
+    <Property Name="AddDate" Type="datetime" />
+    <Property Name="Status" Type="int" />
+    <Property Name="UpdateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="tb_Button">
+    <Key>
+      <PropertyRef Name="ButtonID" />
+    </Key>
+    <Property Name="ButtonID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="ButtonName" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="ButtonIco" Type="nvarchar" MaxLength="250" />
+    <Property Name="ButtonClass" Type="nvarchar" MaxLength="50" />
+    <Property Name="ButtonFun" Type="nvarchar" MaxLength="50" />
+    <Property Name="Sort" Type="int" />
+    <Property Name="Status" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tb_Doption">
+    <Key>
+      <PropertyRef Name="DoptionID" />
+    </Key>
+    <Property Name="DoptionID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="MoptionID" Type="int" Nullable="false" />
+    <Property Name="ItemValue" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="ItemText" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Sort" Type="int" Nullable="false" />
+    <Property Name="Status" Type="int" Nullable="false" />
+    <Property Name="ParentID" Type="int" Nullable="false" />
+    <Property Name="Description" Type="nvarchar" MaxLength="50" />
+    <Property Name="AddDate" Type="datetime" />
+    <Property Name="UpdateDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="tb_Log">
+    <Key>
+      <PropertyRef Name="LogID" />
+    </Key>
+    <Property Name="LogID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="LogTypeID" Type="int" Nullable="false" />
+    <Property Name="LogTypeName" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="Browser" Type="nvarchar" Nullable="false" MaxLength="250" />
+    <Property Name="RequestUrl" Type="nvarchar" Nullable="false" MaxLength="250" />
+    <Property Name="SourceUrl" Type="nvarchar" MaxLength="250" />
+    <Property Name="PostData" Type="nvarchar(max)" />
+    <Property Name="IP" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="CreateDate" Type="datetime" Nullable="false" />
+    <Property Name="Remark" Type="nvarchar(max)" />
+  </EntityType>
+  <EntityType Name="tb_MenuPage">
+    <Key>
+      <PropertyRef Name="MenuID" />
+    </Key>
+    <Property Name="MenuID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="MenuName" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="MenuType" Type="int" Nullable="false" />
+    <Property Name="MenuShort" Type="nvarchar" MaxLength="50" />
+    <Property Name="MenuUrl" Type="nvarchar" Nullable="false" MaxLength="500" />
+    <Property Name="MenuICO" Type="nvarchar" MaxLength="500" />
+    <Property Name="UpdateDate" Type="datetime" Nullable="false" />
+    <Property Name="ParentId" Type="int" Nullable="false" />
+    <Property Name="RootID" Type="int" Nullable="false" />
+    <Property Name="AddDate" Type="datetime" Nullable="false" />
+    <Property Name="Status" Type="int" Nullable="false" />
+    <Property Name="Sort" Type="int" Nullable="false" />
+    <Property Name="Remark" Type="ntext" />
+  </EntityType>
+  <EntityType Name="tb_MenuPage_Fun">
+    <Key>
+      <PropertyRef Name="MenuPageFunID" />
+    </Key>
+    <Property Name="MenuPageFunID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="MenuID" Type="int" Nullable="false" />
+    <Property Name="ButtonID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tb_Moption">
+    <Key>
+      <PropertyRef Name="MoptionID" />
+    </Key>
+    <Property Name="MoptionID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="OptionName" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="OptionCode" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="Status" Type="int" Nullable="false" />
+    <Property Name="AddDate" Type="datetime" Nullable="false" />
+    <Property Name="IsSys" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tb_Role">
+    <Key>
+      <PropertyRef Name="RoleID" />
+    </Key>
+    <Property Name="RoleID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="RoleName" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="AddDate" Type="datetime" Nullable="false" />
+    <Property Name="Status" Type="int" Nullable="false" />
+    <Property Name="UpdateDate" Type="datetime" Nullable="false" />
+    <Property Name="Remark" Type="nvarchar" MaxLength="500" />
+    <Property Name="IsSys" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tb_RoleBasicRight">
+    <Key>
+      <PropertyRef Name="RoleBasicRightID" />
+    </Key>
+    <Property Name="RoleBasicRightID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="RoleID" Type="int" />
+    <Property Name="BasicRightID" Type="int" />
+    <Property Name="Objectids" Type="nvarchar(max)" />
+    <Property Name="ObjectStr" Type="ntext" />
+    <Property Name="AddDate" Type="datetime" />
+  </EntityType>
+  <EntityType Name="tb_RoleData_Right">
+    <Key>
+      <PropertyRef Name="RoleData" />
+    </Key>
+    <Property Name="RoleData" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="TypeID" Type="int" Nullable="false" />
+    <Property Name="object_id" Type="int" Nullable="false" />
+    <Property Name="RoleID" Type="int" Nullable="false" />
+    <Property Name="ButtonID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tb_RoleMenu_Right">
+    <Key>
+      <PropertyRef Name="RoleMenuID" />
+    </Key>
+    <Property Name="RoleMenuID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="RoleID" Type="int" Nullable="false" />
+    <Property Name="MenuID" Type="int" Nullable="false" />
+    <Property Name="ButtonID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tb_UserData_Right">
+    <Key>
+      <PropertyRef Name="UserDataID" />
+    </Key>
+    <Property Name="UserDataID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="TypeID" Type="int" Nullable="false" />
+    <Property Name="object_id" Type="int" Nullable="false" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="ButtonID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tb_UserMenu_Right">
+    <Key>
+      <PropertyRef Name="UserMenuID" />
+    </Key>
+    <Property Name="UserMenuID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="ButtonID" Type="int" Nullable="false" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="MenuID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tb_UserRole">
+    <Key>
+      <PropertyRef Name="UserRoleID" />
+    </Key>
+    <Property Name="UserRoleID" Type="int" Nullable="false" StoreGeneratedPattern="Identity" />
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="RoleID" Type="int" Nullable="false" />
+  </EntityType>
+  <!--生成过程中发现错误:
+      警告 6002: 表/视图“CusJxc.dbo.View_SelectUserList”未定义主键。已推断出该键，并将定义创建为只读的表/视图。
+      -->
+  <EntityType Name="View_SelectUserList">
+    <Key>
+      <PropertyRef Name="UserID" />
+      <PropertyRef Name="UserName" />
+      <PropertyRef Name="Status" />
+      <PropertyRef Name="RoleID" />
+      <PropertyRef Name="Password" />
+    </Key>
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="UserName" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="Status" Type="varchar" Nullable="false" MaxLength="1" />
+    <Property Name="RegStateDate" Type="datetime" />
+    <Property Name="RoleID" Type="int" Nullable="false" />
+    <Property Name="TrueName" Type="nvarchar" MaxLength="20" />
+    <Property Name="Mobile" Type="nvarchar" MaxLength="12" />
+    <Property Name="Phone" Type="nvarchar" MaxLength="20" />
+    <Property Name="QQ" Type="nvarchar" MaxLength="15" />
+    <Property Name="EMail" Type="nvarchar" MaxLength="100" />
+    <Property Name="Password" Type="varchar" Nullable="false" MaxLength="32" />
+    <Property Name="Sex" Type="bit" />
+    <Property Name="ZhiCheng" Type="nvarchar" MaxLength="50" />
+    <Property Name="BuMenId" Type="int" />
+  </EntityType>
+  <!--生成过程中发现错误:
+      警告 6002: 表/视图“CusJxc.dbo.View_userlist”未定义主键。已推断出该键，并将定义创建为只读的表/视图。
+      -->
+  <EntityType Name="View_userlist">
+    <Key>
+      <PropertyRef Name="UserID" />
+      <PropertyRef Name="UserName" />
+      <PropertyRef Name="RoleName" />
+      <PropertyRef Name="RoleID" />
+      <PropertyRef Name="Password" />
+      <PropertyRef Name="IsDelete" />
+      <PropertyRef Name="Status" />
+    </Key>
+    <Property Name="UserID" Type="int" Nullable="false" />
+    <Property Name="UserName" Type="varchar" Nullable="false" MaxLength="50" />
+    <Property Name="TrueName" Type="nvarchar" MaxLength="20" />
+    <Property Name="RoleName" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="RoleID" Type="int" Nullable="false" />
+    <Property Name="Password" Type="varchar" Nullable="false" MaxLength="32" />
+    <Property Name="IsDelete" Type="bit" Nullable="false" />
+    <Property Name="RegStateDate" Type="datetime" />
+    <Property Name="LastDate" Type="datetime" />
+    <Property Name="UserSource" Type="nvarchar" MaxLength="50" />
+    <Property Name="CreateUserID" Type="int" />
+    <Property Name="Status" Type="varchar" Nullable="false" MaxLength="1" />
+    <Property Name="ActivationDate" Type="datetime" />
+  </EntityType>
+  <Function Name="Get_StrArrayLength" ReturnType="int" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="str" Type="varchar" Mode="In" />
+    <Parameter Name="split" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="Get_StrArrayStrOfIndex" ReturnType="varchar" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="str" Type="varchar" Mode="In" />
+    <Parameter Name="split" Type="varchar" Mode="In" />
+    <Parameter Name="index" Type="int" Mode="In" />
+  </Function>
+  <Function Name="UP_Add_User" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="UserID" Type="int" Mode="InOut" />
+    <Parameter Name="RoleID" Type="int" Mode="In" />
+    <Parameter Name="UserName" Type="varchar" Mode="In" />
+    <Parameter Name="Password" Type="varchar" Mode="In" />
+    <Parameter Name="TrueName" Type="varchar" Mode="In" />
+    <Parameter Name="Sex" Type="bit" Mode="In" />
+    <Parameter Name="Mobile" Type="varchar" Mode="In" />
+    <Parameter Name="Phone" Type="varchar" Mode="In" />
+    <Parameter Name="EMail" Type="varchar" Mode="In" />
+    <Parameter Name="QQ" Type="nvarchar" Mode="In" />
+    <Parameter Name="Status" Type="char" Mode="In" />
+    <Parameter Name="BuMenId" Type="int" Mode="In" />
+    <Parameter Name="ZhiCheng" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="UP_Edit_User" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="UserID" Type="int" Mode="In" />
+    <Parameter Name="RoleID" Type="int" Mode="In" />
+    <Parameter Name="UserName" Type="varchar" Mode="In" />
+    <Parameter Name="TrueName" Type="varchar" Mode="In" />
+    <Parameter Name="Sex" Type="bit" Mode="In" />
+    <Parameter Name="Mobile" Type="varchar" Mode="In" />
+    <Parameter Name="Phone" Type="varchar" Mode="In" />
+    <Parameter Name="EMail" Type="varchar" Mode="In" />
+    <Parameter Name="QQ" Type="nvarchar" Mode="In" />
+    <Parameter Name="Status" Type="char" Mode="In" />
+    <Parameter Name="BuMenId" Type="int" Mode="In" />
+    <Parameter Name="ZhiCheng" Type="nvarchar" Mode="In" />
+  </Function>
+  <Function Name="UP_GetRecordByPage" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="tbname" Type="nvarchar" Mode="In" />
+    <Parameter Name="FieldKey" Type="nvarchar" Mode="In" />
+    <Parameter Name="PageCurrent" Type="int" Mode="In" />
+    <Parameter Name="PageSize" Type="int" Mode="In" />
+    <Parameter Name="FieldShow" Type="nvarchar" Mode="In" />
+    <Parameter Name="FieldOrder" Type="nvarchar" Mode="In" />
+    <Parameter Name="Where" Type="varchar" Mode="In" />
+    <Parameter Name="RecordCount" Type="int" Mode="InOut" />
+  </Function>
+  <Function Name="Up_Login" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="UserName" Type="varchar" Mode="In" />
+    <Parameter Name="UserPWd" Type="varchar" Mode="In" />
+  </Function>
+  <Function Name="UP_Save_RoleRight" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+    <Parameter Name="RoleID" Type="int" Mode="In" />
+    <Parameter Name="RoleName" Type="nvarchar" Mode="In" />
+    <Parameter Name="ResourceIDList" Type="nvarchar" Mode="In" />
+  </Function>
+</Schema>

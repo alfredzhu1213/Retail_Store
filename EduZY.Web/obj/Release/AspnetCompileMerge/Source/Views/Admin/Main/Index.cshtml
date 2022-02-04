@@ -1,0 +1,94 @@
+﻿@{
+
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edeg,chrome=1">
+    <link href="MainCss/layout.css" rel="stylesheet">
+    <link href="MainCss/home.css" rel="stylesheet">
+</head>
+<body>
+    <div class="wrapper" style="background:White; margin-top:20px">
+        <div id="content" class="clearfix">
+            <div class="left">
+                <div class="top-sale">
+                    <h3>
+                        畅销商品排行</h3>
+                    <ol>
+
+                    @{
+                        
+                        int i = 1;
+                        System.Data.DataSet dsProduct = Maticsoft.DBUtility.DbHelperSQL.Query("select  top 10 * from [" + ViewBag.DBName + @"].[dbo].tb_Product  ORDER BY (SELECT SUM([Count])FROM  [" + ViewBag.DBName + @"].[dbo].[tb_PosSaleJournal]where [GoodsID]=tb_Product.id) DESC ");
+                        foreach (System.Data.DataRow dr in dsProduct.Tables[0].Rows)
+                        {
+                          @Html.Raw("<li><i>" + i + "</i><span>" + dr["productName"] + "</span><em>" + dr["SalesPrice"] + "</em></li>");
+
+                        i++;
+                        }
+                      
+                      }
+                       
+                      
+                    </ol>
+                </div>
+            </div>
+            <!--left panel if need-->
+            <!--right panel if need-->
+            <div class="main  no-bg">
+                <h2>
+                    首页
+                </h2>
+
+                <div class="cube-box blue" field="NearIncomeData">
+                    <h3>
+                        销售</h3>
+                    <ul class="bg">
+                        <li>今天：<span><span dataname="Today" class="big">@ViewBag.销售今天</span>元</span></li>
+                        <li>昨天：<span><span dataname="Yesterday">@ViewBag.销售昨天</span>元</span></li>
+                    </ul>
+                    <ul>
+                        <li>本周：<span><span dataname="LastWeek">@ViewBag.销售本周</span>元</span></li>
+                        <li>本月：<span><span dataname="LastMonth">@ViewBag.销售本月</span>元</span></li>
+                    </ul>
+                </div>
+                <div class="cube-box green  fl-right" field="NearPromotionData">
+                    <h3>
+                        毛利</h3>
+                   <ul class="bg">
+                        <li>今天：<span><span dataname="Today" class="big">@ViewBag.毛利今天</span>元</span></li>
+                        <li>昨天：<span><span dataname="Yesterday">@ViewBag.毛利昨天</span>元</span></li>
+                    </ul>
+                    <ul>
+                        <li>本周：<span><span dataname="LastWeek">@ViewBag.毛利本周</span>元</span></li>
+                        <li>本月：<span><span dataname="LastMonth">@ViewBag.毛利本月</span>元</span></li>
+                    </ul>
+                </div>
+                <div class="cube-box orange" field="NearStockData">
+                    <h3>
+                        库存</h3>
+                    <ul class="bg">
+                        <li>库存金额：<span class="alone"><span dataname="Amount" class="big">@ViewBag.库存金额</span>元</span></li>
+                    </ul>
+                </div>
+                <div class="cube-box violet fl-right" field="NearPurchaseInData">
+                    <h3>
+                        采购</h3>
+                    <ul class="bg">
+                        <li>本周：<span class="alone"><span dataname="LastWeek" class="big">@ViewBag.采购本周</span>元</span></li>
+                    </ul>
+                    <ul>
+                        <li>本月：<span><span dataname="LastMonth">@ViewBag.采购本月</span>元</span></li>
+                        <li>最近三个月：<span><span dataname="LastThreeMonth">@ViewBag.最近三个月</span>元</span></li>
+                    </ul>
+                </div>
+          
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+

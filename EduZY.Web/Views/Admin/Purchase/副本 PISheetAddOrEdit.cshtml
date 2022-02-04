@@ -1,0 +1,768 @@
+﻿@model Maticsoft.Model.tb_PurchaseOrderAccept
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_LayoutAdminPage.cshtml";
+
+    var list = ViewBag.list as List<Maticsoft.Model.tb_PurchaseOrderAcceptDetail>;
+}
+@section Head{
+    <link href="/css/themes/@Common.PublicConst.TempCss/easyui.css" rel="stylesheet" type="text/css" />
+    <link href="/css/themes/icon.css" rel="stylesheet" type="text/css" />
+    <script src="/Scripts/jquery.easyui-1.3.6.min.js" type="text/javascript"></script>
+    <script src="/Scripts/easyui-lang-zh_CN.js" type="text/javascript"></script>
+    <script src="/Scripts/layer/layer.min.js"></script>
+}
+<div id="breadcrumb" class="ui_nav_breadcrumb_style02 fixed_top">
+    <ul>
+        <li><a href="javascript:goIndex()" class="homepage"></a></li>
+        <li><span class="divider"></span></li>
+        <li class="active">采购管理 </li>
+        <li><span class="divider"></span></li>
+        <li class="active">采购收货新增/编辑 </li>
+    </ul>
+    <ul class=" top_toolbar pull_right">
+        <li id="back_button"><a href="javascript:back();" class="back">返回</a></li>
+        <li><a href="javascript:reload();" class="refresh">刷新</a></li>
+        <li><a href="javascript:removetab();" class="close">关闭</a></li>
+    </ul>
+</div>
+<form class="ui_form1" id="AddOrUpdateForm" method="post">
+@Html.HiddenFor(u => u.id)
+<table width="100%" class="ui_table ui_table_bordered ui_table_condensed ui_table_query">
+    <tr>
+        <th style="width: 10%">
+            <span style="color: red;">*</span>流水号
+        </th>
+        <td style="width: 15%">
+            @Html.TextBoxFor(u => u.SerialNum, new { @style = "width:66%" })
+        </td>
+        <th style="width: 10%">
+            <span style="color: red;">*</span>经手人
+        </th>
+        <td style="width: 15%">
+            @Html.TextBoxFor(u => u.HandledUserName, new { @style = "width:66%" })
+            <a href="#" style="color: blue;" title="选择经手人" onclick="javascript:selectCommon('/admin/Common/SelectUser','选择经手人')">
+                选择</a>
+        </td>
+    </tr>
+    <tr>
+        <th style="width: 10%">
+            <span style="color: red;">*</span>供应商
+        </th>
+        <td style="width: 15%">
+            @Html.TextBoxFor(u => u.SupName, new { @Style = "width:200px" })
+            @Html.HiddenFor(u => u.SupId)
+            <a href="#" style="color: blue;" title="选择供应商" onclick="javascript:selectCommon('/admin/Common/SelectPurchaseSupplier','选择供应商')">
+                选择</a>
+        </td>
+        <th style="width: 10%">
+            <span style="color: red;">*</span>门店
+        </th>
+        <td style="width: 15%">
+            @Html.TextBoxFor(u => u.StoreName, new { @style = "width:66%" })
+            @Html.HiddenFor(u => u.StoreId)
+            <a href="#" style="color: blue;" title="选择门店" onclick="javascript:selectCommon('/admin/Common/SelectStore','选择门店')">
+                选择</a>
+        </td>
+    </tr>
+    <tr>
+        <th style="width: 10%">
+            <span style="color: red;"></span>制单人员
+        </th>
+        <td style="width: 15%">
+            @Html.TextBoxFor(u => u.CreateUserName, new { @style = "width:66%" })
+        </td>
+        <th style="width: 10%">
+            <span style="color: red;">*</span>制单日期
+        </th>
+        <td style="width: 15%">
+            @{
+                string sCreateDate = "";
+                try
+                {
+                    sCreateDate = Model.CreateDate.ToString();
+                }
+                catch { }
+                                
+            }
+            @Html.TextBoxFor(u => u.CreateDate, new { @class = "Wdate", Value = sCreateDate, onclick = "WdatePicker({dateFmt:'yyyy-MM-dd'})" })
+        </td>
+    </tr>
+    <tr>
+        <th style="width: 10%">
+            <span style="color: red;">*</span>审核人
+        </th>
+        <td style="width: 15%">
+            @Html.Raw(Model.ApprUserName)
+        </td>
+        <th style="width: 10%">
+            <span style="color: red;">*</span>审核日期
+        </th>
+        <td style="width: 15%">
+            @{
+                string sApprDate = "";
+                try
+                {
+                    sApprDate = Model.ApprDate.ToString();
+                }
+                catch { }
+                                
+            }
+            @Html.Raw(sApprDate)
+        </td>
+    </tr>
+    @if (!string.IsNullOrEmpty(Model.Status))
+    {
+        <tr>
+            <th style="width: 10%">
+                <span style="color: red;">*</span>单据状态
+            </th>
+            <td style="width: 15%; color: red;" colspan="3">
+                @Html.Raw(Model.Status)
+            </td>
+        </tr>
+  
+    }
+    <tr>
+        <th style="width: 10%;">
+            <span style="color: red;"></span>备注
+        </th>
+        <td style="width: 15%" colspan="3">
+            @Html.TextBoxFor(u => u.Remark, new { @style = "width:76%" })
+        </td>
+    </tr>
+</table>
+<input id="Button1" type="button" value="选择商品" onclick="return SetRange()" />
+<table id="tableProduct" class="ui_table ui_table_bordered ui_table_condensed ui_form_style02">
+    <thead>
+        <tr>
+            @* <th style="text-align: center">
+                <input type="checkbox" id="allChk" />
+            </th>*@ @*      <th style="text-align: center">
+                序号
+            </th>*@
+            <th style="text-align: center">
+                货号
+            </th>
+            <th style="text-align: center">
+                品名
+            </th>
+            <th style="text-align: center">
+                规格
+            </th>
+            <th style="text-align: center">
+                单位
+            </th>
+            <th style="text-align: center">
+                箱数
+            </th>
+            <th style="text-align: center">
+                数量
+            </th>
+            <th style="text-align: center">
+                赠送数量
+            </th>
+            <th style="text-align: center">
+                价格
+            </th>
+            <th style="text-align: center">
+                小计金额
+            </th>
+            <th style="text-align: center">
+                备注
+            </th>
+            <th style="width: 10%; text-align: center">
+                操作
+            </th>
+        </tr>
+    </thead>
+    @Html.HiddenFor(u => u.JsonString)
+    <tbody>
+        @if (list != null)
+        {
+            foreach (var item in list)
+            {
+                               
+            <tr style="text-align: center">
+                @*    <td style="text-align: center">
+                    <input type="checkbox" name="subChk" value="@item.id"/>
+                </td>*@
+                <td style="text-align: center">
+                    @Html.Hidden("id", item.id)
+                    @Html.Hidden("ProductId", item.ProductId)
+                    @Html.Hidden("HHNo", item.HHNo)
+                    @Html.Hidden("ProductName", item.ProductName)
+                    @Html.Hidden("GG", item.GG)
+                    @Html.Hidden("Unit", item.Unit)
+                    @Html.Hidden("BoxNum", item.BoxNum)
+                    @Html.Hidden("Num", item.Num)
+                    @Html.Hidden("SendNum", item.SendNum)
+                    @Html.Hidden("Remark", item.Remark)
+                    @Html.Hidden("Price", item.Price)
+                    @Html.Hidden("SumPrice", item.SumPrice)
+                    @Html.Hidden("DeleteFlag", false)
+                    <span style="color: Black" name="HHNo">@item.HHNo</span>
+                </td>
+                <td style="text-align: center">
+                    <span style="color: Black" name="ProductName">@item.ProductName</span>
+                </td>
+                <td style="text-align: center">
+                    <span style="color: Black" name="GG">@item.GG</span>
+                </td>
+                <td style="text-align: center">
+                    <span style="color: Black" name="Unit">@item.Unit</span>
+                </td>
+                <td style="text-align: center">
+                    <input type="text" name="BoxNum"  onblur ="tongji(this)" style="width: 45px"  value="@item.BoxNum"/>
+                </td>
+                <td style="text-align: center">
+                    <input type="text" name="Num"  onblur ="tongji(this)" style="width: 45px"  value="@item.Num"/>
+                </td>
+                <td style="text-align: center">
+                    <input type="text" name="SendNum"  onblur="tongji(this)" style="width: 45px"  value="@item.SendNum"/>
+                </td>
+                <td style="text-align: center">
+                    <input type="text" name="Price"  onblur ="tongji(this)" style="width: 45px"  value="@item.Price"/>
+                </td>
+                <td style="text-align: center">
+                    <input type="text" name="SumPrice"  style="width: 45px"  value="@(item.Num*item.Price)" disabled/>
+                </td>
+                <td style="text-align: center">
+                    <input type="text" name="Remark"  style="width: 50px"  value="@item.Remark"/>
+                </td>
+                <td style="text-align: center">
+                    <input type="button" value="删除" onclick="_tableProductDelete(this)" />
+                </td>
+            </tr>
+            }
+        }
+    </tbody>
+    <tfoot style="display: none">
+        <tr style="text-align: center">
+            @*    <td style="text-align: center">
+                <input type="checkbox" name="subChk" value="" />
+            </td>*@
+            <td style="text-align: center">
+                <input type="hidden" name="id" value="0" />
+                <input type="hidden" name="ProductId" value="0" />
+                <input type="hidden" name="HHNo" value="0" />
+                <input type="hidden" name="ProductName" value="0" />
+                <input type="hidden" name="GG" value="0" />
+                <input type="hidden" name="Unit" value="0" />
+                <input type="hidden" name="BoxNum" value="0" />
+                <input type="hidden" name="Num" value="0" />
+                <input type="hidden" name="SendNum" value="0" />
+                <input type="hidden" name="Price" value="0" />
+                <input type="hidden" name="SumPrice" value="0" />
+                <input type="hidden" name="Remark" value="0" />
+                <span style="color: Black" name="HHNo"></span>
+                @Html.Hidden("DeleteFlag", false)
+            </td>
+            <td style="text-align: center">
+                <span style="color: Black" name="ProductName"></span>
+            </td>
+            <td style="text-align: center">
+                <span style="color: Black" name="GG"></span>
+            </td>
+            <td style="text-align: center">
+                <span style="color: Black" name="Unit"></span>
+            </td>
+            <td style="text-align: center">
+                <input type="text" name="BoxNum" onblur="tongji(this)" style="width: 45px" value="0" />
+            </td>
+            <td style="text-align: center">
+                <input type="text" name="Num" onblur="tongji(this)" style="width: 45px" value="0" />
+            </td>
+            <td style="text-align: center">
+                <input type="text" name="SendNum" onblur="tongji(this)" style="width: 45px" value="0" />
+            </td>
+            <td style="text-align: center">
+                <input type="text" name="Price" onblur="tongji(this)" style="width: 45px" value="0" />
+            </td>
+            <td style="text-align: center">
+                <input type="text" name="SumPrice" style="width: 45px" value="0" disabled />
+            </td>
+            <td style="text-align: center">
+                <input type="text" name="Remark" style="width: 50px" value="" />
+            </td>
+            <td style="text-align: center">
+                <input type="button" value="删除" onclick="_tableProductDelete(this)" />
+                @* <input type="button" value="添加" onclick="_tableProductAdd(this)" />*@
+            </td>
+        </tr>
+    </tfoot>
+</table>
+<div id="tongji" style="display: none">
+    @Html.Hidden("id", -1)
+    <tr>
+        <td style="text-align: center">
+        </td>
+        <td style="text-align: center">
+        </td>
+        <td style="text-align: center">
+        </td>
+        <td style="text-align: center">
+        </td>
+        <td style="text-align: center">
+            <span style="color: Black" id="Sum_BoxNum">0.00</span>
+        </td>
+        <td style="text-align: center">
+            <span style="color: Black" id="Sum_Num">0.00</span>
+        </td>
+        <td style="text-align: center">
+            <span style="color: Black" id="Sum_SendNum">0.00</span>
+        </td>
+        <td style="text-align: center">
+            <span style="color: Black" id="Sum_Price">0.00</span>
+        </td>
+        <td style="text-align: center">
+            <span style="color: Black" id="Total_SumPrice">0.00</span>
+        </td>
+        <td style="text-align: center">
+        </td>
+        <td style="text-align: center">
+        </td>
+    </tr>
+</div>
+<div class="ui_form_actions " style="text-align: center;display:@Request["display"]">
+    @if (Model.Status == "未审核" || Model.Status == "驳回" || string.IsNullOrEmpty(Model.Status))
+    {
+        <button id="saveAction" type="button" onclick="saveCommonAction();" class="ui_btn">
+            保存</button>
+    }
+    &nbsp;&nbsp;
+    @if (Model.Status == "未审核" || Model.Status == "驳回")
+    {
+        <button id="saveCross1" type="button" onclick="saveAppCross('审核通过');" class="ui_btn">
+            审核</button>
+
+     @*   <button id="saveCross2" type="button" onclick="saveAppCross('驳回');" class="ui_btn">
+            驳回</button>*@
+    }
+</div>
+</form>
+<script>
+    function saveAppCross(status) {
+
+        $.ajax({
+            url: '/Admin/Purchase/savetb_PurchaseOrderAcceptStatus',
+            type: "POST",
+            async: false,
+            dataType: "json",
+            data: { "id": $("#id").val(), "status": status },
+            success: function (data) {
+                if (data.status == '1') {
+
+                    $.ligerDialog.success('审核成功  ！', '提示', function () {
+
+                        window.location.href = '/admin/Purchase/PISheet';
+                    });
+                }
+                else {
+
+                    $.ligerDialog.warn('保存失败！', '提示', function () {
+                        return;
+                    });
+                }
+            }
+        });
+    }
+
+
+    function SetRange(BasicRightID) {
+        $.layer({
+            type: 2,
+            maxmin: true,
+            shadeClose: true,
+            title: '选择产品',
+            shade: [0.1, '#fff'],
+            offset: ['0px', '43px'],
+            area: ['980px', ($(window).height() - 20) + 'px'],
+            iframe: { src: '/admin/Common/SelectProductALL' }
+            , end: function () { }
+        });
+    }
+    /*材料调用*/
+    function ProductSelect(idlist) {
+
+        $.ajax({
+            url: "/Admin/Common/GetProductList",
+            type: "POST",
+            async: false,
+            dataType: "json",
+            data: { "idlist": idlist },
+            success: function (data) {
+
+                $.each(data, function (i, item) {
+
+                    if ($("#tableProduct input[name=HHNo][value=" + item.HHNo + "]").length <= 0) {
+                        var tr = $("#tableProduct tfoot tr").clone();
+
+
+                        tr.find("input[name=id]").val(item.id);
+                        tr.find("input[name=ProductId]").val(item.id);
+                        tr.find("span[name=HHNo]").html(item.HHNo);
+                        tr.find("span[name=ProductName]").html(item.ProductName);
+                        tr.find("span[name=GG]").html(item.GG);
+                        tr.find("span[name=Unit]").html(item.Unit);
+                        tr.find("span[name=MemberPrice]").html(item.MemberPrice);
+                        tr.find("input[name=Price]").val(item.MemberPrice);
+
+                        tr.find("input[name=HHNo]").val(item.HHNo);
+                        tr.find("input[name=ProductName]").val(item.ProductName);
+                        tr.find("input[name=GG]").val(item.GG);
+                        tr.find("input[name=Unit]").val(item.Unit);
+                        tr.find("input[name=Price]").val(item.jinPrice);
+
+                        tr.appendTo($("#tableProduct tbody"));
+
+                    }
+                    else {
+                        var tr = $("#tableProduct input[name=id][value=" + item.id + "]").parents("tr");
+                        tr.show();
+                        tr.find("input[name=DeleteFlag]").val(false);
+                    }
+
+                });
+            }
+
+        });
+
+    }
+
+
+
+    $(document).ready(function () {
+
+        using(["validationengine", "select", "iframe"], function () {
+            // 校验
+            $("#AddOrUpdateForm").validationEngine({
+            });
+        });
+        Sum();
+        $('#uploadify').uploadify({
+            width: '120',
+            uploader: '/Admin/Upfile/GetPic',
+            buttonText: '选择文件',
+            height: 30,
+            fileSizeLimit: '1MB',
+            queueSizeLimit: 0,
+            multi: false,
+            uploadLimit: 0,
+            formData: { 'directory': '/UpFile/UpTemp/', 'fixHeight': 200, 'fixWidth': 200 },
+            onUploadSuccess: UploadSuccess,
+            swf: '/Content/uploadify/uploadify.swf'
+        });
+
+
+    });
+
+    function UploadSuccess(file, data, response) {
+        var v = eval('(' + data + ')')
+        if (response == true) {
+            $("[name=ImgUrl]").val(v.msg);
+            $("#divContaint").html("<img id='img0' src='" + v.msg + "' width='150px' height='150px'/>");
+        }
+        else {
+            $.ligerDialog.error("上传失败");
+        }
+    }
+
+    //保存
+    function saveCommonAction() {
+
+    
+        var txtSerialNum = document.getElementById("SerialNum").value;
+        if (txtSerialNum == "") {
+            $.ligerDialog.warn("流水号不能为空！");
+            document.getElementById("SerialNum").focus();
+            return;
+        }
+   
+        var txtSupId = document.getElementById("SupId").value;
+        if (txtSupId == "") {
+            $.ligerDialog.warn("供应商不能为空！");
+            document.getElementById("SupId").focus();
+            return;
+        }
+      
+        var txtStoreId = document.getElementById("StoreId").value;
+        if (txtStoreId == "") {
+            $.ligerDialog.warn("门店不能为空！");
+            document.getElementById("StoreId").focus();
+            return;
+        } 
+        
+        var txtHandledUserName = document.getElementById("HandledUserName").value;
+        if (txtHandledUserName == "") {
+            $.ligerDialog.warn("经手人不能为空！");
+            document.getElementById("HandledUserName").focus();
+            return;
+        }
+        var txtCreateUserName = document.getElementById("CreateUserName").value;
+        if (txtCreateUserName == "") {
+            $.ligerDialog.warn("制单人员不能为空！");
+            document.getElementById("CreateUserName").focus();
+            return;
+        }
+        var txtCreateDate = document.getElementById("CreateDate").value;
+        if (txtCreateDate == "") {
+            $.ligerDialog.warn("制单日期不能为空！");
+            document.getElementById("CreateDate").focus();
+            return;
+        }    
+     
+
+        if (!save()) {
+            return;
+        }
+        // 校验表单
+        var flag = $.validationEngine.doValidate("#AddOrUpdateForm");
+        if (!flag)
+            return;
+
+        $('#AddOrUpdateForm').ajaxSubmit({
+            type: 'POST',
+            url: '/Admin/Purchase/savetb_PurchaseOrderAccept',
+            dataType: "json",
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            success: function (_o) {
+
+                if (_o.status == '1') {
+
+                    $.ligerDialog.success('保存成功！', '提示', function () {
+
+                        window.location.href = '/admin/Purchase/PISheet';
+                    });
+                }
+                else {
+
+                    $.ligerDialog.warn('保存失败！', '提示', function () {
+                        return;
+                    });
+                }
+
+            },
+            error: function () {
+                $.ligerDialog.warn('保存失败！', '提示', function () {
+                    return;
+                });
+            }
+        });
+
+    }
+    function selectCommon(url, title) {
+
+        $.ligerDialog.open({
+            className: 'dialog_style02',
+            height: 490,
+            width: 400,
+            title: title,
+            url: '' + url,
+            dialogWaiting: true,
+            buttons: [{ text: '关闭', onclick: close}]
+        });
+    }
+    function close(button, dg) {
+        $.ligerDialog.close();
+    }
+
+    function save() {
+
+        var haveProduct = false;
+        var num = 0;
+        var ProductList = new Array();
+        $("#tableProduct").find("tbody tr").each(function () {
+            var ProductInfo = {};
+
+            $(this).find("input[name]").each(function () {
+
+                if ($(this).attr("name") == "Price") {
+                    if (isNaN($(this).val())) {
+                        $(this).css("background", "#9DB7D0");
+                        $(this).focus();
+                        num = 1;
+                        alert("价格必须数字！");
+                        return false;
+                    }
+                }
+                if ($(this).attr("name") == "BoxNum") {
+                    if (isNaN($(this).val())) {
+                        $(this).css("background", "#9DB7D0");
+                        $(this).focus();
+                        num = 1;
+                        alert("箱数必须数字！");
+                        return false;
+                    }
+                }
+
+                if ($(this).attr("name") == "Num") {
+                    if (isNaN($(this).val())) {
+                        $(this).css("background", "#9DB7D0");
+                        $(this).focus();
+                        num = 1;
+                        alert("数量必须数字！");
+                        return false;
+                    }
+                }
+
+                if ($(this).attr("name") == "SendNum") {
+                    if (isNaN($(this).val())) {
+                        $(this).css("background", "#9DB7D0");
+                        $(this).focus();
+                        num = 1;
+                        alert("赠送数必须数字！");
+                        return false;
+                    }
+                }
+
+
+                if ($(this).attr("name") == "SumPrice") {
+                    if (isNaN($(this).val())) {
+                        $(this).css("background", "#9DB7D0");
+                        $(this).focus();
+                        num = 1;
+                        alert("小计金额必须数字！");
+                        return false;
+                    }
+                }
+
+                if ($(this).attr("name") == "DeleteFlag") {
+                    if ($(this).val() == "false" || $(this).val() == "False") {
+                        haveProduct = true;
+                    }
+                }
+
+                ProductInfo[$(this).attr("name")] = $(this).val();
+            })
+            ProductList.push(ProductInfo);
+        })
+
+        if (!haveProduct) {
+            $.ligerDialog.warn("请选择产品！");
+            return false;
+        }
+
+        $("#JsonString").val(JSON.stringify(ProductList))
+        //        alert($("#JsonString").val());
+        if (num == 0) {
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
+
+
+
+    function _tableProductDelete(obj) {
+        var target = $(obj).parents("tr");
+        var id = target.find("input[name=id]").val();
+        if (id > 0) {
+            target.hide();
+            target.find("input[name=DeleteFlag]").val(true);
+            target.remove();
+        }
+        else {
+            target.remove();
+        }
+    }
+
+    function tongji(obj) {
+        var target = $(obj).parents("tr");
+        if (isNaN($(obj).val())) {
+            alert("请输入数字！");
+            $(obj).val(0.00);
+            return;
+        }
+
+        if ($(obj).attr("name") == "BoxNum") {
+            target.find("input[name=BoxNum]").val($(obj).val());
+            target.find("input[name=Num]").val($(obj).val());
+            var Price = target.find("input[name=Price]").val();
+            target.find("input[name=SumPrice]").val(parseFloat($(obj).val()) * parseFloat(Price));
+        }
+        if ($(obj).attr("name") == "Num") {
+            target.find("input[name=BoxNum]").val($(obj).val());
+            target.find("input[name=Num]").val($(obj).val());
+            var Price = target.find("input[name=Price]").val();
+            target.find("input[name=SumPrice]").val(parseFloat($(obj).val()) * parseFloat(Price));
+        }
+        if ($(obj).attr("name") == "Price") {
+            target.find("input[name=Price]").val($(obj).val());
+            var Num = target.find("input[name=Num]").val();
+            target.find("input[name=SumPrice]").val(parseFloat($(obj).val()) * Num);
+        }
+
+        if ($(obj).attr("name") == "SendNum") {
+            target.find("input[name=SendNum]").val($(obj).val());
+        }
+        Sum();
+    }
+
+
+    function Sum() {
+
+        var SumPrice = 0.00;
+        var SumBoxNum = 0.00;
+        var SumNum = 0.00;
+        var SumSendNum = 0.00;
+        var TotalSumPrice = 0.00;
+
+        $("#tableProduct").find("tbody tr").each(function () {
+
+
+            $(this).find("input[name]").each(function () {
+
+                if ($(this).attr("name") == "Price") {
+                    SumPrice += parseFloat($(this).val());
+                }
+                if ($(this).attr("name") == "BoxNum") {
+                    SumBoxNum += parseFloat($(this).val());
+                }
+
+                if ($(this).attr("name") == "Num") {
+                    SumNum += parseFloat($(this).val());
+                }
+
+                if ($(this).attr("name") == "SendNum") {
+                    SumSendNum += parseFloat($(this).val());
+                }
+
+
+                if ($(this).attr("name") == "SumPrice") {
+                    TotalSumPrice += parseFloat($(this).val());
+                }
+            });
+        });
+
+        $("#Sum_Price").html(fmoney(SumPrice / 2.0, 2));
+        $("#Sum_BoxNum").html(fmoney(SumBoxNum / 2.0, 2));
+        $("#Sum_Num").html(fmoney(SumNum / 2.0, 2));
+        $("#Sum_SendNum").html(fmoney(SumSendNum / 2.0, 2));
+        $("#Total_SumPrice").html(fmoney(TotalSumPrice / 2.0, 2));
+    }
+
+
+    function _tableProductAdd(obj) {
+        var tr = $("#tableProduct tfoot tr").clone();
+        tr.appendTo($("#tableProduct tbody"));
+    }
+
+    //格式化金额
+    function fmoney(s, n) {
+        n = n > 0 && n <= 20 ? n : 2;
+        s = parseFloat((s + "").replace(/[^\d\.-]/g, "")).toFixed(n) + ""; //更改这里n数也可确定要保留的小数位
+        var l = s.split(".")[0].split("").reverse(),
+		   r = s.split(".")[1];
+        t = "";
+        for (i = 0; i < l.length; i++) {
+            t += l[i] + ((i + 1) % 3 == 0 && (i + 1) != l.length ? "," : "");
+        }
+        return t.split("").reverse().join("") + "." + r.substring(0, 2); //保留2位小数  如果要改动 把substring 最后一位数改动就可
+    }
+			
+    
+        
+</script>
+@Html.Partial("~/Views/Shared/_LayoutLoveJs.cshtml")

@@ -1,0 +1,489 @@
+﻿@model Maticsoft.Model.tb_Product
+@{
+    ViewBag.Title = "ProductAddEdit";
+    Layout = "~/Views/Shared/_LayoutAdminPage.cshtml";
+}
+<div id="breadcrumb" class="ui_nav_breadcrumb_style02 fixed_top">
+    <ul>
+        <li><a href="javascript:goIndex()" class="homepage"></a></li>
+        <li><span class="divider"></span></li>
+        <li class="active">基础管理 </li>
+        <li><span class="divider"></span></li>
+        <li class="active">商品管理 </li>
+        <li><span class="divider"></span></li>
+        <li class="active">产品新增/编辑</li>
+    </ul>
+    <ul class=" top_toolbar pull_right">
+        <li id="back_button"><a href="javascript:back();" class="back">返回</a></li>
+        <li><a href="javascript:reload();" class="refresh">刷新</a></li>
+        <li><a href="javascript:removetab();" class="close">关闭</a></li>
+    </ul>
+</div>
+ <form class="ui_form1" id="AddOrUpdateForm" method="post">
+
+
+<table width="95%" class="ui_table ui_table_bordered ui_table_condensed ui_table_query">
+    <tr>
+        <th style="width: 10%; text-align: right">
+            <span style="color: red">*</span>货号：
+              
+
+        </th>
+        <td colspan="2" style="width: 25%;">
+           @Html.TextBoxFor(u => u.HHNo, new { @Style = "width:160px" } )
+           <a href="javascript:void(0)" style="color: blue;" title="设置条码"  onclick="SelectBarCode();">设置一品多条码</a> 
+                @Html.HiddenFor(u => u.barcodelist)
+                <script>
+                    function SelectBarCode() {
+                        var barcodelist = document.getElementById("barcodelist").value;
+                        selectCommon('ProductBarCode?barcodelist=' + barcodelist, '设置条码');
+                    }
+                    function setBarCode(barcodelist) {
+                        document.getElementById("barcodelist").value = barcodelist;
+
+                    }
+                
+                </script>
+          
+        </td>
+        <th style="width: 10%; text-align: right">
+            <span style="color: red">*</span>品名：
+        </th>
+        <td colspan="3" style="width: 30%;">
+            @Html.TextBoxFor(u => u.ProductName, new { @Style = "width:250px", @onblur = "GetPy(this);" })
+            <script>
+                //获取名称拼音
+                function GetPy(obj) {
+
+                    var pyvalue = $(obj).val();
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Admin/Common/GetHzPy',
+                        data: { "value": pyvalue },
+                        dataType: "json",
+                        success: function (data) {
+
+                            if (data != null) {
+
+                                $("#ProductJJ").val(data.html);
+                            }
+                            else {
+
+                                $("#ProductJJ").val("");
+                            }
+                        }
+                    });
+                }
+            
+            </script>
+        </td>
+        <td rowspan="6" width="400"  style="display:none">
+                   <div id="divContaint" class="frame" style="display: table-cell; text-align:left; width:150px; height:150px"> 
+                   <img id="img0" src="@Model.ImgUrl" width="150px" height="150px"/>
+                   
+                   </div>
+                    <div id="fileQueue">
+                      <input type="file" name="uploadify" id="uploadify"   />
+                     </div>
+                     @Html.HiddenFor(u => u.ImgUrl)
+
+          <span style="color: Red">
+            <br />
+            图片上传说明：
+            <br />
+            1. 图片最大为1M.
+            <br />
+            2. 图片必须是png或者jpg格式.
+            </span>
+        </td>
+    </tr>
+    <tr>
+        <th style="text-align: right">
+            <span style="color: red">*</span>类别：
+        </th>
+        <td>
+            @Html.HiddenFor(u =>u.id)
+            @Html.TextBoxFor(u => u.ClassName, new { @Style = "width:100px", @onblur = "GetIsLastLeval();" })
+            @Html.HiddenFor(u =>u.ClassId)
+
+            <script>
+
+                //获取名称拼音
+                function GetIsLastLeval() {
+
+                    var ClassId = $("#ClassId").val();
+                    if (ClassId == "0" || ClassId == "") {
+                        return;
+                    }
+                    $.ajax({
+                        type: 'POST',
+                        url: '/Admin/Common/GetIsLastLeval',
+                        data: { "ClassId": ClassId },
+                        dataType: "json",
+                        success: function (data) {
+                            if (data.count == 1) {
+
+
+                                $("#ClassName").val("");
+                                $("#ClassId").val("");
+                                $.ligerDialog.warn('您选择存在下级,请选最后一级！', '提示', function () { return; });
+                            }
+
+
+                        }
+                    });
+                }
+            </script>
+           
+           <a href="#" style="color: blue;" title="选择类别"  onclick="javascript:selectCommon('/admin/Common/SelectProductType','选择')">选择</a> 
+       
+        </td>
+        <th style="text-align: right">
+           规格：
+        </th>
+        <td>
+          
+          
+            @Html.TextBoxFor(u => u.GG, new { @Style = "width:100px",@onblur = "GetIsLastLeval();" })
+
+        </td>
+        <th style="text-align: right">
+            <span style="color: red">*</span>单位：
+        </th>
+        <td>
+        
+           
+             <select id="Unit" name="Unit" >
+              @Html.Raw(Model.unitlist)
+             </select>
+           @*<input id="otherUnit" name="otherUnit" type="text"  value="@Model.other"/>*@
+                 
+       
+
+        </td>
+    </tr>
+    <tr>
+        <th style="text-align: right">
+            <span style="color: red">*</span>最后进价：
+        </th>
+        <td>
+            @Html.TextBoxFor(u => u.jinPrice, new { @Style = "width:100px",@class="input_large validate[required,length[1,30]" })
+        </td>
+        <th style="text-align: right">
+            <span style="color: red">*</span>零售价：
+        </th>
+        <td>
+            @Html.TextBoxFor(u => u.SalesPrice, new { @Style = "width:100px",@class="input_large validate[required,length[1,30]" })
+        </td>
+        <th style="text-align: right">
+            <span style="color: red">*</span>会员价：
+        </th>
+        <td>
+            @Html.TextBoxFor(u => u.MemberPrice, new { @Style = "width:100px",@class="input_large validate[required,length[1,30]" })
+        </td>
+    </tr>
+    <tr>
+        <th style="text-align: right">
+            <span style="color: red"></span>允许改价折扣：
+        </th>
+        <td>
+         <input  id="IsAllowChange" name="IsAllowChange" type="checkbox"   @(Model.IsAllowChange ==1?"checked='checked'":"")>
+        </td>
+        <th style="text-align: right">
+            <span style="color: red">*</span>最低售价：
+        </th>
+        <td>
+            @Html.TextBoxFor(u => u.MinPrice, new { @Style = "width:100px",@class="input_large validate[required,length[1,30]" } )
+        </td>
+        <th style="text-align: right">
+            <span style="color: red">*</span>实时库存：
+        </th>
+        <td>
+            @Html.TextBoxFor(u => u.StockNum, new { @Style = "width:100px",@readonly="readonly"})
+        </td>
+    </tr>
+    <tr>
+        <th style="text-align: right">
+            <span style="color: red"></span>简称：
+        </th>
+        <td>
+            @Html.TextBoxFor(u => u.ProductSingeName, new { @Style = "width:150px" })
+        </td>
+        <th style="text-align: right">
+            <span style="color: red">*</span>助记码：
+        </th>
+        <td>
+            @Html.TextBoxFor(u => u.ProductJJ, new {  @Style = "width:100px", @class = "input_large validate[required,length[1,30]" })
+        </td>
+        <th style="text-align: right">
+            <span style="color: red"></span>品牌：
+        </th>
+        <td>
+
+           @Html.TextBoxFor(u => u.BrandName, new { @Style = "width:100px" })
+            @Html.HiddenFor(u =>u.BrandId)
+
+            <a href="#" style="color: blue;" title="选择品牌"  onclick="javascript:selectCommon('/admin/Common/SelectProductBrand','选择品牌')">选择</a> 
+        </td>
+    </tr>
+    <tr>
+        <th style="text-align: right">
+            <span style="color: red">*</span>进货规格：
+        </th>
+        <td>
+            @Html.TextBoxFor(u => u.JinGG, new { @Style = "width:100px", @class = "input_large validate[required,length[1,30]" })
+        </td>
+        <th style="text-align: right">
+            <span style="color: red">*</span> 供应商：
+        </th>
+        <td colspan="3">
+            @Html.TextBoxFor(u => u.SupName, new { @Style = "width:200px" })
+            @Html.HiddenFor(u => u.SupId)
+         <a href="#" style="color: blue;" title="选择供应商"  onclick="javascript:selectCommon('/admin/Common/SelectPurchaseSupplier','选择供应商')">选择</a> 
+        </td>
+    </tr>
+    <tr>
+        <th style="text-align: right">
+            <span style="color: red">*</span> 商品状态：
+        </th>
+        <td colspan="2">
+                      
+          <input type="radio" name="ProductStatus" value="正常" id="Status0"  @(Model.ProductStatus =="正常"?"checked='checked'":"")/>
+          <label for="Status0">正常</label>
+          <input type="radio" name="ProductStatus" value="停售" id="Status1"  @(Model.ProductStatus == "停售" ? "checked='checked'" : "")/>
+          <label for="Status1">停售</label>
+          <input type="radio" name="ProductStatus" value="停购" id="Status2"  @(Model.ProductStatus == "停购" ? "checked='checked'" : "")/>
+          <label for="Status2">停购</label>
+          <input type="radio" name="ProductStatus" value="淘汰" id="Status3"  @(Model.ProductStatus == "淘汰" ? "checked='checked'" : "")/>
+          <label for="Status3">淘汰</label>
+                   
+
+
+        </td>
+         <th style="text-align: right">
+            <span style="color: red">*</span> 提成方式：
+        </th>
+        <td colspan="2">
+
+          <input type="radio" onclick="TCWayOp(1)" name="TJWay" value="不提成" id="DeductType0"  @(Model.TJWay == "不提成" ? "checked='checked'" : "")><label for="DeductType0">不提成</label>
+          <input type="radio" onclick="TCWayOp(1)" name="TJWay" value="按比率" id="DeductType1"  @(Model.TJWay == "按比率" ? "checked='checked'" : "")><label for="DeductType1">按比率</label>
+          <input type="radio" onclick="TCWayOp(1)"  name="TJWay" value="按金额" id="DeductType2"  @(Model.TJWay == "按金额" ? "checked='checked'" : "")><label for="DeductType2">按金额</label>
+          
+            <span id="TCHTML"  style="display:none; margin-left:40px;">
+            <span id="TCName1" style="display:none">提成比率(%) </span>
+            <span id="TCName2"  style="display:none">提成金额 </span>
+            @Html.TextBoxFor(u => u.TJPrice, new { @Style = "width:50px"})
+            </span>
+             
+              <script>
+
+
+                  function getRadioBoxValue(radioName) {
+                      var obj = document.getElementsByName(radioName);  //这个是以标签的name来取控件
+                      for (i = 0; i < obj.length; i++) {
+
+                          if (obj[i].checked) {
+                              return obj[i].value;
+                          }
+                      }
+                      return "undefined";
+                  }
+
+
+                  function TCWayOp(type) {
+
+
+                      if (getRadioBoxValue("TJWay") == "不提成") {
+
+                          document.getElementById("TCHTML").style.display = "none";
+
+                      }
+                      else if (getRadioBoxValue("TJWay") == "按比率") {
+                          document.getElementById("TCHTML").style.display = "";
+                          document.getElementById("TCName1").style.display = "";
+                          document.getElementById("TCName2").style.display = "none";
+
+                      }
+                      else if (getRadioBoxValue("TJWay") == "按金额") {
+                          document.getElementById("TCHTML").style.display = "";
+                          document.getElementById("TCName1").style.display = "none";
+                          document.getElementById("TCName2").style.display = "";
+                      }
+                      if (type == "1") {
+                          document.getElementById("TJPrice").value = "0.00";
+                      }
+
+                  }
+                  TCWayOp(0);
+              
+              </script>
+          
+
+        </td>
+
+     
+    </tr>
+    <tr>
+    @*   <th style="text-align: right">
+            <span style="color: red">*</span> 商品类型：
+        </th>
+        <td colspan="3">
+              <input type="radio" name="ProductType" value="普通" id="ItemType0"  @(Model.ProductType == "普通" ? "checked='checked'" : "")><label for="ItemType0">普通</label>
+              <input type="radio" name="ProductType" value="套餐组合" id="ItemType1" @(Model.ProductType == "套餐组合" ? "checked='checked'" : "")><label for="ItemType1">套餐、组合</label>
+              <input type="radio" name="ProductType" value="服务联营" id="ItemType2" @(Model.ProductType == "服务联营" ? "checked='checked'" : "")><label for="ItemType2">服务、联营</label>
+        </td>*@
+    @*    <th style="text-align: right">
+            <span style="color: red">*</span> 计价方式：
+        </th>
+        <td colspan="2">
+   
+            <input type="radio" name="JJWay" value="普通" id="MeasureFlag0" @(Model.JJWay == "普通" ? "checked='checked'" : "")><label for="MeasureFlag0">普通</label>
+            <input type="radio" name="JJWay" value="计重" id="MeasureFlag1" @(Model.JJWay == "计重" ? "checked='checked'" : "")><label for="MeasureFlag1">计重</label>
+            <input type="radio" name="JJWay" value="计数" id="MeasureFlag2" @(Model.JJWay == "计数" ? "checked='checked'" : "")><label for="MeasureFlag2">计数</label>
+        </td>*@
+       
+    </tr>
+    <tr>
+        <th style="text-align: right" >
+            <span style="color: red">*</span> 商品说明：
+        </th>
+        <td colspan="7">
+
+             @Html.TextAreaFor(u => u.Remark, new { @Style = "width:80%;height:40px" })
+        </td>
+    </tr>
+</table>
+
+<script src="/Scripts/common/disableFormCommon.js" type="text/javascript"></script>
+
+    @if (Request["display"] != null)
+    {
+        <script>
+            $(document).ready(function () {
+                disableForm("AddOrUpdateForm", true)
+            });
+        </script>    
+    }
+<div class="ui_form_actions " style="text-align: center; border-bottom:30px">
+    <button id="saveAction" type="button" onclick="saveCommonAction();" class="ui_btn" style=" display:@Request["display"]" />
+    保存</button>&nbsp;&nbsp;
+      <a id="btnReturn"  onclick="ReturnBack();" class="ui_btn" />
+    返回</a>&nbsp;&nbsp;
+</div>
+
+
+</form>
+
+
+ <link href="@Url.Content("~/Content/uploadify/uploadify.css")" rel="stylesheet" type="text/css" />
+<script src="@Url.Content("~/Content/uploadify/jquery.uploadify.js")" type="text/javascript"></script>
+
+<script>
+
+    function ReturnBack() {
+        window.location.href = "ProductList";
+    }
+
+    $(document).ready(function () {
+        using(["validationengine", "select", "iframe"], function () {
+            // 校验
+            $("#AddOrUpdateForm").validationEngine({
+        });
+    });
+
+    $('#uploadify').uploadify({
+        width: '120',
+        uploader: '/Admin/Upfile/GetPic',
+        buttonText: '选择文件',
+        height: 30,
+        fileSizeLimit: '1MB',
+        queueSizeLimit: 0,
+        multi: false,
+        uploadLimit: 0,
+        formData: { 'directory': '/UpFile/UpTemp/', 'fixHeight': 200, 'fixWidth': 200 },
+        onUploadSuccess: UploadSuccess,
+        swf: '/Content/uploadify/uploadify.swf'
+    });
+
+});
+
+function UploadSuccess(file, data, response) {
+    var v = eval('(' + data + ')')
+    if (response == true) {
+        $("[name=ImgUrl]").val(v.msg);
+        $("#divContaint").html("<img id='img0' src='" + v.msg + "' width='150px' height='150px'/>");
+    }
+    else {
+        $.ligerDialog.error("上传失败");
+    }
+}
+
+    //保存
+    function saveCommonAction() {
+
+
+          if ($("#ClassName").val()=="") {
+              $.ligerDialog.warn('类别不能为空！', '提示', function () {
+
+            });
+            return false;
+        }
+
+        // 校验表单
+        var flag = $.validationEngine.doValidate("#AddOrUpdateForm");
+        if (!flag)
+            return;
+        $('#AddOrUpdateForm').ajaxSubmit({
+            type: 'POST',
+            url: '/Admin/Product/saveInfoProduct',
+            dataType: "json",
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            success: function (_o) {
+              
+                 if (_o.status == '1') {
+
+                    $.ligerDialog.success('保存成功！', '提示', function () {
+
+                        window.location.href = '/Admin/Product/Productlist';
+                    });
+                }
+                else {
+
+                    $.ligerDialog.warn('保存失败！', '提示', function () {
+                        return;
+                    });
+                }
+
+            },
+            error: function () {
+                $.ligerDialog.warn('保存失败！', '提示', function () {
+                    return;
+                });
+            }
+        });
+
+    }
+    
+
+
+    function selectCommon(url, title) {
+
+        $.ligerDialog.open({
+            className: 'dialog_style02',
+            height: 490,
+            width: 400,
+            title: title,
+            url: '' + url,
+            dialogWaiting: true,
+            buttons: [{ text: '关闭',onclick: close }]
+        });
+    }
+    function close(button, dg) 
+     {
+         $.ligerDialog.close();
+     }
+ 
+</script>
+
+
+@Html.Partial("~/Views/Shared/_LayoutLoveJs.cshtml")

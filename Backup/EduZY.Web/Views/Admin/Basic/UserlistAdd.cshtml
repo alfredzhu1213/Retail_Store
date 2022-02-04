@@ -1,0 +1,348 @@
+﻿@{
+    Layout = "~/Views/Shared/_LayoutAdminPage.cshtml";
+}
+<div id="breadcrumb" class="ui_nav_breadcrumb_style02 fixed_top">
+    <ul>
+        <li><a href="javascript:goIndex()" class="homepage"></a></li>
+        <li><span class="divider"></span>
+            <li class="active">基础管理 </li>
+        </li>
+        <li><span class="divider"></span>
+            <li class="active">系统安全管理 </li>
+        </li>
+        <li><span class="divider"></span>
+            <li class="active">用户新增</li>
+        </li>
+    </ul>
+    <ul class=" top_toolbar pull_right">
+        <li id="back_button"><a href="javascript:back();" class="back">返回</a></li>
+        <li><a href="javascript:reload();" class="refresh">刷新</a></li>
+        <li id="fav_button" class="hidden"><a href="javascript:void(0);" onclick="fav(this);"
+            class="collect">收藏</a></li>
+        <li id="unFav_button" class="hidden"><a href="javascript:void(0);" onclick="unFav(this);"
+            class="collect">取消收藏</a></li>
+        <li><a href="javascript:removetab();" class="close">关闭</a></li>
+    </ul>
+</div>
+<script>
+    var tabElement = top.$("#content_right");
+    var navtab = tabElement.ligerGetTabManager();
+    var tabid = navtab.getSelectedTabItemID();
+    var liElement = top.$("li[tabid=" + tabid + "]", top.$(".l-tab-links"));
+
+    var taskbarElement = top.$("#taskbar");
+    var taskbar = taskbarElement.loveyGetTaskBarManager();
+
+    taskbarElement.unbind("unFavComplete").bind("unFavComplete", function (event, taskid) {
+        if (taskid != tabid) {
+            return;
+        }
+        toggleFavButton(false);
+    })
+
+    taskbarElement.unbind("favComplete").bind("favComplete", function (event, taskid) {
+        if (taskid != tabid) {
+            return;
+        }
+        toggleFavButton(true);
+    })
+
+    function goIndex() {
+        navtab.selectTabItem("-1");
+    }
+
+    //返回列表页面
+    function back() {
+        var historyUrl = liElement.attr("url");
+        window.location.href = historyUrl;
+    }
+
+    //刷新当前选中的tab
+    function reload() {
+        window.location.reload(true);
+    }
+
+    function removetab() {
+        navtab.removeTabItem(navtab.getSelectedTabItemID());
+        //当tab关闭后，只留有首页tab时，自动刷新
+        if (navtab != null && navtab.getTabItemCount() == 1) {
+            navtab.reload(-1);
+        }
+    }
+
+    //收藏当前选中的TAB
+    function fav() {
+        taskbar.addTaskBar({
+            taskid: liElement.attr("tabid"),
+            url: liElement.attr("url"),
+            title: liElement.attr("title"),
+            icon: liElement.attr("menupic")
+        });
+    }
+
+    //取消收藏的tab
+    function unFav(clickObj) {
+        taskbar.removeTaskBar(navtab.getSelectedTabItemID());
+    }
+
+    function needShowBackButton() {
+        var tabUrl = liElement.attr("url");
+        var currentUrl = window.location.href;
+
+        if (tabUrl.indexOf("?") > -1) {
+            tabUrl = tabUrl.substring(0, tabUrl.indexOf("?"));
+        }
+
+        if (currentUrl.indexOf("?") > -1) {
+            currentUrl = currentUrl.substring(0, currentUrl.indexOf("?"));
+        }
+
+        if (currentUrl.indexOf(tabUrl) == -1) {
+            return true;
+        }
+
+        return false;
+    }
+
+    $(document).ready(function () {
+        //动态控制返回按钮
+        if (needShowBackButton()) {
+            $("#back_button").removeClass("hidden");
+        }
+
+        //动态控制收藏和取消收藏
+        $.ajax({
+            dataType: "json",
+            url: "/module/isCollect.do?pkId=" + liElement.attr("tabid") + "&v=" + new Date().getTime(),
+            success: function (data) {
+                toggleFavButton(data.isCollect);
+            }
+        })
+    })
+
+    function toggleFavButton(isFav) {
+        if (isFav) {
+            $("#fav_button").hide();
+            $("#unFav_button").show();
+        } else {
+            $("#fav_button").show();
+            $("#unFav_button").hide();
+        }
+    }
+</script>
+<div class="p15 mt20" id="content">
+    <div id="mainDiv" class="p15 ui_container_fluid pr5 pb5 ">
+        <form class="ui_form" id="AddOrUpdateForm" method="post">
+        <table class="ui_table ui_table_bordered ui_table_condensed ui_form_style02" width="100%">
+            <tr>
+                <th style="width: 10%">
+                    <span style="color: red">*</span>用户名：
+                </th>
+                <td style="width: 40%">
+                    <input id="UserName" name="UserName" style="width: 97%;" class="input_large validate[required,length[1,30] " />
+                </td>
+                <th style="width: 10%">
+                    <span style="color: red">*</span>用户角色：
+                </th>
+                <td style="width: 40%">
+                    @Html.DropDownListFor(m => new EduJXC.Model.UserMaster().RoleID, ViewData["itemsrole"] as IEnumerable<SelectListItem>)
+                </td>
+            </tr>
+           
+            <tr>
+           
+
+                <th style="width: 10%">
+                    <span style="color: red">*</span>管理门店：
+                </th>
+                <td style="width: 40%">
+                @*  @Html.DropDownListFor(m => new EduJXC.Model.UserMaster().StoreId, ViewData["StoreList"] as IEnumerable<SelectListItem>)*@
+
+                   @Html.TextBoxFor(u => new EduJXC.Model.UserMaster().StoreNameList, new { @style = "width:80%", @readonly = "readonly" })
+                   @Html.HiddenFor(u => new EduJXC.Model.UserMaster().StoreIdList)
+                   <a href="#" style="color: blue;" title="选择门店" onclick="javascript:selectCommon('/admin/Common/SelectStoreMore','选择门店')">选择</a>
+                </td>
+               
+
+                <th>
+                    <span style="color: red">*</span>用户密码：
+                </th>
+                <td>
+                    <input id="Password" name="Password" type="password" style="width: 97%;" value="" class="input_large validate[required,length[1,30]" />
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    <span style="color: red">*</span>确认密码：
+                </th>
+                <td>
+                    <input id="Password1" type="password" name="Password1" style="width: 97%;" class="input_large validate[required,length[1,30]" />
+                </td>
+
+                <th>
+                    <span style="color: red">*</span>姓名：
+                </th>
+                <td>
+                    <input id="TrueName" name="TrueName" style="width: 97%;" class="input_large validate[required,length[1,30] " />
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    性别：
+                </th>
+                <td>
+                    <input checked="True" id="radio0" name="Sex" type="radio" value="False" />男
+                    <input id="radio1" name="Sex" type="radio" value="True" />女
+                </td>
+                <th>
+                    <span style="color: red">*</span>手机号码：
+                </th>
+                <td>
+                    <input id="Mobile" name="Mobile" style="width: 97%;" class="input_large validate[required,length[1,30]" />
+                </td>
+            </tr>
+            <tr>
+              <th>
+                    办公电话：
+                </th>
+                <td>
+                    <input id="Phone" name="Phone" style="width: 97%;" class="input_large" />
+                </td>
+                <th>
+                    QQ：
+                </th>
+                <td>
+                    <input id="QQ" name="QQ" style="width: 97%;" class="input_large" />
+                </td>
+            </tr>
+            <tr>
+                <th>
+                    电子邮箱：
+                </th>
+                <td>
+                    <input id="EMail" name="EMail" style="width: 97%;" class="input_large" />
+                </td>
+                <th>
+                    状态：
+                </th>
+                <td>
+                    <input checked="True" id="radio00" name="Status" type="radio" value="1">正常
+                    <input id="radio11" name="Status" type="radio" value="0">禁用
+                </td>
+            </tr>
+        </table>
+        <div class="ui_form_actions " style="text-align: center">
+            <button id="saveAction" type="button" onclick="saveCommonAction();" class="ui_btn" />
+            保存</button>&nbsp;&nbsp;
+        </div>
+        </form>
+    </div>
+</div>
+<script type="text/javascript">
+
+    var contextPath = "";
+
+    $(document).ready(function () {
+        using(["validationengine", "select", "iframe"], function () {
+            // 校验
+            $("#AddOrUpdateForm").validationEngine({
+            });
+
+        });
+    });
+
+    //保存
+    function saveCommonAction() {
+
+        if ($('#StoreIdList').val()=="") {
+            $.ligerDialog.warn('请选择门店！', '提示', function () { });
+           return;
+       }
+
+
+        // 校验表单
+        var flag = $.validationEngine.doValidate("#AddOrUpdateForm");
+        if (!flag)
+            return;
+
+
+        $('#AddOrUpdateForm').ajaxSubmit({
+            type: 'POST',
+            url: '/Admin/Basic/UserlistSave',
+            dataType: "json",
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            success: function (_o) {
+                if (_o.status == '3') {
+                    $.ligerDialog.warn('两次输入密码不一样！', '提示', function () {
+                        return;
+                    });
+                }
+                else if (_o.status == '2') {
+                    $.ligerDialog.warn('用户已存在！', '提示', function () {
+                        return;
+                    });
+                }
+                else if (_o.status == '1') {
+
+                    $.ligerDialog.success('用户保存成功！', '提示', function () {
+
+                        window.location.href = '/Admin/Basic/Userlist';
+                    });
+                }
+                else if (_o.status == '-10') {
+
+                    $.ligerDialog.warn('密码只能为数字！', '提示', function () {
+                        return;
+                    });
+                }
+                else if (_o.status == '-11') {
+
+                    $.ligerDialog.warn('密码必须6数字！', '提示', function () {
+                        return;
+                    });
+                }
+                else if (_o.status == '-12') {
+
+                    $.ligerDialog.warn('用户名只能数字！', '提示', function () {
+                        return;
+                    });
+                }
+                else {
+
+                    $.ligerDialog.warn('保存失败！', '提示', function () {
+                        return;
+                    });
+                }
+
+            },
+            error: function () {
+                $.ligerDialog.warn('保存失败！', '提示', function () {
+                    return;
+                });
+            }
+        });
+
+    }
+    function selectCommon(url, title) {
+
+        $.ligerDialog.open({
+            className: 'dialog_style02',
+            height: 490,
+            width: 400,
+            title: title,
+            url: '' + url,
+            dialogWaiting: true,
+            buttons: [{ text: '关闭', onclick: close}]
+        });
+    }
+    function StoreSelect(ids,names) {
+        $('#StoreIdList').val(ids);
+        $('#StoreNameList').val(names);
+
+    }
+    function close(button, dg) {
+        $.ligerDialog.close();
+    }
+
+</script>
+@Html.Partial("~/Views/Shared/_LayoutLoveJs.cshtml"); 

@@ -1,0 +1,390 @@
+﻿@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_LayoutAdminPage.cshtml";
+}
+@section Head{
+    <link href="/css/themes/@Common.PublicConst.TempCss/easyui.css" rel="stylesheet" type="text/css" />
+    <link href="/css/themes/icon.css" rel="stylesheet" type="text/css" />
+    <script src="/Scripts/jquery.easyui-1.3.6.min.js" type="text/javascript"></script>
+    <script src="/Scripts/easyui-lang-zh_CN.js" type="text/javascript"></script>
+}
+<div id="tb" data-options="region:'center',title:'',iconCls:'icon-book'" style="padding: 10px;
+    height: auto;">
+    <!-------------------------------搜索框----------------------------------->
+    <fieldset style="border-width: 2px; border-style: solid; padding-bottom: 5px; border-color: #95B8E7">
+        <legend>信息查询</legend>
+        <form id="ffSearch" method="post">
+        <div style="margin-bottom: 5px">
+            <label for="txtName">
+                &nbsp;&nbsp;关键字：</label>
+            <input type="text" id="KeyWord" name="KeyWord" style="width: 200px"   placeholder="业务单号/经手人/审核人查询"/>&nbsp;
+         <label>制单日期:</label>
+         <input id="StartDate" name="StartDate" class="easyui-datebox" style="width: 100px"/>
+        <label>-</label>
+                 <input id="EndDate" name="EndDate" class="easyui-datebox" style="width: 150px" />
+                <label> 门店:</label>
+               <input id="StoreIds" name="StoreIds" type="hidden" />
+               <input id="StoreNames" name="StoreNames" style="width: 60px" class="easyui-validatebox"  onclick="SelectStoreEasyuis()" />&nbsp;
+              <a href="javascript:void(0)" style="color: blue;" title="选择"  onclick="javascript:SelectStoreEasyuis()">选择</a> 
+                <label> 供应商:</label>
+               <input id="SupId" name="SupId" type="hidden" />
+                <input id="SupName" name="SupName" style="width: 60px" class="easyui-validatebox"  onclick="javascript:selectCommon('/admin/Common/SelectPurchaseSupplier?type=1','选择供应商')" />&nbsp;
+                <a href="#" style="color: blue;" title="选择供应商" onclick="javascript:selectCommon('/admin/Common/SelectPurchaseSupplier?type=1','选择供应商')">选择</a>
+
+            <label>
+            状态:</label>
+         <select id="status" name="status" class="easyui-combobox"  style="width: 80px" >
+            <option value="">选择状态</option>
+            <option value="未审核">未审核</option>
+            <option value="	审核通过">审核通过</option>
+        </select>
+
+            <input id="Button1" type="button" value="查询" style="cursor: pointer;" class="easyui-linkbutton1"
+                onclick="search()" />
+                
+
+                <script>
+
+                    function search() {
+                      
+
+                        $('#dg').datagrid('load', {
+                            KeyWord: '' + $("#KeyWord").val() + '',
+                            SupId: '' + $("#SupId").val() + '',
+                            status: '' + $('#status').combobox('getValue') + '',
+                            StartDate: '' + $('#StartDate').datebox('getValue'),
+                            EndDate: '' + $('#EndDate').datebox('getValue'),
+                            StoreIds: '' + $("#StoreIds").val() + '',
+                            StoreNames: '' + $("#StoreNames").val() + ''
+                        });
+
+                    }
+                
+                </script>
+        </div>
+        </form>
+    </fieldset>
+    <!-------------------------------详细信息展示表格----------------------------------->
+</div>
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'west',split:true">
+        <table id="dg" title="采购收货" class="easyui-datagrid" style="" url="/admin/Purchase/GetListtb_PurchaseOrderAccept"
+            toolbar="#toolbar" pagination="true" rownumbers="true" fitcolumns="true" singleselect="true">
+            <thead>
+                <tr>
+                    <th data-options="field:'SerialNum'" width="90">
+                        业务单号
+                    </th>
+                    <th data-options="field:'StoreName'" width="40">
+                        门店
+                    </th>
+                    <th data-options="field:'SupplierCode'" width="40">
+                        供应商编码
+                    </th>
+                    <th data-options="field:'SupplierName'" width="40">
+                        供应商名
+                    </th>
+                    <th data-options="field:'HandledUserName'" width="40">
+                        经手人
+                    </th>
+                    <th data-options="field:'SumPrice'" width="40" formatter="formatMethod">
+                        总金额
+                    </th>
+                    <th data-options="field:'Status'" width="40">
+                        单据状态
+                    </th>
+                    <th data-options="field:'CreateDate'" formatter="timeTransformation" width="80">
+                        制单日期
+                    </th>
+                    <th data-options="field:'ApprUserName'" width="40">
+                        审核人
+                    </th>
+                    <th data-options="field:'ApprDate'" formatter="timeTransformation" width="80">
+                        审核日期
+                    </th>
+                    <th data-options="field:'CreateUserName'" width="40">
+                        制单人员
+                    </th>
+                    <th data-options="field:'Remark'" width="40">
+                        备注
+                    </th>
+                </tr>
+            </thead>
+        </table>
+        <div id="toolbar" style="padding-bottom: 5px;">
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+                onclick="add_fun()">添加</a><span class="datagrid-btn-separator"></span> <a href="javascript:void(0)"
+                    class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="edit_fun()">
+                    修改</a> <span class="datagrid-btn-separator"></span><a href="javascript:void(0)" class="easyui-linkbutton"
+                        iconcls="icon-edit" plain="true" onclick="edit_fun()">审核</a> <span class="datagrid-btn-separator">
+                        </span><a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-remove"
+                            plain="true" onclick="del_fun()">删除</a>
+        </div>
+    </div>
+</div>
+<div id="dlg" class="easyui-dialog" style="width: 480px; height: 440px; padding: 10px 20px"
+    closed="true" buttons="#dlg-buttons">
+    <div class="ftitle">
+        商品管理
+    </div>
+    <form id="fm" method="post" novalidate>
+    <input id="id" name="id" type="hidden" />
+    <div class="fitem">
+        <label>
+            :</label>
+        <input id="id" name="id" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            制单日期:</label>
+        <input id="CreateDate" name="CreateDate" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            审核人:</label>
+        <input id="ApprUserName" name="ApprUserName" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            审核日期:</label>
+        <input id="ApprDate" name="ApprDate" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            :</label>
+        <input id="HandledUserName" name="HandledUserName" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            流水号:</label>
+        <input id="SerialNum" name="SerialNum" class="easyui-validatebox" required="true" />
+    </div>
+    
+    <div class="fitem">
+        <label>
+            门店ID:</label>
+        <input id="StoreId" name="StoreId" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            门店:</label>
+        <input id="StoreCode" name="StoreCode" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            备注:</label>
+        <input id="Remark" name="Remark" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            单据状态:</label>
+        <input id="Status" name="Status" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            制单人员:</label>
+        <input id="CreateUserName" name="CreateUserName" class="easyui-validatebox" required="true" />
+    </div>
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="saveInfo()">
+        保存</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="javascript:$('#dlg').dialog('close')">取消</a>
+</div>
+<script type="text/javascript">
+
+    //格式
+    function formatMethod(value, row, index) {
+
+        return formatCurrency(value);
+
+    }
+    function formatCurrency(num) {
+        num = num.toString().replace(/\$|\,/g, '');
+        if (isNaN(num))
+            num = "0";
+        sign = (num == (num = Math.abs(num)));
+        num = Math.floor(num * 100 + 0.50000000001);
+        cents = num % 100;
+        num = Math.floor(num / 100).toString();
+        if (cents < 10)
+            cents = "0" + cents;
+        for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++)
+            num = num.substring(0, num.length - (4 * i + 3)) + ',' +
+    num.substring(num.length - (4 * i + 3));
+        return (((sign) ? '' : '-') + num + '.' + cents);
+    }
+    function add_fun() {
+
+        window.location.href = "PISheetAddOrEdit";
+
+    }
+    function edit_fun() {
+        var row = $('#dg').datagrid('getSelected');
+        if (row) {
+            window.location.href = "PISheetAddOrEdit?id=" + row.id;
+        } else {
+            $.messager.alert("提示", "请选择你要修改的数据")
+        }
+    }
+
+    $(document).ready(function () {
+        $("#dg").datagrid({
+            onDblClickRow: function (row) {  //easyui封装好的时间（被单机行的索引，被单击行的值）
+                var row = $('#dg').datagrid('getSelected');
+                if (row) {
+                    window.location.href = "PISheetAddOrEdit?id=" + row.id + "&display=none";
+                } else {
+                    $.messager.alert("提示", "请选择你要查看的数据")
+                }
+            }
+        });
+    });
+
+
+
+    function saveInfo() {
+        $.ajax({
+            type: "POST",
+            url: "/admin/Purchase/savetb_PurchaseOrderAccept",
+            dataType: "json",
+            data: $('#fm').serializeArray(), //serializeArray  serialize
+            beforeSend: function () {
+                return $('#fm').form('validate');
+            },
+            success: function (data) {
+                if (data.status == "1") {
+                    $('#dlg').dialog('close');
+                    $('#dg').datagrid('reload');
+                }
+                else {
+                    $.messager.show({
+                        title: 'Error',
+                        msg: data.msg
+                    });
+                }
+            }
+        });
+        return false;
+    }
+    function del_fun() {
+        var row = $('#dg').datagrid('getSelected');
+        if (row) {
+
+            if (row.Status=="审核通过") {
+                $.messager.alert("提示", "审核通过不能删除")
+                return;
+            }
+
+            $.messager.confirm('提示', '您确实要删除该数据吗?', function (r) {
+                if (r) {
+                    $.post('/admin/Purchase/Deltb_PurchaseOrderAccept', { id: row.id }, function (result) {
+                        if (result.status == 1) {
+                            $('#dg').datagrid('reload');    // reload the user data
+                        } else {
+                            $.messager.show({    // show error message
+                                title: 'Error',
+                                msg: result.msg
+                            });
+                        }
+                    }, 'json');
+                }
+            });
+        }
+        else {
+            $.messager.alert("提示", "请选择你要删除的数据")
+        }
+    }
+</script>
+<style>
+    .ScrollBar
+    {
+        overflow: auto;
+        background: #fff;
+    }
+    .checkbuttonOk
+    {
+        margin: 5px;
+        width: auto;
+        border: solid 3px #6699cc;
+        height: 40px;
+        background: #F7F7F7;
+        float: left;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .checktext
+    {
+        width: 70px;
+    }
+    .checktext
+    {
+        float: left;
+        width: auto;
+        padding-left: 8px;
+        line-height: 40px;
+        text-align: center;
+    }
+    .checktext img
+    {
+        vertical-align: middle;
+        padding-right: 3px;
+        padding-bottom: 3px;
+    }
+    .checkbuttonOk .triangleOk
+    {
+        display: block;
+        height: 25px;
+        width: 25px;
+        float: right;
+        background: url('/Images/checkicon.png');
+    }
+    .checkbuttonOk
+    {
+        cursor: pointer;
+    }
+    .checkbuttonNo
+    {
+        margin: 5px;
+        width: auto;
+        border: solid 3px #ccc;
+        height: 40px;
+        background: #F7F7F7;
+        float: left;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    *
+    {
+        font-size: 9pt;
+    }
+    .checkbuttonNo .triangleNo
+    {
+        display: block;
+        height: 0px;
+        width: 0px;
+        border: 12.5px solid #ccc;
+        border-color: #F7F7F7 #F7F7F7 transparent transparent;
+        border-style: solid solid dashed dashed;
+        line-height: 0px;
+        float: right;
+    }
+    .checkbuttonNo
+    {
+        margin: 5px;
+        width: auto;
+        border: solid 3px #ccc;
+        height: 40px;
+        background: #F7F7F7;
+        float: left;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>

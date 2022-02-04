@@ -1,0 +1,113 @@
+﻿@model Maticsoft.Model.tb_PurchaseBasicSet
+@{
+    ViewBag.Title = "销售设置";
+    Layout = "~/Views/Shared/_LayoutAdminPage.cshtml";
+}
+<form class="ui_form1" id="AddOrUpdateForm" method="post">
+@Html.HiddenFor(u => u.id)
+<table width="100%" class="ui_table ui_table_bordered ui_table_condensed ui_table_query">
+    <tr>
+        <th style="width: 25%">
+            <span style="color: red;">*</span>采购收货单审核生效时即时更新商品档案中的进价(0除外)
+        </th>
+        <td style="width: 35%">
+             
+          <input type="radio" name="SetStatus1" value="1" id="SetStatus10"  @(Model.SetStatus1 == 1 ? "checked='checked'" : "")/>
+          <label for="SetStatus10">启用</label>
+          <input type="radio" name="SetStatus1" value="0" id="SetStatus11"  @(Model.SetStatus1 == 0 ? "checked='checked'" : "")/>
+          <label for="SetStatus11">不启用</label>
+        </td>
+    
+    </tr>
+       <tr>
+       
+        <th style="width: 25%">
+            <span style="color: red;">*</span>收货单按数量与总价自动计算单价
+        </th>
+        <td style="width: 35%">
+
+          <input type="radio" name="SetStatus2" value="1" id="SetStatus20"  @(Model.SetStatus2 == 1 ? "checked='checked'" : "")/>
+          <label for="SetStatus20">启用</label>
+          <input type="radio" name="SetStatus2" value="0" id="SetStatus21"  @(Model.SetStatus2 == 0 ? "checked='checked'" : "")/>
+          <label for="SetStatus21">不启用</label>
+        </td>
+    </tr>
+      
+      <tr>
+        <th style="width: 25%">
+            <span style="color: red;">*</span>采购收货允许0进价商品入库
+        </th>
+        <td style="width: 35%">
+
+          <input type="radio" name="SetStatus3" value="1" id="SetStatus30"  @(Model.SetStatus3 == 1 ? "checked='checked'" : "")/>
+          <label for="SetStatus30">启用</label>
+          <input type="radio" name="SetStatus3" value="0" id="SetStatus31"  @(Model.SetStatus3 == 0 ? "checked='checked'" : "")/>
+          <label for="SetStatus31">不启用</label>
+        </td>
+      
+    </tr>
+    <tr>
+     
+        <th style="width: 25%">
+            <span style="color: red;">*</span>允许采购单、出入库单据通过扫码建档(只对13位标准条码有效
+        </th>
+        <td style="width: 35%">
+
+             <input type="radio" name="SetStatus4" value="1" id="SetStatus40"  @(Model.SetStatus4 == 1 ? "checked='checked'" : "")/>
+          <label for="SetStatus40">启用</label>
+          <input type="radio" name="SetStatus4" value="0" id="SetStatus41"  @(Model.SetStatus4 == 0 ? "checked='checked'" : "")/>
+          <label for="SetStatus41">不启用</label>
+        </td>
+    </tr>
+</table>
+<div class="ui_form_actions " style="text-align: center">
+    <button id="saveAction" type="button" onclick="saveCommonAction();" class="ui_btn" />
+    保存</button>&nbsp;&nbsp;
+</div>
+</form>
+<script>
+
+    $(document).ready(function () {
+        using(["validationengine", "select", "iframe"], function () {
+
+
+        });
+    });
+
+    //保存
+    function saveCommonAction() {
+
+
+        $('#AddOrUpdateForm').ajaxSubmit({
+            type: 'POST',
+            url: '/Admin/Purchase/savetb_PurchaseBasicSet',
+            dataType: "json",
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            success: function (_o) {
+
+                if (_o.status == '1') {
+
+                    $.ligerDialog.success('保存成功！', '提示', function () {
+
+                        window.location.href = '/admin/Purchase/PurSetting';
+                    });
+                }
+                else {
+
+                    $.ligerDialog.warn('保存失败！', '提示', function () {
+                        return;
+                    });
+                }
+
+            },
+            error: function () {
+                $.ligerDialog.warn('保存失败！', '提示', function () {
+                    return;
+                });
+            }
+        });
+
+    }
+    
+</script>
+@Html.Partial("~/Views/Shared/_LayoutLoveJs.cshtml"); 

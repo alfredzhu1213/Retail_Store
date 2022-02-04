@@ -1,0 +1,150 @@
+﻿@model Maticsoft.Model.tb_MemberIntegralSet
+@{
+    ViewBag.Title = "积分设置";
+    Layout = "~/Views/Shared/_LayoutAdminPage.cshtml";
+}
+
+
+
+<form class="ui_form1" id="AddOrUpdateForm" method="post">
+@Html.HiddenFor(u => u.Id)
+<table width="100%" class="ui_table ui_table_bordered ui_table_condensed ui_table_query">
+
+    <tr>
+        <th style="width: 10%">
+            <span style="color: red;">*</span>积分规则
+        </th>
+        <td style="width: 40%">
+            消费金额每 @(Html.TextBoxFor(u => u.xfPrice, new { @style = "width:30%" })) 元积1分（0表示不积分）
+        </td>
+     
+    </tr>
+
+   <tr>
+        <th style="width: 10%">
+            <span style="color: red;">*</span>开启积分付款功能
+        </th>
+        <td style="width: 40%">
+           <input type="radio" name="IsPayIntegralEnable" value="1" id="IsPayIntegralEnable1" onclick="showdisplay();"  @(Model.IsPayIntegralEnable == 1 ? "checked='checked'" : "")/>
+           <label for="IsPayIntegralEnable1">启用</label>
+           <input type="radio" name="IsPayIntegralEnable" value="0" id="IsPayIntegralEnable0"  onclick="showdisplay();"  @(Model.IsPayIntegralEnable == 0 ? "checked='checked'" : "")/>
+           <label for="IsPayIntegralEnable0">不启用</label>
+          
+        </td>
+
+    </tr>
+    
+    
+<script>
+
+    function getRadioBoxValue(radioName) {
+        var obj = document.getElementsByName(radioName);  //这个是以标签的name来取控件
+        for (i = 0; i < obj.length; i++) {
+
+            if (obj[i].checked) {
+                return obj[i].value;
+            }
+        }
+        return "undefined";
+    }
+
+
+    function showdisplay() {
+
+
+        if (getRadioBoxValue("IsPayIntegralEnable") == "0") {
+
+            document.getElementById("shuoming1").style.display = "none";
+            document.getElementById("shuoming2").style.display = "none";
+        }
+        else {
+
+            document.getElementById("shuoming1").style.display = "";
+            document.getElementById("shuoming2").style.display = "";
+        }
+    }
+
+
+</script>
+   <tr id="shuoming1" style="display:none">
+        <th style="width: 10%">
+            <span style="color: red;">*</span>积分付款说明
+        </th>
+        <td style="width: 40%">
+
+            每 @(Html.TextBoxFor(u => u.Integral, new { @style = "width:15%" })) 分可抵用  @(Html.TextBoxFor(u => u.diPrice, new { @style = "width:15%" })) 元 
+            
+           <span style="color:Red">(抵用基数为 100.01，前台抵付/退金额按抵用基数的整数倍数计算) </span> 
+        </td>
+
+    </tr>
+
+    <tr id="shuoming2" style="display:none">
+        <th style="width: 10%">
+            <span style="color: red;">*</span>积分付款的金额不再积分
+        </th>
+        <td style="width: 40%">
+           <input type="radio" name="IsScorePayingNoScoring" value="1" id="IsScorePayingNoScoring1"  @(Model.IsScorePayingNoScoring == 1 ? "checked='checked'" : "")/>
+          <label for="IsScorePayingNoScoring1">启用</label>
+          <input type="radio" name="IsScorePayingNoScoring" value="0" id="IsScorePayingNoScoring0"  @(Model.IsScorePayingNoScoring == 0 ? "checked='checked'" : "")/>
+          <label for="IsScorePayingNoScoring0">不启用</label>
+      
+        </td>
+
+    </tr>
+
+</table>
+<div class="ui_form_actions " style="text-align: center">
+    <button id="saveAction" type="button" onclick="saveCommonAction();" class="ui_btn" />
+    保存</button>&nbsp;&nbsp;
+</div>
+</form>
+<script>
+
+    $(document).ready(function () {
+        using(["validationengine", "select", "iframe"], function () {
+        });
+
+      @if (Model.IsPayIntegralEnable==1)
+      {
+        @Html.Raw("showdisplay();")
+     }
+    });
+
+    //保存
+    function saveCommonAction() {
+
+
+        $('#AddOrUpdateForm').ajaxSubmit({
+            type: 'POST',
+            url: '/Admin/Member/savetb_MemberIntegralSet',
+            dataType: "json",
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            success: function (_o) {
+
+                if (_o.status == '1') {
+
+                    $.ligerDialog.success('保存成功！', '提示', function () {
+
+                        window.location.href = 'admin/Member/ScoreSetting';
+                    });
+                }
+                else {
+
+                    $.ligerDialog.warn('保存失败！', '提示', function () {
+                        return;
+                    });
+                }
+
+            },
+            error: function () {
+                $.ligerDialog.warn('保存失败！', '提示', function () {
+                    return;
+                });
+            }
+        });
+
+    }
+    
+</script>
+@Html.Partial("~/Views/Shared/_LayoutLoveJs.cshtml"); 

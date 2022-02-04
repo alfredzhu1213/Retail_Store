@@ -1,0 +1,83 @@
+﻿@model Maticsoft.Model.tb_StockChainSet
+@{
+    ViewBag.Title = "积分设置";
+    Layout = "~/Views/Shared/_LayoutAdminPage.cshtml";
+}
+
+
+
+<form class="ui_form1" id="AddOrUpdateForm" method="post">
+@Html.HiddenFor(u => u.id)
+<table width="100%" class="ui_table ui_table_bordered ui_table_condensed ui_table_query">
+
+  
+
+   <tr>
+        <th style="width: 10%">
+            <span style="color: red;">*</span>调拨单据需要收货方审核
+        </th>
+        <td style="width: 60%">
+           <input type="radio" name="IsEnable" value="1" id="IsPayIntegralEnable1"   @(Model.IsEnable == 1 ? "checked='checked'" : "")/>
+           <label for="IsPayIntegralEnable1">启用</label>
+           <input type="radio" name="IsEnable" value="0" id="IsPayIntegralEnable0"   @(Model.IsEnable == 0 ? "checked='checked'" : "")/>
+           <label for="IsPayIntegralEnable0">不启用</label>
+              <span style="color: red;"> 提示：启用该项后，门店可生成调拨单，且调拨单由调出门店保存审核后，调入门店需再次审核，并可修改差异数量</span>
+          
+        </td>
+
+    </tr>
+    
+ 
+
+</table>
+<div class="ui_form_actions " style="text-align: center">
+    <button id="saveAction" type="button" onclick="saveCommonAction();" class="ui_btn" />
+    保存</button>&nbsp;&nbsp;
+</div>
+</form>
+<script>
+
+    $(document).ready(function () {
+        using(["validationengine", "select", "iframe"], function () {
+        });
+
+    
+    });
+
+    //保存
+    function saveCommonAction() {
+
+
+        $('#AddOrUpdateForm').ajaxSubmit({
+            type: 'POST',
+            url: '/Admin/Stock/savetb_StockChainSet',
+            dataType: "json",
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            success: function (_o) {
+
+                if (_o.status == '1') {
+
+                    $.ligerDialog.success('保存成功！', '提示', function () {
+
+                        window.location.href = 'admin/Stock/ChainBranchSetting';
+                    });
+                }
+                else {
+
+                    $.ligerDialog.warn('保存失败！', '提示', function () {
+                        return;
+                    });
+                }
+
+            },
+            error: function () {
+                $.ligerDialog.warn('保存失败！', '提示', function () {
+                    return;
+                });
+            }
+        });
+
+    }
+    
+</script>
+@Html.Partial("~/Views/Shared/_LayoutLoveJs.cshtml"); 

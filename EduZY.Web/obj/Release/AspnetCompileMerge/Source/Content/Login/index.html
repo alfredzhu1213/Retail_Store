@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>登录</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
+</head>
+<body id="bg">
+    <script type="text/javascript">
+        $(function () {
+            /*获取body高度，将值赋予div元素*/
+            $(".main").height($(window).height());
+        });
+    </script>
+    <div class="auto">
+        <div class="login">
+            <div class="logo">
+                <a href="#">
+                    <img src="img/logo.jpg" alt="" /></a></div>
+            <div class="login-box">
+                <ul class="login-box1">
+                    <li class="on"><a href="#"><b>用户登录</b></a></li>
+                    <li><a href="#"><b>用户注册</b></a></li>
+                </ul>
+                <ul class="login-box2">
+                    <li>
+                        <label for="">
+                            <font>*</font>账号：</label>
+                        <input type="text" name="username" class="login-int1" value="请输入4位用户名" />
+                    </li>
+                    <li>
+                        <label for="">
+                            <font>*</font>密码：</label>
+                        <input type="text" name="password" class="login-int1" value="请输入用户密码" />
+                    </li>
+                    <li>
+                        <label for="">
+                            &nbsp;</label>
+                        <button class="login-btn">
+                            登 录</button>
+                    </li>
+                </ul>
+                <div class="forget-password">
+                    <a href="#">忘记密码？</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- footer -->
+    <div class="footer">
+        © 2016 - 杭州海蝶技术有限公司 粤ICP备14033072号-18</div>
+</body>
+</html>

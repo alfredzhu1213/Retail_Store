@@ -1,0 +1,58 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>@ViewBag.Title</title>
+    <link rel="stylesheet" href="/css/public.css" type="text/css" media="all" />
+    <script src="/Scripts/jquery-1.8.2.min.js" type="text/javascript"></script>
+   @* <script src="/Scripts/jquery.jcarousel.pack.js" type="text/javascript"></script>
+    <script src="/Scripts/jquery-func.js" type="text/javascript"></script>*@
+    @RenderSection("head", required: false)@*View页面自定义特定js/css使用*@
+    <script src="/Content/js/My97DatePicker/WdatePicker.js" type="text/javascript"></script>
+</head>
+<body>
+
+ <div class="top">
+        <div class="topn">
+            <div class="topn_t">
+                <div class="topn_t_r">
+                    <a href="#">个人中心 </a><span>|</span><a href="#"> 帮助服务</a></div>
+            </div>
+            <div class="topn_c">
+                <div class="topn_c_logo">
+                    <a href="#">
+                        <img src="/images/logo.png" /></a></div>
+                <div class="topn_c_r">
+                    <div class="ss_zy">
+                        <input name="key_main" class="ss_s" id="key_main" value="" /></div>
+                    <div class="ss_an">
+                        <a href="#">
+                            <img src="/images/ssn.jpg" onclick="search_main()" /></a></div>
+                            <script>
+                                function search_main() {
+                                    location.href = "/Home/ResList?keyword=" + $("#key_main").val();
+                                }
+                            </script>
+                </div>
+            </div>
+            <div class="top_d">
+            @{
+                var nav_index = ViewBag.nav_index != null ? Convert.ToInt32(ViewBag.nav_index) : 0;
+                }
+                <a href="/" class="daohang_niu @(nav_index == 0 ? "daohang_cur" : "")">首 页</a>
+                  @Html.Raw(EduZY.Web.CommonHelper.GetNav(ViewBag.nav_index != null ? Convert.ToInt32(ViewBag.nav_index) : 0))
+              @*   <a href="#" class="daohang_niu">
+                    数 学</a> <a href="#" class="daohang_niu">语 文</a> <a href="#" class="daohang_niu">英 语</a>
+                <a href="#" class="daohang_niu">物 理</a> <a href="#" class="daohang_niu">化 学</a>
+                <a href="#" class="daohang_niu">政 治</a> <a href="#" class="daohang_niu">历 史</a>
+                <a href="#" class="daohang_niu">生 物</a> <a href="#" class="daohang_niu">地 理</a>*@
+            </div>
+        </div>
+    </div>
+
+    @RenderBody()
+
+    <div class="bottom">
+        版权所有©大数时代</div>
+</body>
+</html>

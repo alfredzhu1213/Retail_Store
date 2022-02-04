@@ -1,0 +1,425 @@
+﻿@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_LayoutAdminPage.cshtml";
+}
+@section Head{
+    <link href="/css/themes/@Common.PublicConst.TempCss/easyui.css" rel="stylesheet" type="text/css" />
+    <link href="/css/themes/icon.css" rel="stylesheet" type="text/css" />
+    <script src="/Scripts/jquery.easyui-1.3.6.min.js" type="text/javascript"></script>
+    <script src="/Scripts/easyui-lang-zh_CN.js" type="text/javascript"></script>
+}
+<div id="tb" data-options="region:'center',title:'',iconCls:'icon-book'" style="padding: 10px;
+    height: auto;">
+    <!-------------------------------搜索框----------------------------------->
+    <fieldset style="border-width: 2px; border-style: solid; padding-bottom: 5px; border-color: #95B8E7">
+     <legend>信息查询</legend>
+
+       <form id="ffSearch" method="post">
+        <div style="margin-bottom: 5px">
+            <label for="txtName">
+                &nbsp;&nbsp;关键字：</label>
+            <input type="text" id="KeyWord" name="KeyWord" style="width: 200px" placeholder="类别编码/类别名查询"/>&nbsp;&nbsp;&nbsp;
+              <label> 门店:</label>
+               <input id="StoreIds" name="StoreIds" type="hidden" />
+               <input id="StoreNames" name="StoreNames" style="width: 60px" class="easyui-validatebox"  onclick="SelectStoreEasyuis()" />&nbsp;
+              <a href="javascript:void(0)" style="color: blue;" title="选择"  onclick="javascript:SelectStoreEasyuis()">选择</a> 
+            <label> 类别:</label>  <input style="width:60px" id="ClassName" name="ClassName"  type="text"  style="width: 200px">
+            <input id="ClassId" name="ClassId" type="hidden" >
+            <a href="#" style="color: blue;" title="选择类别"  onclick="javascript:selectCommon('/admin/Common/SelectProductType?type=1','选择类别')">选择</a> 
+
+
+            <input id="Button1" type="button" value="查询" style="cursor: pointer;" class="easyui-linkbutton1"
+             onclick="search()" />
+
+        </div>
+            <script>
+
+                function search() {
+
+                    $('#dg').datagrid('load', {
+                        KeyWord: '' + $("#KeyWord").val() + '',
+                        StoreIds: '' + $("#StoreIds").val() + '',
+                        StoreNames: '' + $("#StoreNames").val() + '',
+                        ClassName: '' + $("#ClassName").val() + ''
+                    });
+
+                }
+
+
+                function selectCommon(src, title) {
+                    $.layer({
+                        type: 2,
+                        maxmin: true,
+                        shadeClose: true,
+                        title: title,
+                        shade: [0.1, '#fff'],
+                        offset: ['30px', '520px'],
+                        area: ['400px', ($(window).height() - 150) + 'px'],
+                        iframe: { src: src }, end: function () { }
+                    });
+                }
+       
+          </script>
+        </form>
+
+    </fieldset>
+    <!-------------------------------详细信息展示表格----------------------------------->
+</div>
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'west',split:true">
+        <table id="dg" title=" 采购类别汇总" class="easyui-datagrid" style="" url="/admin/Purchase/GetListView_RptPurCategoriesSummary"
+            toolbar="#toolbar" pagination="true" rownumbers="true" fitcolumns="true" singleselect="true">
+            <thead>
+                <tr>
+                 
+                  
+                    <th data-options="field:'StoreName'" >
+                        门店
+                    </th>
+               
+                     <th data-options="field:'ProductClassCode'" >
+                        类别编码
+                    </th>
+                      <th data-options="field:'ProductClassName'" >
+                        类别名
+                    </th>
+                     <th data-options="field:'Num'" >
+                        采购数量
+                    </th>
+                     <th data-options="field:'Price'" >
+                        采购金额
+                    </th>
+                     <th data-options="field:'SendNum'" >
+                        采购赠送
+                    </th>
+                     <th data-options="field:'THNum'" >
+                        退货数量
+                    </th>
+                    <th data-options="field:'THSumPrice'" >
+                        退货金额
+                    </th>
+
+                    <th data-options="field:'THSendNum'" >
+                        退货赠送
+                    </th>
+                  
+                    <th data-options="field:'Num'" >
+                        数量小计
+                    </th>
+
+                     <th data-options="field:'SumPrice'" >
+                        金额小计
+                    </th>
+                   
+                   
+                </tr>
+            </thead>
+        </table>
+      <div id="toolbar" style="padding-bottom: 5px;">
+             <span class="datagrid-btn-separator"></span>
+                <a href="javascript:void(0)"  class="easyui-linkbutton" iconcls="icon-redo" plain="true" onclick="Export_fun()">导出</a>
+                 <a href="javascript:void(0)"  class="easyui-linkbutton" iconcls="icon-print" plain="true" onclick="CreateFormPage('采购类别汇总','datagrid',$('#dg'))">打印</a>
+               
+                    <script>
+                        function Export_fun() {
+
+                            window.location.href = "/admin/Export/tbView_SelectPurchaseReport_RptPurCategoriesSummaryMonthExport";
+
+                        }
+               </script>
+        </div>
+    </div>
+</div>
+<div id="dlg" class="easyui-dialog" style="width: 480px; height: 440px; padding: 10px 20px"
+    closed="true" buttons="#dlg-buttons">
+    <div class="ftitle">
+        商品管理
+    </div>
+    <form id="fm" method="post" novalidate>
+    <input id="id" name="id" type="hidden" />
+    <div class="fitem">
+        <label>
+            :</label>
+        <input id="id" name="id" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            :</label>
+        <input id="SendNum" name="SendNum" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            :</label>
+        <input id="Price" name="Price" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            :</label>
+        <input id="SumPrice" name="SumPrice" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            :</label>
+        <input id="ProductId" name="ProductId" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            :</label>
+        <input id="StoreId" name="StoreId" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            :</label>
+        <input id="SupId" name="SupId" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            :</label>
+        <input id="ProductClassName" name="ProductClassName" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            :</label>
+        <input id="ProductBrandName" name="ProductBrandName" class="easyui-validatebox" required="true" />
+    </div>
+
+    <div class="fitem">
+        <label>
+            :</label>
+        <input id="BrandId" name="BrandId" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            :</label>
+        <input id="CreateUserName" name="CreateUserName" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            :</label>
+        <input id="SerialNum" name="SerialNum" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            :</label>
+        <input id="THNum" name="THNum" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            :</label>
+        <input id="THSendNum" name="THSendNum" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            :</label>
+        <input id="THPrice" name="THPrice" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            :</label>
+        <input id="Status" name="Status" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            :</label>
+        <input id="AcceptStatus" name="AcceptStatus" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            :</label>
+        <input id="CreateDate" name="CreateDate" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            :</label>
+        <input id="ProductName" name="ProductName" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            :</label>
+        <input id="HHNo" name="HHNo" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            :</label>
+        <input id="GG" name="GG" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            :</label>
+        <input id="Unit" name="Unit" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            :</label>
+        <input id="BoxNum" name="BoxNum" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            :</label>
+        <input id="Num" name="Num" class="easyui-validatebox" required="true" />
+    </div>
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="saveInfo()">
+        保存</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="javascript:$('#dlg').dialog('close')">取消</a>
+</div>
+<script type="text/javascript">
+
+    function add_fun() {
+
+        $('#dlg').dialog('open').dialog('setTitle', '添加');
+        $('#fm').form('clear');
+
+    }
+    function edit_fun() {
+        var row = $('#dg').datagrid('getSelected');
+        if (row) {
+            $('#dlg').dialog('open').dialog('setTitle', '修改');
+            $('#fm').form('load', row);
+
+        } else {
+            $.messager.alert("提示", "请选择你要修改的数据")
+        }
+    }
+
+
+    function saveInfo() {
+        $.ajax({
+            type: "POST",
+            url: "/admin/Product/saveView_SelectPurchaseOrder_Sum",
+            dataType: "json",
+            data: $('#fm').serializeArray(), //serializeArray  serialize
+            beforeSend: function () {
+                return $('#fm').form('validate');
+            },
+            success: function (data) {
+                if (data.status == "1") {
+                    $('#dlg').dialog('close');
+                    $('#dg').datagrid('reload');
+                }
+                else {
+                    $.messager.show({
+                        title: 'Error',
+                        msg: data.msg
+                    });
+                }
+            }
+        });
+        return false;
+    }
+    function del_fun() {
+        var row = $('#dg').datagrid('getSelected');
+        if (row) {
+            $.messager.confirm('提示', '您确实要删除该数据吗?', function (r) {
+                if (r) {
+                    $.post('/admin/Product/DelView_SelectPurchaseOrder_Sum', { id: row.id }, function (result) {
+                        if (result.status == 1) {
+                            $('#dg').datagrid('reload');    // reload the user data
+                        } else {
+                            $.messager.show({    // show error message
+                                title: 'Error',
+                                msg: result.msg
+                            });
+                        }
+                    }, 'json');
+                }
+            });
+        }
+        else {
+            $.messager.alert("提示", "请选择你要删除的数据")
+        }
+    }
+</script>
+<style>
+    .ScrollBar
+    {
+        overflow: auto;
+        background: #fff;
+    }
+    .checkbuttonOk
+    {
+        margin: 5px;
+        width: auto;
+        border: solid 3px #6699cc;
+        height: 40px;
+        background: #F7F7F7;
+        float: left;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .checktext
+    {
+        width: 70px;
+    }
+    .checktext
+    {
+        float: left;
+        width: auto;
+        padding-left: 8px;
+        line-height: 40px;
+        text-align: center;
+    }
+    .checktext img
+    {
+        vertical-align: middle;
+        padding-right: 3px;
+        padding-bottom: 3px;
+    }
+    .checkbuttonOk .triangleOk
+    {
+        display: block;
+        height: 25px;
+        width: 25px;
+        float: right;
+        background: url('/Images/checkicon.png');
+    }
+    .checkbuttonOk
+    {
+        cursor: pointer;
+    }
+    .checkbuttonNo
+    {
+        margin: 5px;
+        width: auto;
+        border: solid 3px #ccc;
+        height: 40px;
+        background: #F7F7F7;
+        float: left;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    *
+    {
+        font-size: 9pt;
+    }
+    .checkbuttonNo .triangleNo
+    {
+        display: block;
+        height: 0px;
+        width: 0px;
+        border: 12.5px solid #ccc;
+        border-color: #F7F7F7 #F7F7F7 transparent transparent;
+        border-style: solid solid dashed dashed;
+        line-height: 0px;
+        float: right;
+    }
+    .checkbuttonNo
+    {
+        margin: 5px;
+        width: auto;
+        border: solid 3px #ccc;
+        height: 40px;
+        background: #F7F7F7;
+        float: left;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>

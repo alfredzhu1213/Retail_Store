@@ -1,0 +1,5 @@
+F:\外单整理\王昭元_2016年\进销存管理系统\code\EduDBUtility\bin\Debug\EduJw.DBUtility.dll
+F:\外单整理\王昭元_2016年\进销存管理系统\code\EduDBUtility\bin\Debug\EduJw.DBUtility.pdb
+F:\外单整理\王昭元_2016年\进销存管理系统\code\EduDBUtility\bin\Debug\MySql.Data.dll
+F:\外单整理\王昭元_2016年\进销存管理系统\code\EduDBUtility\obj\Debug\EduJw.DBUtility.dll
+F:\外单整理\王昭元_2016年\进销存管理系统\code\EduDBUtility\obj\Debug\EduJw.DBUtility.pdb

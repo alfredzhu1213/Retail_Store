@@ -1,0 +1,5 @@
+C:\多店进销存\Code\EduDBUtility\bin\Release\EduJw.DBUtility.dll
+C:\多店进销存\Code\EduDBUtility\bin\Release\MySql.Data.dll
+C:\多店进销存\Code\EduDBUtility\obj\Release\DBUtility.csproj.CoreCompileInputs.cache
+C:\多店进销存\Code\EduDBUtility\obj\Release\DBUtility.csproj.CopyComplete
+C:\多店进销存\Code\EduDBUtility\obj\Release\EduJw.DBUtility.dll

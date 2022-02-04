@@ -1,0 +1,6 @@
+F:\外单整理\王昭元_2016年\进销存管理系统\code\EduZY.Model\bin\Debug\EduZY.Model.dll.config
+F:\外单整理\王昭元_2016年\进销存管理系统\code\EduZY.Model\bin\Debug\EduZY.Model.dll
+F:\外单整理\王昭元_2016年\进销存管理系统\code\EduZY.Model\bin\Debug\EduZY.Model.pdb
+F:\外单整理\王昭元_2016年\进销存管理系统\code\EduZY.Model\obj\Debug\EduZY.Model.dll
+F:\外单整理\王昭元_2016年\进销存管理系统\code\EduZY.Model\obj\Debug\EduZY.Model.pdb
+F:\外单整理\王昭元_2016年\进销存管理系统\code\EduZY.Model\obj\Debug\EduZY.Model.csprojResolveAssemblyReference.cache

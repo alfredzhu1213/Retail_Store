@@ -1,0 +1,77 @@
+﻿
+@{
+    ViewBag.Title = "ProductAddEdit";
+    Layout = "~/Views/Shared/_CommonPage.cshtml";
+}
+
+
+<div class="divEdit">
+  
+    <div class="divShow">
+        <b>用户导入</b></div>
+    <table class="ui_table ui_table_bordered ui_table_condensed ui_table_query">
+        <tr>
+            <th>
+                说明
+            </th>
+            <td>
+                <span style="color: Red;">模板下载下来之后，请匆修改!</span>
+                <br />
+
+                 <a href="/UpFile/ExportExcel/会员导入模板.xls" class="btnBlue">会员导入模板</a>
+            </td>
+        </tr>
+        <tr>
+            <th>
+                文件选择导入
+            </th>
+            <td>
+                <input type="file" name="uploadify" id="uploadify" />
+             
+            </td>
+        </tr>
+    </table>
+</div>
+
+
+
+    
+<link href="@Url.Content("~/Content/uploadify/uploadify.css")" rel="stylesheet" type="text/css" />
+<script src="@Url.Content("~/Content/uploadify/jquery.uploadify.js")" type="text/javascript"></script>
+
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            using(["select", "dialog", "html5"], function () {
+
+            });
+
+            $('#uploadify').uploadify({
+                width: '120',
+                uploader: '/admin/Export/MemberExcelExport',
+                buttonText: '选择文件',
+                height: 30,
+                fileSizeLimit: '10MB',
+                queueSizeLimit: 0,
+                multi: true,
+                uploadLimit: 0,
+                formData: { 'directory': '/UpFile/Excel' },
+                onUploadSuccess: UploadSuccess,
+                auto: true,
+                swf: '/Content/uploadify/uploadify.swf'
+            });
+        })
+        function UploadSuccess(file, data, response) {
+
+            var v = eval('(' + data + ')');
+            if (v.count == 0) {
+                alert("导入失败,可能原因：格式错误,或该会员信息已经导入过！");
+            }
+            else {
+                parent.search();
+                var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+                parent.layer.close(index);
+            }
+        }
+    </script>
+    @Html.Partial("~/Views/Shared/_LayoutLoveJs.cshtml")

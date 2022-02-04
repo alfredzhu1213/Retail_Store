@@ -1,0 +1,281 @@
+﻿@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_CommonPage.cshtml";
+}
+@section Head{
+    <link href="/css/themes/@Common.PublicConst.TempCss/easyui.css" rel="stylesheet" type="text/css" />
+
+    <link href="/css/themes/icon.css" rel="stylesheet" type="text/css" />
+    <script src="/Scripts/jquery.easyui-1.3.6.min.js" type="text/javascript"></script>
+    <script src="/Scripts/easyui-lang-zh_CN.js" type="text/javascript"></script>
+}
+
+<div class="easyui-layout"  data-options="fit:true"  style="width: 450px; height:980px">
+    <div data-options="region:'west',split:true"  style="width: 300px">
+        <table id="dg" style="width:300px" class="easyui-treegrid" title="商品类别" style="" toolbar="#toolbar" data-options="
+                iconCls: 'icon-ok',
+                rownumbers: true,
+                animate: true,
+                fitColumns: true,
+                url: '/admin/Product/GetProductTypeList',
+                method: 'get',
+                idField: 'id',
+                treeField: 'name'
+            ">
+
+            <thead>
+                <tr>
+                    <th data-options="field:'id'" width="50">
+                        编号
+                    </th>
+                    <th data-options="field:'name'"  width="150">
+                        名称
+                    </th>
+                
+                </tr>
+            </thead>
+        </table>
+
+    </div>
+    
+    <div data-options="region:'center'" title="商品档案"  style="width: 450px">
+    <div id="tb" data-options="region:'center',title:'',iconCls:'icon-book'" style="padding: 10px;
+    height: auto;">
+    <!-------------------------------搜索框----------------------------------->
+    <fieldset style="border-width: 2px; border-style: solid; padding-bottom: 5px; border-color: #95B8E7">
+        <legend>信息查询</legend>
+        <form id="ffSearch" method="post">
+        <div style="margin-bottom: 5px">
+            <label for="txtName">
+                &nbsp;&nbsp;关键字：</label>
+            <input type="text" id="KeyWord" name="KeyWord" style="width: 100px" />&nbsp;&nbsp;&nbsp;
+   
+            <input id="Button1" type="button" value="查询" style="cursor: pointer;" class="easyui-linkbutton1"
+             onclick="search()" />
+
+                &nbsp;&nbsp;<input id="ButonGetCheck" type="button" value="确定" style="cursor: pointer;" class="easyui-linkbutton1" />
+        </div>
+        </form>
+    </fieldset>
+    <!-------------------------------详细信息展示表格----------------------------------->
+</div>
+     <table id="dgProduct" title="" class="easyui-datagrid" style="" url="/admin/Common/GetListProduct"
+       toolbar="#toolbar" pagination="true" rownumbers="true" fitcolumns="false" singleselect="true"   selectOnCheck="false" checkOnSelect="true" >
+
+            <thead>
+                <tr>
+                
+      
+                    <th data-options="field:'HHNo',align:'left'"  width="50">
+                        货号
+                    </th>
+                    <th data-options="field:'ProductName',align:'left'"  width="100">
+                        品名
+                    </th>
+                    <th data-options="field:'GG'"  width="40">
+                        规格
+                    </th>
+                    <th data-options="field:'Unit'"  width="40">
+                        单位
+                    </th>
+                    <th data-options="field:'StockNum'"  width="50" formatter="formatMethod" sortable="true">
+                        系统库存
+                    </th>
+                     <th data-options="field:'jinPrice'"  width="50" formatter="formatMethod" sortable="true">
+                        进货价
+                    </th>
+                     <th data-options="field:'SalesPrice'"  width="50" formatter="formatMethod" sortable="true">
+                        零售价
+                    </th>
+                         <th data-options="field:'MemberPrice'"  width="50" formatter="formatMethod" sortable="true">
+                        会员价
+                    </th>
+                     <th data-options="field:'操作',width:150,formatter: rowformater">选择</th>
+                </tr>
+            </thead>
+        </table>
+
+    </div>
+
+  <div id="dlgProduct" class="easyui-dialog" style="width: 480px;  height: 440px; padding: 10px 20px" closed="true" buttons="#dlg-buttons">
+</div>
+
+</div>
+
+
+
+
+<script type="text/javascript">
+
+   
+    var isflag = "0";
+    $(document).ready(function () {
+        $("#dg").treegrid({
+            onClickRow: function (row) {  //easyui封装好的时间（被单机行的索引，被单击行的值）
+                $('#dgProduct').datagrid({
+                    url: "/admin/Product/GetListProduct?ProductType=" + row.id,
+                    onLoadSuccess: function () { //数据加载完毕事件
+                      
+                        $(this).datagrid('selectRow', 0);
+                    }
+                });
+            }
+        });
+
+
+//        $('#dgProduct').datagrid({
+//            url: "/admin/Product/GetListProduct",
+//            onLoadSuccess: function () { //数据加载完毕事件
+//            
+//                $(this).datagrid('selectRow', 0);
+//            }
+//        });
+
+        var keyword = decodeURIComponent(GetURLParamer("keyword"));
+            if (keyword != "") {
+                $("#KeyWord").val(keyword);
+                search();
+                isflag = "1";
+            }
+
+
+    });
+
+    function GetURLParamer(name) {
+        var reg = new RegExp("(^|\\?|&)" + name + "=([^&]*)(\\s|&|$)", "i");
+        var href = window.location.href;
+        if (reg.test(href)) return RegExp.$2; return "";
+    }
+
+    function selectProduct(id,HHNo,name) {
+
+        window.parent.SingleProduct(id);
+        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+        parent.layer.close(index);
+
+
+    }
+    function rowformater(value, row, index) {
+        return "<a href='javascript:void(0)' onclick='selectProduct(" + row["id"] + ",\"" + row["HHNo"] + "\",\"" + row["ProductName"] + "\");' >选择</a>";
+    }
+
+    function search() {
+        $('#dgProduct').datagrid('load', {
+            KeyWord: '' + $("#KeyWord").val() + ''
+        });
+
+    }
+
+    //格式
+    function formatMethod(value, row, index) {
+
+        return formatCurrency(value);
+
+    }
+    function formatCurrency(num) {
+        num = num.toString().replace(/\$|\,/g, '');
+        if (isNaN(num))
+            num = "0";
+        sign = (num == (num = Math.abs(num)));
+        num = Math.floor(num * 100 + 0.50000000001);
+        cents = num % 100;
+        num = Math.floor(num / 100).toString();
+        if (cents < 10)
+            cents = "0" + cents;
+        for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3); i++)
+            num = num.substring(0, num.length - (4 * i + 3)) + ',' +
+    num.substring(num.length - (4 * i + 3));
+        return (((sign) ? '' : '-') + num + '.' + cents);
+    }
+</script>
+<style>
+    .ScrollBar
+    {
+        overflow: auto;
+        background: #fff;
+    }
+    .checkbuttonOk
+    {
+        margin: 5px;
+        width: auto;
+        border: solid 3px #6699cc;
+        height: 40px;
+        background: #F7F7F7;
+        float: left;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .checktext
+    {
+        width: 70px;
+    }
+    .checktext
+    {
+        float: left;
+        width: auto;
+        padding-left: 8px;
+        line-height: 40px;
+        text-align: center;
+    }
+    .checktext img
+    {
+        vertical-align: middle;
+        padding-right: 3px;
+        padding-bottom: 3px;
+    }
+    .checkbuttonOk .triangleOk
+    {
+        display: block;
+        height: 25px;
+        width: 25px;
+        float: right;
+        background: url('/Images/checkicon.png');
+    }
+    .checkbuttonOk
+    {
+        cursor: pointer;
+    }
+    .checkbuttonNo
+    {
+        margin: 5px;
+        width: auto;
+        border: solid 3px #ccc;
+        height: 40px;
+        background: #F7F7F7;
+        float: left;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    *
+    {
+        font-size: 9pt;
+    }
+    .checkbuttonNo .triangleNo
+    {
+        display: block;
+        height: 0px;
+        width: 0px;
+        border: 12.5px solid #ccc;
+        border-color: #F7F7F7 #F7F7F7 transparent transparent;
+        border-style: solid solid dashed dashed;
+        line-height: 0px;
+        float: right;
+    }
+    .checkbuttonNo {
+margin: 5px;
+width: auto;
+border: solid 3px #ccc;
+height: 40px;
+background: #F7F7F7;
+float: left;
+-moz-border-radius: 5px;
+-webkit-border-radius: 5px;
+border-radius: 5px;
+cursor: pointer;
+}
+</style>
+

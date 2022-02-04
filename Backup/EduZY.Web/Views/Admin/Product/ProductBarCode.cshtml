@@ -1,0 +1,117 @@
+﻿@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_CommonPage.cshtml";
+}
+
+<span style="color:Red">
+提示:
+请在设置完成之后，在“商品档案”界面点击“保存”后生效
+</span>
+<br />
+
+条码:<input id="txtbarcode" type="text" />
+<input id="Button1" type="button" value="添加条码" onclick="barcodeAdd()" />
+<table id="tableProduct" class="ui_table ui_table_bordered ui_table_condensed ui_form_style02">
+    <thead>
+        <tr>
+            <th style="text-align: center">
+                条码
+            </th>
+            <th style="width: 30%; text-align: center">
+                操作
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+    <tfoot style="display: none">
+        <tr style="text-align: center">
+            <td style="text-align: center">
+                <input type="hidden" name="Id" value="0" />
+                <input type="hidden" name="ProductId" value="0" />
+                <input type="hidden" name="barcode" value="0" />
+                @Html.Hidden("DeleteFlag", false)
+                <span style="color: Black" name="barcode"></span>
+            </td>
+            <td style="text-align: center">
+                <input type="button" value="删除" onclick="_tableProductDelete(this)" />
+            </td>
+        </tr>
+    </tfoot>
+</table>
+<script>
+    $(document).ready(function () {
+
+        using(["validationengine", "select", "iframe"], function () { });
+        var href = window.location.href;
+        var barcodelist = GetURLParamer(href, "barcodelist");
+        if (barcodelist != "") {
+
+            var result = barcodelist.split(",");
+            for (var i = 0; i < result.length; i++) {
+                addTable(result[i]);
+            }
+        }
+
+    });
+
+    function GetURLParamer(source, name) {
+        var reg = new RegExp("(^|\\?|&)" + name + "=([^&]*)(\\s|&|$)", "i");
+
+        if (reg.test(source)) return RegExp.$2; return "";
+    }
+
+    function _tableProductDelete(obj) {
+        var target = $(obj).parents("tr");
+        var id = target.find("input[name=barcode]").val();
+        if (id > 0) {
+            target.hide();
+            target.find("input[name=DeleteFlag]").val(true);
+            target.remove();
+        }
+        else {
+            target.remove();
+        }
+        getbarlist();
+    }
+
+
+    function barcodeAdd() {
+        if (document.getElementById("txtbarcode").value == "") {
+            $.ligerDialog.warn("请输入条码！");
+            return;
+        }
+        var barcode = document.getElementById("txtbarcode").value;
+        addTable(barcode);
+        getbarlist();
+    }
+
+    function getbarlist() {
+        var barcodelist = [];
+        $("#tableProduct").find("tbody tr").each(function () {
+
+            $(this).find("input[name]").each(function () {
+
+                if ($(this).attr("name") == "barcode") {
+                    barcodelist.push($(this).val());
+                }
+            })
+        })
+        $('#barcodelist', window.parent.document).val(barcodelist.join(','));
+
+    }
+    function addTable(barcode) {
+
+        if ($("#tableProduct input[name=barcode][value=" + barcode + "]").length <= 0) {
+            var tr = $("#tableProduct tfoot tr").clone();
+            tr.find("input[name=barcode]").val(barcode);
+            tr.find("span[name=barcode]").html(barcode);
+            tr.appendTo($("#tableProduct tbody"));
+        }
+        else {
+            $.ligerDialog.warn("该条码已经存在！");
+        
+        }
+    }                 
+</script>
+@Html.Partial("~/Views/Shared/_LayoutLoveJs.cshtml")

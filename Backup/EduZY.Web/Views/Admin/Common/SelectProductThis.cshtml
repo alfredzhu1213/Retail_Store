@@ -1,0 +1,251 @@
+﻿@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_CommonPage.cshtml";
+
+
+    var list = ViewBag.list as IEnumerable<Maticsoft.Model.tb_Product>;
+}
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        using(["dateeditor", "select", "dialog", "html5", "validationengine"], function () {
+
+        });
+        $("#KeyWord").focus();
+        var keyword = decodeURIComponent(GetURLParamer("keyword"));
+        if (keyword != "") {
+            $("#KeyWord").val(keyword);
+
+        }
+
+     
+
+
+    });
+
+
+
+    var i = 0;
+    $(document).keydown(function (event) {
+
+        var e = event || window.event;
+
+        var k = e.keyCode || e.which;
+
+        switch (k) {
+
+            case 13:
+                if ($("#table1 tr").length == 1) {
+                    doSearch();
+                }
+                else {
+
+                    selectProduct($("#table1 tr:gt(0):eq(" + i + ") td:eq(0)").text().trim());
+                }
+                return false;
+                break;
+
+            case 38:
+                i--;
+                for (var j = 0; j < $("#table1 tr").length; j++) {
+                    if (j == i) {
+                        $("#table1 tr:gt(0):eq(" + j + ")").css("background-color", "#FFFFCC");
+                    }
+                    else {
+                        $("#table1 tr:gt(0):eq(" + j + ")").css("background-color", "");
+                    }
+                }
+
+                if (i == -1) {
+                    $("#table1 tr:gt(0):eq(0)").css("background-color", "#FFFFCC");
+                    i = 0;
+                    return;
+                }
+                return false;
+                break;
+
+            case 40:
+
+                if ($("#table1 tr").length - 2 == i) {
+
+                    $("#table1 tr:gt(0):eq(" + $("#table1 tr").length - 2 + ")").css("background-color", "#FFFFCC");
+                    return;
+                }
+                i++;
+                for (var jj = 0; jj < $("#table1 tr").length; jj++) {
+                    if (jj == i) {
+                        $("#table1 tr:gt(0):eq(" + parseInt(jj) + ")").css("background-color", "#FFFFCC");
+                    }
+                    else {
+                        $("#table1 tr:gt(0):eq(0)").css("background-color", "");
+                        $("#table1 tr:gt(0):eq(" + parseInt(jj) + ")").css("background-color", "");
+                    }
+                }
+                return false;
+                break;
+            default:
+
+                break;
+
+        }
+
+
+
+    });
+
+
+    function doSearch() {
+
+        window.location.href = "SelectProductThis?KeyWord=" + $("#KeyWord").val() + "&ClassId=" + $("#ClassId").val() + "&ClassName=" + $("#ClassName").val(); 
+    }
+
+    function GetURLParamer(name) {
+        var reg = new RegExp("(^|\\?|&)" + name + "=([^&]*)(\\s|&|$)", "i");
+        var href = window.location.href;
+        if (reg.test(href)) return RegExp.$2; return "";
+    }
+
+    function refreshsss() {
+
+        window.location.href = "SelectProductThis";
+
+      
+     
+    }
+
+    function selectCommon(url, title) {
+
+        $.ligerDialog.open({
+            className: 'dialog_style02',
+            height: 490,
+            width: 400,
+            title: title,
+            url: '' + url,
+            dialogWaiting: true,
+            buttons: [{ text: '关闭', onclick: close}]
+        });
+    }
+    function close(button, dg) {
+        $.ligerDialog.close();
+    }
+
+    function selectProduct(id) {
+
+        window.parent.SingleProduct(id);
+        var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
+        parent.layer.close(index);
+
+
+    }
+</script>
+@Html.Partial("~/Views/Shared/_LayoutLoveJs.cshtml")
+<div class="j_hidden_area">
+    <form id="frmSearch" name="frmSearch" method="post" class="ui_form">
+    <input id="colType" type="hidden" name="colType" value="">
+    <table width="100%" class="ui_table ui_table_bordered ui_table_condensed ui_table_query">
+        <tr>
+            <th style="width: 10%">
+                关键字:
+            </th>
+            <td style="width: 20%">
+                <input type="text" class="input_xlarge" name="KeyWord" id="KeyWord"  value="@Common.DNTRequest.GetString("KeyWord")"   placeholder="货号/品名查询"/>
+            </td>
+             <th style="width: 10%">
+                分类:
+            </th>
+            <td style="width: 20%">
+
+                <input id="ClassId" name="ClassId" type="hidden" value="@Common.DNTRequest.GetString("ClassId")" />
+
+                <input type="text" class="input_xlarge" name="ClassName" id="ClassName"  value="@Common.DNTRequest.GetString("ClassName")"   placeholder="分类"/>
+                 <a href="#" style="color: blue;" title="选择类别"  onclick="javascript:selectCommon('/admin/Common/SelectProductType','选择')">选择</a> 
+            </td>
+        </tr>
+            
+    </table>
+    <div class="ui_form_actions ui_form_actions_style02">
+        <a href="javascript:void(0)" class="ui_btn ui_btn_small ui_btn_primary" onclick="doSearch();"><span
+            class="icon_search icon_white"></span>查询</a> <a href="javascript:void(0)" class="ui_btn ui_btn_small"
+                onclick="refreshsss();">重置</a>
+    </div>
+    </form>
+</div>
+<table id="table1" class="ui_table ui_table_bordered ui_table_condensed ui_form_style02"
+    style="width: 100%; margin-left: 10px">
+    <thead>
+        <tr>
+            <th width="10%" scope="col" style="text-align: center">
+                货号
+            </th>
+            <th width="15%" scope="col" style="text-align: center">
+                品名
+            </th>
+            <th width="10%" scope="col" style="text-align: center">
+                规格
+            </th>
+            <th width="10%" scope="col" style="text-align: center">
+                单位
+            </th>
+            <th width="10%" scope="col" style="text-align: center">
+                进货价
+            </th>
+            <th width="10%" scope="col" style="text-align: center">
+                零售价
+            </th>
+            <th width="10%" scope="col" style="text-align: center">
+                会员价
+            </th>
+            <th width="10%" scope="col" style="text-align: center">
+                操作
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+
+        @{int i = 0;}
+        @foreach (var item in ViewData.Model.tb_Product)
+        {
+            string css = "";
+            if (i==0)
+            {
+                css = "background-color:#FFFFCC";
+                
+            }
+            
+            <tr style="@css"  onclick="selectProduct(@item.id);">
+               <td style="text-align: center; display:none">
+                    @item.id
+                </td>
+                <td style="text-align: center">
+                    @item.HHNo
+                </td>
+                <td style="text-align: center">
+                    @item.ProductName
+                </td>
+                <td style="text-align: center">
+                    @item.GG
+                </td>
+                <td style="text-align: center">
+                    @item.Unit
+                </td>
+                <td style="text-align: center">
+                    @item.jinPrice
+                </td>
+                <td style="text-align: center">
+                    @item.SalesPrice
+                </td>
+                <td style="text-align: center">
+                    @item.MemberPrice
+                </td>
+               <td style="text-align: center">
+                <a href="javascript:void(0)" onclick="selectProduct(@item.id);">选择</a>
+                </td>
+              
+            </tr>   
+            i++;
+        }
+    </tbody>
+</table>
+<div class="ui_pagination ui_pagination_right" style="text-align: ">
+    @Html.Raw(new Common.PagerNumber(ViewData.Model.PageName, ViewData.Model.UrlParameter).Pager(ViewData.Model.RowCount, ViewData.Model.PageSize, ViewData.Model.CurrentPage))
+</div>

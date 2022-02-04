@@ -1,0 +1,15 @@
+C:\多店进销存\Code\EduCommon\bin\Release\Edu.Common.dll
+C:\多店进销存\Code\EduCommon\bin\Release\Edu.Common.pdb
+C:\多店进销存\Code\EduCommon\bin\Release\Aspose.Cells.dll
+C:\多店进销存\Code\EduCommon\bin\Release\EduJw.DBUtility.dll
+C:\多店进销存\Code\EduCommon\bin\Release\System.Web.Mvc.dll
+C:\多店进销存\Code\EduCommon\bin\Release\System.Web.Razor.dll
+C:\多店进销存\Code\EduCommon\bin\Release\System.Web.WebPages.Razor.dll
+C:\多店进销存\Code\EduCommon\bin\Release\System.Web.WebPages.dll
+C:\多店进销存\Code\EduCommon\bin\Release\Microsoft.Web.Infrastructure.dll
+C:\多店进销存\Code\EduCommon\bin\Release\System.Web.WebPages.Deployment.dll
+C:\多店进销存\Code\EduCommon\obj\Release\JXCCommon.csprojAssemblyReference.cache
+C:\多店进销存\Code\EduCommon\obj\Release\JXCCommon.csproj.CoreCompileInputs.cache
+C:\多店进销存\Code\EduCommon\obj\Release\JXCCommon.csproj.CopyComplete
+C:\多店进销存\Code\EduCommon\obj\Release\Edu.Common.dll
+C:\多店进销存\Code\EduCommon\obj\Release\Edu.Common.pdb

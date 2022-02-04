@@ -1,0 +1,258 @@
+﻿@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_LayoutAdminPage.cshtml";
+}
+@section Head{
+    <link href="/css/themes/@Common.PublicConst.TempCss/easyui.css" rel="stylesheet" type="text/css" />
+    <link href="/css/themes/icon.css" rel="stylesheet" type="text/css" />
+    <script src="/Scripts/jquery.easyui-1.3.6.min.js" type="text/javascript"></script>
+    <script src="/Scripts/easyui-lang-zh_CN.js" type="text/javascript"></script>
+}
+<div id="tb" data-options="region:'center',title:'',iconCls:'icon-book'" style="padding: 10px;
+    height: auto;">
+    <!-------------------------------搜索框----------------------------------->
+    <fieldset style="border-width: 2px; border-style: solid; padding-bottom: 5px; border-color: #95B8E7">
+        <legend>查询</legend>
+        <form id="ffSearch" name="ffSearch" method="post">
+        <div style="margin-bottom: 5px">
+            <label for="txtName">
+                &nbsp;&nbsp;会员卡号：</label>
+            <input type="text" id="KeyWord" name="KeyWord" style="width: 100px" />&nbsp;&nbsp;&nbsp;
+            <input id="Button1" type="button" value="查询" style="cursor: pointer;" class="easyui-linkbutton1"
+                onclick="search()" />
+              <input id="Button1" type="button" value="兑换" style="cursor: pointer;" class="easyui-linkbutton1"
+                onclick="duihuan()" />
+        </div>
+        </form>
+    </fieldset>
+    <!-------------------------------详细信息展示表格----------------------------------->
+    <fieldset style="border-width: 2px; border-style: solid; padding-bottom: 5px; border-color: #95B8E7">
+        <legend>信息显示</legend>
+        <div style="margin-bottom: 5px">
+            <label for="cardno">
+                &nbsp;&nbsp;会员卡号：</label>
+            <input type="text" id="cardno" name="cardno" style="width: 200px" disabled />
+            <label for="name">
+                &nbsp;&nbsp;真实姓名：</label>
+            <input type="text" id="name" name="name" style="width: 200px" disabled />
+        </div>
+        <div style="margin-bottom: 5px">
+            <label for="sumJf">
+                &nbsp;&nbsp;累计积分：</label>
+            <input type="text" id="sumJf" name="sumJf" style="width: 200px" disabled />
+            <label for="keyongJf">
+                &nbsp;&nbsp;可用积分：</label>
+            <input type="text" id="keyongJf" name="keyongJf" style="width: 200px" disabled />
+        </div>
+        <div style="margin-bottom: 5px">
+            <label for="benJf">
+                &nbsp;&nbsp;本次积分：</label>
+            <input type="text" id="benJf" name="benJf" style="width: 200px" disabled />
+            <label for="status">
+                &nbsp;&nbsp;会员状态：</label>
+            <input type="text" id="status" name="status" style="width: 200px" disabled />
+            <input id="userId" type="hidden"  value="0"/>
+        </div>
+    </fieldset>
+</div>
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'west',split:true">
+        <table id="dgli" title="礼品列表" class="easyui-datagrid" style="" url="/admin/Member/GetListtb_MemberGift"
+            pagination="true" rownumbers="true" fitcolumns="true" singleselect="true">
+            <thead>
+                <tr>
+                
+                    <th field="Id" checkbox="true" width="150"></th>
+                    <th data-options="field:'Code'" width="40">
+                        礼品编码
+                    </th>
+                    <th data-options="field:'Name'" width="40">
+                        礼品名
+                    </th>
+                    <th data-options="field:'Num'" width="40">
+                        兑换数量
+                    </th>
+                    <th data-options="field:'IntegralNum'" width="40">
+                        需要积分
+                    </th>
+                    <th data-options="field:'StartDate'" width="40">
+                        开始日期
+                    </th>
+                    <th data-options="field:'EndDate'" width="40">
+                        结束日期
+                    </th>
+                </tr>
+            </thead>
+        </table>
+    </div>
+</div>
+<div id="dlg" class="easyui-dialog" style="width: 480px; height: 440px; padding: 10px 20px"
+    closed="true" buttons="#dlg-buttons">
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="saveInfo()">
+        保存</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="javascript:$('#dlg').dialog('close')">取消</a>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $("#dgli").datagrid({
+            onClickRow: function (index, row) {  //easyui封装好的时间（被单机行的索引，被单击行的值）
+
+                $('#benJf').val(row["IntegralNum"]);
+            }
+        });
+    });
+
+
+    function search() {
+        $.ajax({
+            type: "POST",
+            url: '/Admin/Member/GetMemberModel',
+            dataType: "json",
+            data: $('#ffSearch').serializeArray(), //serializeArray  serialize
+            beforeSend: function () {
+              
+            },
+            success: function (strjson) {
+                if (strjson.Result == 1) {
+                    $('#userId').val(strjson.id);
+                    $('#cardno').val(strjson.Code);
+                    $('#name').val(strjson.TrueName);
+                    $('#sumJf').val(strjson.SumIntegral);
+                    $('#keyongJf').val(strjson.keYongIntegral);
+                    $('#status').val(strjson.Status);
+                }
+                else {
+                    $.messager.alert("提示", "没有找到会员信息!")
+                }
+            }
+        });
+    }
+
+
+    function duihuan() {
+
+        if ($('#userId').val()=="0") {
+            $.messager.alert("提示", "没有找到会员信息!")
+            return;
+        }
+
+        var row = $('#dgli').datagrid('getSelected');
+        if (row) {
+            $.ajax({
+                type: "POST",
+                url: '/Admin/Member/GetMemberDuiHuan?id=' + row.id + "&IntegralNum=" + row.IntegralNum + "&userId=" + $('#userId').val(),
+                dataType: "json",
+                beforeSend: function () {
+                },
+                success: function (strjson) {
+                    search();
+                    $.messager.alert("提示", strjson.msg);
+                   
+
+                }
+            });
+
+        } 
+        else 
+        {
+            $.messager.alert("提示", "请选择你要兑换礼品")
+        }
+
+      }
+
+ 
+</script>
+<style>
+    .ScrollBar
+    {
+        overflow: auto;
+        background: #fff;
+    }
+    .checkbuttonOk
+    {
+        margin: 5px;
+        width: auto;
+        border: solid 3px #6699cc;
+        height: 40px;
+        background: #F7F7F7;
+        float: left;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .checktext
+    {
+        width: 70px;
+    }
+    .checktext
+    {
+        float: left;
+        width: auto;
+        padding-left: 8px;
+        line-height: 40px;
+        text-align: center;
+    }
+    .checktext img
+    {
+        vertical-align: middle;
+        padding-right: 3px;
+        padding-bottom: 3px;
+    }
+    .checkbuttonOk .triangleOk
+    {
+        display: block;
+        height: 25px;
+        width: 25px;
+        float: right;
+        background: url('/Images/checkicon.png');
+    }
+    .checkbuttonOk
+    {
+        cursor: pointer;
+    }
+    .checkbuttonNo
+    {
+        margin: 5px;
+        width: auto;
+        border: solid 3px #ccc;
+        height: 40px;
+        background: #F7F7F7;
+        float: left;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    *
+    {
+        font-size: 9pt;
+    }
+    .checkbuttonNo .triangleNo
+    {
+        display: block;
+        height: 0px;
+        width: 0px;
+        border: 12.5px solid #ccc;
+        border-color: #F7F7F7 #F7F7F7 transparent transparent;
+        border-style: solid solid dashed dashed;
+        line-height: 0px;
+        float: right;
+    }
+    .checkbuttonNo
+    {
+        margin: 5px;
+        width: auto;
+        border: solid 3px #ccc;
+        height: 40px;
+        background: #F7F7F7;
+        float: left;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>

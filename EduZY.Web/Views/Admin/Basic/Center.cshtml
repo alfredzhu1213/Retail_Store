@@ -1,0 +1,503 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>福建省教育行政办公系统</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="Content-Language" content="zh-CN" />
+    <meta content="all" name="robots" />
+    <meta name="author" content="福建省教育行政办公系统" />
+    <meta name="Copyright" content="福建省教育行政办公系统" />
+    <meta name="description" content="基于HTML，CSS，JAVASCRIPT的简洁灵活的流行前端框架及交互组件集" />
+    <meta name="keywords" content="lovey,CSS框架,JS框架" />
+    <!--lovey核心css-->
+    <link rel="stylesheet" href="/Content/js/lovey/style/css/lovey.css?__V=1387455242901"
+        type="text/css" />
+    <!--OA自定义样式-->
+    <link rel="stylesheet" href="/Content/custom_style/custom.css?__V=1387455242901"
+        type="text/css" />
+    <link rel="stylesheet" href="/Content/custom_style/custom_oa.css?__V=1387455242901"
+        type="text/css" />
+    <!-- 暂时将jquery放在head中，因为jsp标签使用了 $(document).ready -->
+    <!--jquery核心js文件-->
+    <script type="text/javascript" src="/Content/js/lovey/js/jquery.min.js?__V=1387455242901"></script>
+</head>
+<body>
+    <div class="ui_container_fluid">
+        <div class="p10">
+           @* <div class="row">
+                <div class="grid_1_2">
+                    <div class="pr10 pb10">
+                        <script type="text/javascript">
+                            /*查看文件*/
+                            function readDocInfo(pkId, resourceId, title, orgType) {
+                                var url = "";
+                                if (orgType && 'docIssued' == orgType) {
+                                    url = "/docIssued/gatherShow1?docIssuedId=" + resourceId + "&isRead=true";
+                                }
+                                else if (orgType && 'docReport' == orgType) {
+                                    url = "/docReport/toReportInfo?docReportId=" + resourceId;
+                                }
+
+                                top.$.ligerDialog.open({
+                                    className: "dialog_style02",
+                                    height: 400,
+                                    width: 730,
+                                    title: '查看文件',
+                                    url: "" + url,
+                                    dialogWaiting: true,
+                                    buttons: [
+                                {
+                                    text: '确认签收',
+                                    onclick: confirmSign
+                                },
+                                {
+                                    text: '关闭',
+                                    onclick: close
+                                }]
+                                });
+
+                                //文件下发
+                                function issued(button, dialogDom) {
+                                    var url = "/docIssued/toIssuedAdd.do?selectDocIdStr=" + docIssuedId + "&doWhat=add&moduleId=";
+                                    if (!easyloader.isIframe) {
+                                        return;
+                                    }
+                                    dialogDom.close();
+
+                                    var tabid = "";
+                                    var tabOptions = {
+                                        text: "" ? "" : '空菜单',
+                                        url: url,
+                                        tabid: tabid,
+                                        resizeFrame: true,
+                                        dialogWaiting: true,
+                                        menuPic: ""
+                                    };
+
+                                    //判断是否存在，存在则覆盖，否则新增
+                                    if (parent.navtab.isTabItemExist(tabid)) {
+                                        //覆盖tab前事件
+                                        parent.$.ligerDialog.confirm("你确定要覆盖" + "" + "项吗?", function (status) {
+                                            if (status) {
+                                                parent.navtab.overrideTabItem(tabid, tabOptions);
+                                            }
+                                        });
+                                    } else {
+                                        parent.navtab.addTabItem(tabOptions);
+                                    }
+                                }
+
+                                function close(button, dialogDom) {
+                                    dialogDom.close();
+                                }
+
+                                function confirmSign(button, dg) {
+                                    var reqUrl = '';
+                                    if (orgType && 'docIssued' == orgType) {
+                                        reqUrl = '/docIssued/signDoc?docIssuedId=' + resourceId;
+                                    }
+                                    else if (orgType && 'docReport' == orgType) {
+                                        reqUrl = '/docReport/signDoc?docReportId=' + resourceId;
+                                    }
+                                    $.ajax({
+                                        type: 'POST',
+                                        url: reqUrl,
+                                        success: function (o) {
+                                            var ret = jQuery.parseJSON(o);
+                                            if (ret && ret.status == '1') {
+                                                $.ligerDialog.success('确认签收成功', '提示', function () {
+                                                    dg.close();
+                                                    window.location.reload();
+                                                });
+                                            }
+                                        },
+                                        error: function () {
+                                            $.ligerDialog.error('确认签收失败', '提示', function () {
+                                                dg.close();
+                                            });
+                                        }
+                                    });
+                                }
+
+                            }
+
+                        </script>
+                        <div class="ui_box_style03">
+                            <div class="hd">
+                                <h3 class="pull_left">
+                                    <a>待签收文件列表</a>
+                                </h3>
+                            </div>
+                            <div class="bd">
+                                <table class="ui_table ui_table_style04 table_fixed">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 60%">
+                                                标题
+                                            </th>
+                                            <th style="width: 20%;">
+                                                类型
+                                            </th>
+                                            <th style="width: 20%">
+                                                时间
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                      <tr>
+                                            <td>
+                                              
+
+                                                    <a href="javascript:readDocInfo(0,'78',' 2','docReport')">
+                                                      2&nbsp;等待您签收 
+                                                      </a>
+                                                 
+                                                     
+                                            </td>
+                                            <td>
+                                                
+
+                                                   
+                                                    上传文件
+                                                     
+                                            </td>
+                                            <td title='2014-03-14 11:33'>
+                                               
+                                                2014/4/9 21:04:16
+                                            </td>
+                                        </tr>
+
+                                            <tr>
+                                            <td>
+                                              
+
+                                                    <a href="javascript:readDocInfo(0,'78',' 2','docReport')">
+                                                      2&nbsp;等待您签收 
+                                                      </a>
+                                                 
+                                                     
+                                            </td>
+                                            <td>
+                                                
+
+                                                   
+                                                    上传文件
+                                                     
+                                            </td>
+                                            <td title='2014-03-14 11:33'>
+                                               
+                                                2014/4/9 21:04:16
+                                            </td>
+                                        </tr>
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="ui_box_background">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid_1_2">
+                    <div class="pb10">
+                        <div class="ui_box_style03">
+                            <div class="hd">
+                                <h3 class="pull_left">
+                                    <a>快速导航</a></h3>
+                                <span class="pull_right"></span>
+                            </div>
+                            <div class="bd">
+                                <div class="ui_container_fluid p10">
+                                    <div class="row">
+                                        <div class="grid_1_4 align_c mt10 appBorder">
+                                            <a href="javascript:void(0);" url="/docIssued/toIssuedCreate.do?doWhat=create&responseType=issuedManage&moduleId=269327"
+                                                class="tab" title="新增下发" tabtitle="下发文件管理" tabid="269327" menupic="menu_dbwj.png">
+                                                <img src="/Content/themes/wisedu_oa_lovey/basic/images/icon_supervision.png" width="52"
+                                                    height="52">
+                                            </a>
+                                            <p class="mt5">
+                                                <a href="javascript:void(0);" url="/docIssued/toIssuedCreate?doWhat=create&responseType=docToIssued&moduleId=269327"
+                                                    class="tab" title="新增下发" tabtitle='下发文件管理' tabid="269327" menupic="menu_dbwj.png">
+                                                    新增下发 </a>
+                                            </p>
+                                        </div>
+                                        <div class="grid_1_4 align_c mt10 appBorder">
+                                            <a href="javascript:void(0);" url="/docIssued/issuedList.do?moduleId=249262" class="tab"
+                                                title="已下发文件管理" tabtitle="已发文件管理" tabid="249262" menupic="menu_syfw.png">
+                                                <img src="/Content/themes/wisedu_oa_lovey/basic/images/icon_canlendar.gif" width="52"
+                                                    height="52">
+                                            </a>
+                                            <p class="mt5">
+                                                <a href="javascript:void(0);" url="/docIssued/issuedList?moduleId=249262" class="tab"
+                                                    title="已下发文件管理" tabtitle='已发文件管理' tabid="249262" menupic="menu_syfw.png">已下发文件管理
+                                                </a>
+                                            </p>
+                                        </div>
+                                        <div class="grid_1_4 align_c mt10 appBorder">
+                                            <a href="javascript:void(0);" url="/docIssued/gatherIssuedList?moduleId=249260" class="tab"
+                                                title="收取下发文件管理" tabtitle="收取下发文件管理" tabid="249260" menupic="menu_bjlysq.png">
+                                                <img src="/Content/themes/wisedu_oa_lovey/basic/images/icon_journal.png" width="52"
+                                                    height="52">
+                                            </a>
+                                            <p class="mt5">
+                                                <a href="javascript:void(0);" url="/docIssued/gatherIssuedList?moduleId=249260" class="tab"
+                                                    title="收取下发文件管理" tabtitle='收取下发文件管理' tabid="249260" menupic="menu_bjlysq.png">收取下发文件管理
+                                                </a>
+                                            </p>
+                                        </div>
+                                        <div class="grid_1_4 align_c mt10 appBorder">
+                                            <a href="http://bg.fjedu.gov.cn:88/zdsoft/fpf/login/eisLogin.action" class="otherTab"
+                                                title="旧OA文件查询" target="_blank">
+                                                <img src="/Content/themes/wisedu_oa_lovey/basic/images/icon_weekend.png" width="52"
+                                                    height="52">
+                                            </a>
+                                            <p class="mt5">
+                                                <a href="#" class="otherTab" target="_blank">旧OA文件查询 </a>
+                                            </p>
+                                        </div>
+                                        <div class="grid_1_4 align_c mt10 appBorder">
+                                            <a href="javascript:void(0);" url="/docReport/toReportAddJsp.do?moduleId=276414"
+                                                class="tab" title="新增上传" tabtitle="上传文件管理" tabid="276414" menupic="menu_jdxxng.png">
+                                                <img src="/Content/themes/wisedu_oa_lovey/basic/images/icon_supervision.png" width="52"
+                                                    height="52">
+                                            </a>
+                                            <p class="mt5">
+                                                <a href="javascript:void(0);" url="/docReport/DocUpCreate?moduleId=276414" class="tab"
+                                                    title="新增上传" tabtitle='上传文件管理' tabid="276414" menupic="menu_jdxxng.png">新增上传
+                                                </a>
+                                            </p>
+                                        </div>
+                                        <div class="grid_1_4 align_c mt10 appBorder">
+                                            <a href="javascript:void(0);" url="/docReport/docReportedList?moduleId=276415" class="tab"
+                                                title="已上传文件管理" tabtitle="已传文件管理" tabid="276415" menupic="">
+                                                <img src="/Content/themes/wisedu_oa_lovey/basic/images/icon_canlendar.gif" width="52"
+                                                    height="52">
+                                            </a>
+                                            <p class="mt5">
+                                                <a href="javascript:void(0);" url="/docReport/docReportedList?moduleId=276415" class="tab"
+                                                    title="已上传文件管理" tabtitle='已传文件管理' tabid="276415" menupic="">已上传文件管理 </a>
+                                            </p>
+                                        </div>
+                                        <div class="grid_1_4 align_c mt10 appBorder">
+                                            <a href="javascript:void(0);" url="/docReport/toReportedList?moduleId=276416" class="tab"
+                                                title="收取上传文件管理" tabtitle="收取上传文件管理" tabid="276416" menupic="menu_djb.png">
+                                                <img src="/Content/themes/wisedu_oa_lovey/basic/images/icon_journal.png" width="52"
+                                                    height="52">
+                                            </a>
+                                            <p class="mt5">
+                                                <a href="javascript:void(0);" url="/docReport/toReportedList?moduleId=276416" class="tab"
+                                                    title="收取上传文件管理" tabtitle='收取上传文件管理' tabid="276416" menupic="menu_djb.png">收取上传文件管理
+                                                </a>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="ui_box_background">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="grid_1_2">
+                    <div class="pr10 pb10">
+                        <div class="ui_box_style03">
+                            <div class="hd">
+                                <h3 class="pull_left">
+                                    <a>通知公告</a>
+                                </h3>
+                                <span class="pull_right"></span>
+                            </div>
+                            <div class="bd">
+                                <table class="ui_table ui_table_style04 table_fixed">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 80%">
+                                                标题
+                                            </th>
+                                            <th style="width: 20%">
+                                                时间
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="2">
+                                                暂无公告
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="ui_box_background">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid_1_2">
+                    <div class="pb10">
+                        <div class="ui_box_style03">
+                            <div class="hd">
+                                <h3 class="pull_left">
+                                    <a>相关下载</a>
+                                </h3>
+                                <span class="pull_right"><a href="javascript:void(0);" url="/attachment/downListFile.do?moduleId=17305"
+                                    class="tab" title="常用文件" tabtitle="常用文件" tabid="17305" menupic="menu_cywj.png">更多</a>
+                                </span>
+                            </div>
+                            <div class="bd">
+                                <div class="p10">
+                                    <ul class="ui_list">
+                                        <li><a href="/forum/download.do?attachId=17237" title="haozip.exe">haozip.exe </a>
+                                        </li>
+                                        <li><a href="/forum/download.do?attachId=17234" title="ACDSEE5.rar">ACDSEE5.rar </a>
+                                        </li>
+                                        <li><a href="/forum/download.do?attachId=17233" title="pdf阅读器安装程序1.exe">pdf阅读器安装程序1.exe
+                                        </a></li>
+                                        <li><a href="/forum/download.do?attachId=17232" title="方正CEB版式文件阅读软件.exe">方正CEB版式文件阅读软件.exe
+                                        </a></li>
+                                        <li><a href="/forum/download.do?attachId=17231" title="IE8-WindowsXP-x86-CHS.exe">IE8-WindowsXP-x86-CHS.exe
+                                        </a></li>
+                                        <li><a href="/forum/download.do?attachId=17230" title="IE7-WindowsXP-x86-chs.exe">IE7-WindowsXP-x86-chs.exe
+                                        </a></li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="ui_box_background">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>*@
+        </div>
+    </div>
+    <!--懒加载核心js文件-->
+    <script type="text/javascript" src="/Content/js/lovey/js/easyloader.js?__V=1387455242901">
+    </script>
+    <!-- 加载公用的js -->
+    <script type="text/javascript" src="/Content/js/oa/base/commfunction_jquery.js?__V=1378462010000">
+    </script>
+    <script type="text/javascript">
+        //判断当前页面是否被Iframe集成
+        easyloader.isIframe = (window != top);
+        //校验组件
+        easyloader.hideFormError = true;
+        //启用SNS风格，动态程序在高层页面全局设定
+        easyloader.dialogCssName = "dialog_style02";
+        easyloader.URI = "";
+        easyloader.allowClose = false; //success对话框,去除关闭按钮
+        var isIe6 = navigator.appName == "Microsoft Internet Explorer" && navigator.appVersion.split(";")[1].replace(/[ ]/g, "") == "MSIE6.0";
+        var isShowQueryArea = false;  //查询区域默认为展开
+
+        //刷新制定tab
+        function refresh() {
+            navtab.reload(navtab.getSelectedTabItemID());
+        }
+
+        $(document).ready(function () {
+            using("dialog", function () { });
+
+            $(window).unbind("focus").bind("focus", function () {
+                var tabElement = top.$("#content_right");
+                var navtab = tabElement.ligerGetTabManager();
+                var tabid = navtab.getSelectedTabItemID();
+                storeCurrentModuleId(tabid);
+            })
+        });
+
+        function storeCurrentModuleId(tabid) {
+            if (tabid == "-1") {
+                setCookie("currentModuleId", "");
+            } else {
+                setCookie("currentModuleId", tabid);
+            }
+        }
+
+        function setCookie(name, value) {
+            var exdate = new Date();
+            exdate.setDate(exdate.getDate() + 30);
+            document.cookie = name + "=" + value + ";expires=" + exdate.toGMTString() + ";path=/";
+        }
+    </script>
+    <script type="text/javascript">
+        var contextPath = "";
+        $(document).ready(function () {
+            using(["tree", "dialog"], function () {
+                $(".tab", $(".ui_box_style03")).live("click", function () {
+                    if (!easyloader.isIframe) {
+                        return;
+                    }
+
+                    var hrefElement = $(this);
+                    var tabid = hrefElement.attr("tabid");
+                    var tabOptions = {
+                        text: hrefElement.attr("tabtitle") ? hrefElement.attr("tabtitle") : '空菜单',
+                        url: hrefElement.attr("url") ? hrefElement.attr("url") : '#',
+                        tabid: tabid,
+                        resizeFrame: true,
+                        dialogWaiting: true,
+                        menuPic: hrefElement.attr("menuPic")
+                    };
+
+                    //判断是否存在，存在则覆盖，否则新增
+                    if (parent.navtab.isTabItemExist(tabid)) {
+                        //覆盖tab前事件
+                        parent.$.ligerDialog.confirm("你确定要覆盖" + hrefElement.attr("tabtitle") + "项吗?", function (status) {
+                            if (status) {
+                                parent.navtab.overrideTabItem(tabid, tabOptions);
+                            }
+                        });
+                    } else {
+                        parent.navtab.addTabItem(tabOptions);
+                    }
+                });
+            });
+
+        });
+
+        function renderPage(url) {
+            window.location.href = '' + url;
+        }
+
+        function fileReleasePubInfo(pkId, content) {
+            alert(1);
+            //var windowW = window.screen.width;
+            //var windowH = window.screen.height;
+            //var webURL = '/jsp/weboffice_open.jsp?path=/'+content+'&fileType=.doc&type=webOpen&islocked=locked&isComments=false&detail=true&topdf=0&postId=' + pkId+'&moduleId=&defaultTemplate=';
+            //window.showModalDialog(encodeURI(webURL),'','dialogWidth='+windowW+';dialogHeight='+windowH+';dialogLeft=0;dialogTop=0');
+            top.$.ligerDialog.open({
+                height: 500,
+                width: 700,
+                showButton: true,
+                url: encodeURI(webURL)
+            });
+        }
+
+        function downloadFileReleasePub(content, title) {
+            jQuery.ajax({
+                type: "POST",
+                url: contextPath + "/workFlow/hasFileReleasePub.do?content=" + content + "&moduleId=",
+                success: function (o) {
+                    var _e = jQuery.parseJSON(o);
+                    if (_e && _e.status == 1) {
+                        window.location.href = "/workFlow/downloadFileReleasePub.do?content=" + content + "&title=" + title + "&moduleId=";
+                    } else if (_e.status == 0) {
+                        jQuery.ligerDialog.warn("没有可下载的文件！", "提示");
+                    } else {
+                        jQuery.ligerDialog.alert(GE.cst.MSG.ASYNC_FAILURE, "提示");
+                    }
+                },
+                error: function (o) {
+                    jQuery.ligerDialog.alert(GE.cst.MSG.ASYNC_FAILURE);
+                }
+            });
+        }
+    </script>
+</body>
+</html>

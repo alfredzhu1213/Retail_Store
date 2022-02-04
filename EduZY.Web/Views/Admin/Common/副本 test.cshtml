@@ -1,0 +1,121 @@
+﻿@model Maticsoft.Model.tb_PurchaseOrderDetail
+@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_CommonPage.cshtml";
+
+    var list = ViewBag.list as List<Maticsoft.Model.tb_PurchaseOrderDetail>;
+}
+
+
+<table id="tableMaterial" class="ui_table ui_table_bordered ui_table_condensed ui_form_style02">
+    <thead>
+        <tr>
+            <th style="text-align: center">
+                <input type="checkbox" id="allChk" />
+            </th>
+            <th style="text-align: center">
+                序号
+            </th>
+            <th style="text-align: center">
+                货号
+            </th>
+            <th style="text-align: center">
+                品名
+            </th>
+            <th style="text-align: center">
+                原价
+            </th>
+            <th style="text-align: center">
+                会员价
+            </th>
+            <th style="text-align: center">
+                特价
+            </th>
+            <th style="width: 30%; text-align: center">
+                操作
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (list != null)
+        {
+            foreach (var item in list)
+            {
+                               
+            <tr style="text-align: center">
+                <td style="text-align: center">
+                    <input type="checkbox" name="subChk" value="@item.id"/>
+                </td>
+                <td style="text-align: center">
+                    @Html.Hidden("id", item.id)
+                    @Html.Hidden("HHNo", item.ProductName)
+                    @Html.Hidden("ProductName", item.ProductName)
+                    @Html.Hidden("GG", item.GG)
+                    @Html.Hidden("Unit", item.Unit)
+
+                    @Html.Hidden("DeleteFlag", false)
+                    <span style="color: Black" name="ProductName">@item.ProductName</span>
+                </td>
+                <td style="text-align: center">
+                    <span style="color: Black" name="MaterialName">@item.MaterialName</span>
+                </td>
+                <td style="text-align: center">
+                    <span style="color: Black" name="Specification">@item.Specification</span>
+                </td>
+                <td style="text-align: center">
+                    <span style="color: Black" name="MaterialUnit">@item.MaterialUnit</span>
+                </td>
+                <td style="text-align: center">
+                    <span style="color: Black" name="PriceEncoding">@item.PriceEncoding</span>
+                </td>
+                <td style="text-align: center">
+                    @Html.TextBox("EngineeringPrice", item.EngineeringPrice, new { @style = "width:80px;" })
+                </td>
+                <td style="text-align: center">
+                    @Html.TextBox("MarketPrice", item.MarketPrice, new { @style = "width:80px" })
+                </td>
+                <td style="text-align: center">
+                    <input type="button" value="删除" onclick="_MaterialDelete(this)" />
+                </td>
+            </tr>
+            }
+        }
+    </tbody>
+    <tfoot style="display: none">
+        <tr style="text-align: center">
+            <td style="text-align: center">
+                <input type="checkbox" name="subChk" value="" />
+            </td>
+            <td style="text-align: center">
+                <input type="hidden" name="ID" value="0" />
+                <input type="hidden" name="MarketValueID" value="0" />
+                <input type="hidden" name="MaterialID" value="0" />
+                <input type="hidden" name="MaterialCode15" value="0" />
+                <input type="hidden" name="PriceEncoding" value="" />
+                <span style="color: Black" name="MaterialCode15"></span>
+                @Html.Hidden("DeleteFlag", false)
+            </td>
+            <td style="text-align: center">
+                <span style="color: Black" name="MaterialName"></span>
+            </td>
+            <td style="text-align: center">
+                <span style="color: Black" name="Specification"></span>
+            </td>
+            <td style="text-align: center">
+                <span style="color: Black" name="MaterialUnit"></span>
+            </td>
+            <td style="text-align: center">
+                <span style="color: Black" name="PriceEncoding"></span>
+            </td>
+            <td style="text-align: center">
+                <input type="text" name="EngineeringPrice" value="0" style="width: 80px" />
+            </td>
+            <td style="text-align: center">
+                <input type="text" name="MarketPrice" value="0" style="width: 80px" />
+            </td>
+            <td style="text-align: center">
+                <input type="button" value="删除" onclick="_MaterialDelete(this)" />
+            </td>
+        </tr>
+    </tfoot>
+</table>

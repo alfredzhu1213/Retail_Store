@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <ProjectType>Local</ProjectType>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{53995DBB-9836-4647-AD22-865884FDEB9E}</ProjectGuid>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <AssemblyKeyContainerName>
+    </AssemblyKeyContainerName>
+    <AssemblyName>EduZY.Model</AssemblyName>
+    <RootNamespace>EduZY.Model</RootNamespace>
+    <AssemblyOriginatorKeyFile>
+    </AssemblyOriginatorKeyFile>
+    <DefaultClientScript>JScript</DefaultClientScript>
+    <DefaultHTMLPageLayout>Grid</DefaultHTMLPageLayout>
+    <DefaultTargetSchema>IE50</DefaultTargetSchema>
+    <DelaySign>false</DelaySign>
+    <OutputType>Library</OutputType>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+    <StartupObject>
+    </StartupObject>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <SccProjectName>
+    </SccProjectName>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccProvider>
+    </SccProvider>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <OldToolsVersion>2.0</OldToolsVersion>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <OutputPath>bin\Debug\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>true</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>false</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>full</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <OutputPath>bin\Release\</OutputPath>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+    <BaseAddress>285212672</BaseAddress>
+    <CheckForOverflowUnderflow>false</CheckForOverflowUnderflow>
+    <ConfigurationOverrideFile>
+    </ConfigurationOverrideFile>
+    <DefineConstants>TRACE</DefineConstants>
+    <DocumentationFile>
+    </DocumentationFile>
+    <DebugSymbols>false</DebugSymbols>
+    <FileAlignment>4096</FileAlignment>
+    <NoStdLib>false</NoStdLib>
+    <NoWarn>
+    </NoWarn>
+    <Optimize>true</Optimize>
+    <RegisterForComInterop>false</RegisterForComInterop>
+    <RemoveIntegerChecks>false</RemoveIntegerChecks>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+    <WarningLevel>4</WarningLevel>
+    <DebugType>none</DebugType>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System">
+      <Name>System</Name>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data">
+      <Name>System.Data</Name>
+    </Reference>
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Drawing">
+      <Name>System.Drawing</Name>
+    </Reference>
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml">
+      <Name>System.XML</Name>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BasicClass.cs" />
+    <Compile Include="JxcModel\Common\BasicClass.cs" />
+    <Compile Include="JxcModel\Common\BasicUnit.cs" />
+    <Compile Include="JxcModel\Common\FileExInfo.cs" />
+    <Compile Include="JxcModel\pos\tb_PosCashJournal.cs" />
+    <Compile Include="JxcModel\pos\tb_PosSaleBrandSummary.cs" />
+    <Compile Include="JxcModel\pos\tb_PosSaleDaySummary.cs" />
+    <Compile Include="JxcModel\pos\tb_PosSaleGoodsTypeSummary.cs" />
+    <Compile Include="JxcModel\pos\tb_PosSaleGrossProfitAnalyse.cs" />
+    <Compile Include="JxcModel\pos\tb_PosSaleJournal.cs" />
+    <Compile Include="JxcModel\pos\tb_PosSaleMonthSummary.cs" />
+    <Compile Include="JxcModel\pos\tb_PosSaleSyerTC.cs" />
+    <Compile Include="JxcModel\pos\tb_PosSaleSyerTCDetail.cs" />
+    <Compile Include="JxcModel\StockReport\View_SelectStockReport_StockDetail_RptStmDaily.cs" />
+    <Compile Include="JxcModel\StockReport\View_SelectStockReport_StockDetail_RptStmIODetail.cs" />
+    <Compile Include="JxcModel\StockReport\View_SelectStockReport_StockDetail_RptStmMonthly.cs" />
+    <Compile Include="JxcModel\StockReport\View_SelectStockReport_StockRptStmCost_GroupBy.cs" />
+    <Compile Include="JxcModel\StockReport\View_SelectStockReport_StocktransferDetail_RptStmDBItems.cs" />
+    <Compile Include="JxcModel\tbBasicRight.cs" />
+    <Compile Include="JxcModel\tb_MemberGift.cs" />
+    <Compile Include="JxcModel\tb_MemberIntegralSet.cs" />
+    <Compile Include="JxcModel\tb_MembersSpendingDetail.cs" />
+    <Compile Include="JxcModel\tb_PosSaleMan.cs" />
+    <Compile Include="JxcModel\tb_PosSaleSetting.cs" />
+    <Compile Include="JxcModel\tb_Product.cs" />
+    <Compile Include="JxcModel\tb_ProductBarCode.cs" />
+    <Compile Include="JxcModel\tb_ProductBrand.cs" />
+    <Compile Include="JxcModel\tb_ProductType.cs" />
+    <Compile Include="JxcModel\tb_ProductUnit.cs" />
+    <Compile Include="JxcModel\tb_PromotionPlanSheet.cs" />
+    <Compile Include="JxcModel\tb_PromotionPlanSheetDetail.cs" />
+    <Compile Include="JxcModel\tb_PromotionSaleDetail.cs" />
+    <Compile Include="JxcModel\tb_PromotionSaleSummary.cs" />
+    <Compile Include="JxcModel\tb_PurchaseBasicSet.cs" />
+    <Compile Include="JxcModel\tb_PurchaseOrder.cs" />
+    <Compile Include="JxcModel\tb_PurchaseOrderAcceptDetail.cs" />
+    <Compile Include="JxcModel\tb_PurchaseOrderDetail.cs" />
+    <Compile Include="JxcModel\tb_PurchaseOrderReturn.cs" />
+    <Compile Include="JxcModel\tb_PurchaseOrderReturnDetail.cs" />
+    <Compile Include="JxcModel\tb_PurchaseSupplier.cs" />
+    <Compile Include="JxcModel\tb_StockChainSet.cs" />
+    <Compile Include="JxcModel\tb_StockCheck.cs" />
+    <Compile Include="JxcModel\tb_StockCheckDetail.cs" />
+    <Compile Include="JxcModel\tb_StockIn.cs" />
+    <Compile Include="JxcModel\tb_StockInDetail.cs" />
+    <Compile Include="JxcModel\tb_StockOut.cs" />
+    <Compile Include="JxcModel\tb_StockOutDetail.cs" />
+    <Compile Include="JxcModel\tb_Stocktransfer.cs" />
+    <Compile Include="JxcModel\tb_StocktransferDetail.cs" />
+    <Compile Include="JxcModel\tb_Store.cs" />
+    <Compile Include="JxcModel\View_SelectChuxiaoList.cs" />
+    <Compile Include="JxcModel\View_SelectJfList.cs" />
+    <Compile Include="JxcModel\View_SelectPurchaseOrder.cs" />
+    <Compile Include="JxcModel\View_SelectPurchaseOrder_Sum.cs" />
+    <Compile Include="tbBasicRight.cs" />
+    <Compile Include="tbLog.cs" />
+    <Compile Include="tbMenuPage.cs" />
+    <Compile Include="tbMenuPageFun.cs" />
+    <Compile Include="tbResClass.cs" />
+    <Compile Include="tbResource.cs" />
+    <Compile Include="tbRole.cs" />
+    <Compile Include="tbUser.cs" />
+    <Compile Include="JxcModel\tb_Member.cs" />
+    <Compile Include="JxcModel\tb_MemberClass.cs" />
+    <Compile Include="JxcModel\tb_PosClient.cs" />
+    <Compile Include="UserMaster.cs" />
+    <Compile Include="zy.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>zy.edmx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <EntityDeploy Include="zy.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>zy.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PreBuildEvent>
+    </PreBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
+</Project>

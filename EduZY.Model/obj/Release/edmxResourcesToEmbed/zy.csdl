@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="zhxy_resModel" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns="http://schemas.microsoft.com/ado/2008/09/edm">
+  <EntityContainer Name="zhxy_resEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="tb_BasicRight" EntityType="zhxy_resModel.tb_BasicRight" />
+    <EntitySet Name="tb_Button" EntityType="zhxy_resModel.tb_Button" />
+    <EntitySet Name="tb_Doption" EntityType="zhxy_resModel.tb_Doption" />
+    <EntitySet Name="tb_Log" EntityType="zhxy_resModel.tb_Log" />
+    <EntitySet Name="tb_MenuPage" EntityType="zhxy_resModel.tb_MenuPage" />
+    <EntitySet Name="tb_MenuPage_Fun" EntityType="zhxy_resModel.tb_MenuPage_Fun" />
+    <EntitySet Name="tb_Moption" EntityType="zhxy_resModel.tb_Moption" />
+    <EntitySet Name="tb_Role" EntityType="zhxy_resModel.tb_Role" />
+    <EntitySet Name="tb_RoleBasicRight" EntityType="zhxy_resModel.tb_RoleBasicRight" />
+    <EntitySet Name="tb_RoleData_Right" EntityType="zhxy_resModel.tb_RoleData_Right" />
+    <EntitySet Name="tb_RoleMenu_Right" EntityType="zhxy_resModel.tb_RoleMenu_Right" />
+    <EntitySet Name="tb_UserData_Right" EntityType="zhxy_resModel.tb_UserData_Right" />
+    <EntitySet Name="tb_UserMenu_Right" EntityType="zhxy_resModel.tb_UserMenu_Right" />
+    <EntitySet Name="tb_UserRole" EntityType="zhxy_resModel.tb_UserRole" />
+    <EntitySet Name="View_SelectUserList" EntityType="zhxy_resModel.View_SelectUserList" />
+    <EntitySet Name="View_userlist" EntityType="zhxy_resModel.View_userlist" />
+  </EntityContainer>
+  <EntityType Name="tb_BasicRight">
+    <Key>
+      <PropertyRef Name="BasicRightID" />
+    </Key>
+    <Property Type="Int32" Name="BasicRightID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="BasicRightName" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Description" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="OjbectTypeID" />
+    <Property Type="String" Name="ObjectTypeName" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="AddDate" />
+    <Property Type="Int32" Name="Status" />
+    <Property Type="DateTime" Name="UpdateDate" />
+  </EntityType>
+  <EntityType Name="tb_Button">
+    <Key>
+      <PropertyRef Name="ButtonID" />
+    </Key>
+    <Property Type="Int32" Name="ButtonID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="ButtonName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="ButtonIco" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="ButtonClass" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="ButtonFun" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="Sort" />
+    <Property Type="Int32" Name="Status" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tb_Doption">
+    <Key>
+      <PropertyRef Name="DoptionID" />
+    </Key>
+    <Property Type="Int32" Name="DoptionID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="MoptionID" Nullable="false" />
+    <Property Type="String" Name="ItemValue" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="ItemText" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="Sort" Nullable="false" />
+    <Property Type="Int32" Name="Status" Nullable="false" />
+    <Property Type="Int32" Name="ParentID" Nullable="false" />
+    <Property Type="String" Name="Description" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="AddDate" />
+    <Property Type="DateTime" Name="UpdateDate" />
+  </EntityType>
+  <EntityType Name="tb_Log">
+    <Key>
+      <PropertyRef Name="LogID" />
+    </Key>
+    <Property Type="Int32" Name="LogID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="LogTypeID" Nullable="false" />
+    <Property Type="String" Name="LogTypeName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="UserID" Nullable="false" />
+    <Property Type="String" Name="Browser" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="RequestUrl" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="SourceUrl" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="PostData" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="IP" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="CreateDate" Nullable="false" />
+    <Property Type="String" Name="Remark" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="tb_MenuPage">
+    <Key>
+      <PropertyRef Name="MenuID" />
+    </Key>
+    <Property Type="Int32" Name="MenuID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="MenuName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="MenuType" Nullable="false" />
+    <Property Type="String" Name="MenuShort" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="MenuUrl" Nullable="false" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="MenuICO" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="UpdateDate" Nullable="false" />
+    <Property Type="Int32" Name="ParentId" Nullable="false" />
+    <Property Type="Int32" Name="RootID" Nullable="false" />
+    <Property Type="DateTime" Name="AddDate" Nullable="false" />
+    <Property Type="Int32" Name="Status" Nullable="false" />
+    <Property Type="Int32" Name="Sort" Nullable="false" />
+    <Property Type="String" Name="Remark" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="tb_MenuPage_Fun">
+    <Key>
+      <PropertyRef Name="MenuPageFunID" />
+    </Key>
+    <Property Type="Int32" Name="MenuPageFunID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="MenuID" Nullable="false" />
+    <Property Type="Int32" Name="ButtonID" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tb_Moption">
+    <Key>
+      <PropertyRef Name="MoptionID" />
+    </Key>
+    <Property Type="Int32" Name="MoptionID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="OptionName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="OptionCode" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="Status" Nullable="false" />
+    <Property Type="DateTime" Name="AddDate" Nullable="false" />
+    <Property Type="Int32" Name="IsSys" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tb_Role">
+    <Key>
+      <PropertyRef Name="RoleID" />
+    </Key>
+    <Property Type="Int32" Name="RoleID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="String" Name="RoleName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="AddDate" Nullable="false" />
+    <Property Type="Int32" Name="Status" Nullable="false" />
+    <Property Type="DateTime" Name="UpdateDate" Nullable="false" />
+    <Property Type="String" Name="Remark" MaxLength="500" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="IsSys" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tb_RoleBasicRight">
+    <Key>
+      <PropertyRef Name="RoleBasicRightID" />
+    </Key>
+    <Property Type="Int32" Name="RoleBasicRightID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="RoleID" />
+    <Property Type="Int32" Name="BasicRightID" />
+    <Property Type="String" Name="Objectids" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="ObjectStr" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Type="DateTime" Name="AddDate" />
+  </EntityType>
+  <EntityType Name="tb_RoleData_Right">
+    <Key>
+      <PropertyRef Name="RoleData" />
+    </Key>
+    <Property Type="Int32" Name="RoleData" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="TypeID" Nullable="false" />
+    <Property Type="Int32" Name="object_id" Nullable="false" />
+    <Property Type="Int32" Name="RoleID" Nullable="false" />
+    <Property Type="Int32" Name="ButtonID" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tb_RoleMenu_Right">
+    <Key>
+      <PropertyRef Name="RoleMenuID" />
+    </Key>
+    <Property Type="Int32" Name="RoleMenuID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="RoleID" Nullable="false" />
+    <Property Type="Int32" Name="MenuID" Nullable="false" />
+    <Property Type="Int32" Name="ButtonID" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tb_UserData_Right">
+    <Key>
+      <PropertyRef Name="UserDataID" />
+    </Key>
+    <Property Type="Int32" Name="UserDataID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="TypeID" Nullable="false" />
+    <Property Type="Int32" Name="object_id" Nullable="false" />
+    <Property Type="Int32" Name="UserID" Nullable="false" />
+    <Property Type="Int32" Name="ButtonID" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tb_UserMenu_Right">
+    <Key>
+      <PropertyRef Name="UserMenuID" />
+    </Key>
+    <Property Type="Int32" Name="UserMenuID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="ButtonID" Nullable="false" />
+    <Property Type="Int32" Name="UserID" Nullable="false" />
+    <Property Type="Int32" Name="MenuID" Nullable="false" />
+  </EntityType>
+  <EntityType Name="tb_UserRole">
+    <Key>
+      <PropertyRef Name="UserRoleID" />
+    </Key>
+    <Property Type="Int32" Name="UserRoleID" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Type="Int32" Name="UserID" Nullable="false" />
+    <Property Type="Int32" Name="RoleID" Nullable="false" />
+  </EntityType>
+  <EntityType Name="View_SelectUserList">
+    <Key>
+      <PropertyRef Name="UserID" />
+      <PropertyRef Name="UserName" />
+      <PropertyRef Name="Status" />
+      <PropertyRef Name="RoleID" />
+      <PropertyRef Name="Password" />
+    </Key>
+    <Property Type="Int32" Name="UserID" Nullable="false" />
+    <Property Type="String" Name="UserName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="Status" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Type="DateTime" Name="RegStateDate" />
+    <Property Type="Int32" Name="RoleID" Nullable="false" />
+    <Property Type="String" Name="TrueName" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Mobile" MaxLength="12" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Phone" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="QQ" MaxLength="15" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="EMail" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="Password" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+    <Property Type="Boolean" Name="Sex" />
+    <Property Type="String" Name="ZhiCheng" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="BuMenId" />
+  </EntityType>
+  <EntityType Name="View_userlist">
+    <Key>
+      <PropertyRef Name="UserID" />
+      <PropertyRef Name="UserName" />
+      <PropertyRef Name="RoleName" />
+      <PropertyRef Name="RoleID" />
+      <PropertyRef Name="Password" />
+      <PropertyRef Name="IsDelete" />
+      <PropertyRef Name="Status" />
+    </Key>
+    <Property Type="Int32" Name="UserID" Nullable="false" />
+    <Property Type="String" Name="UserName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Type="String" Name="TrueName" MaxLength="20" FixedLength="false" Unicode="true" />
+    <Property Type="String" Name="RoleName" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="RoleID" Nullable="false" />
+    <Property Type="String" Name="Password" Nullable="false" MaxLength="32" FixedLength="false" Unicode="false" />
+    <Property Type="Boolean" Name="IsDelete" Nullable="false" />
+    <Property Type="DateTime" Name="RegStateDate" />
+    <Property Type="DateTime" Name="LastDate" />
+    <Property Type="String" Name="UserSource" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Type="Int32" Name="CreateUserID" />
+    <Property Type="String" Name="Status" Nullable="false" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Type="DateTime" Name="ActivationDate" />
+  </EntityType>
+</Schema>

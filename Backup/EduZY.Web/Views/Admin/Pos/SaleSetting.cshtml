@@ -1,0 +1,232 @@
+﻿@model Maticsoft.Model.tb_PosSaleSetting
+@{
+    ViewBag.Title = "销售设置";
+    Layout = "~/Views/Shared/_LayoutAdminPage.cshtml";
+}
+
+<form class="ui_form1" id="AddOrUpdateForm" method="post">
+@Html.HiddenFor(u => u.id)
+<table width="100%" class="ui_table ui_table_bordered ui_table_condensed ui_table_query">
+
+    <tr style="display:none">
+        <th style="width: 10%">
+            <span style="color: red;">*</span>开启电子秤码无档销售
+        </th>
+        <td style="width: 15%">
+           
+           <input type="radio" name="IsAutoFreshNoGroup" value="1" id="IsAutoFreshNoGroup0"  @(Model.IsAutoFreshNoGroup == 1 ? "checked='checked'" : "")/>
+          <label for="IsAutoFreshNoGroup1">启用</label>
+          <input type="radio" name="IsAutoFreshNoGroup" value="0" id="IsAutoFreshNoGroup1"  @(Model.IsAutoFreshNoGroup == 0 ? "checked='checked'" : "")/>
+          <label for="IsAutoFreshNoGroup0">不启用</label>
+      
+        </td>
+        <th style="width: 10%">
+            <span style="color: red;">*</span>开启国标条码无档销售
+        </th>
+        <td style="width: 15%">
+        
+        
+           <input type="radio" name="IsAutoBarcode" value="1" id="IsAutoBarcode1"  @(Model.IsAutoBarcode == 1 ? "checked='checked'" : "")/>
+          <label for="IsAutoBarcode1">启用</label>
+          <input type="radio" name="IsAutoBarcode" value="0" id="IsAutoBarcode0"  @(Model.IsAutoBarcode == 0 ? "checked='checked'" : "")/>
+          <label for="IsAutoBarcode0">不启用</label>
+
+        </td>
+
+    </tr>
+    <tr style="display:none">
+        <th style="width: 10%">
+            <span style="color: red;">*</span>开启自编码无档销售
+        </th>
+        <td style="width: 15%" >
+   
+
+            
+         <input type="radio" name="IsDefineItemNo" value="1" id="IsDefineItemNo1"  @(Model.IsDefineItemNo == 1 ? "checked='checked'" : "")/>
+          <label for="IsDefineItemNo1">启用</label>
+          <input type="radio" name="IsDefineItemNo" value="0" id="IsDefineItemNo0"  @(Model.IsDefineItemNo == 0 ? "checked='checked'" : "")/>
+          <label for="IsDefineItemNo0">不启用</label>
+
+        </td>
+        <th style="width: 10%">
+            <span style="color: red;">*</span>开启输入价格销售
+        </th>
+        <td style="width: 15%">
+                 
+          <input type="radio" name="IsAutoPriceCreate" value="1" id="IsAutoPriceCreate1"  @(Model.IsAutoPriceCreate == 1 ? "checked='checked'" : "")/>
+          <label for="IsAutoPriceCreate1">启用</label>
+          <input type="radio" name="IsAutoPriceCreate" value="0" id="IsAutoPriceCreate0"  @(Model.IsAutoPriceCreate == 0 ? "checked='checked'" : "")/>
+          <label for="IsAutoPriceCreate0">不启用</label>
+        </td>
+    </tr>
+    <tr>
+        <th style="width: 10%">
+             收银金额尾数处理: <span style="color: red;">*</span>
+        </th>
+        <td style="width: 15%" colspan= 2>
+
+          <input type="radio" name="SmallChangeRound" value="1" id="SmallChangeRound1"  @(Model.SmallChangeRound == 1 ? "checked='checked'" : "")/>
+          <label for="SmallChangeRound1">实款实收(默认)</label>
+          <input type="radio" name="SmallChangeRound" value="2" id="SmallChangeRound2"  @(Model.SmallChangeRound == 2 ? "checked='checked'" : "")/>
+          <label for="SmallChangeRound2">抹掉角以下的金额</label>
+
+            <input type="radio" name="SmallChangeRound" value="3" id="SmallChangeRound3"  @(Model.SmallChangeRound == 3 ? "checked='checked'" : "")/>
+          <label for="SmallChangeRound3">抹掉元以下的金额</label>
+
+            <input type="radio" name="SmallChangeRound" value="4" id="SmallChangeRound4"  @(Model.SmallChangeRound == 4 ? "checked='checked'" : "")/>
+          <label for="SmallChangeRound4">元以下的金额四舍五入</label>
+
+          <input type="radio" name="SmallChangeRound" value="5" id="SmallChangeRound5"  @(Model.SmallChangeRound == 5 ? "checked='checked'" : "")/>
+          <label for="SmallChangeRound5">角以下的金额四舍五入</label>
+
+        </td>
+   
+    </tr>
+    <tr >
+        <th style="width: 10%">
+            <span style="color: red;">*</span>打印小票是否使用商品简称
+        </th>
+        <td style="width: 15%">
+
+         <input type="radio" name="IsPrintItemShortName" value="1" id="IsPrintItemShortName1"  @(Model.IsPrintItemShortName == 1 ? "checked='checked'" : "")/>
+          <label for="IsPrintItemShortName1">启用</label>
+          <input type="radio" name="IsPrintItemShortName" value="0" id="IsPrintItemShortName0"  @(Model.IsPrintItemShortName == 0 ? "checked='checked'" : "")/>
+          <label for="IsPrintItemShortName0">不启用</label>
+        </td>
+
+        <th style="width: 10%">
+            <span style="color: red;">*</span>是否打印优惠合计
+        </th>
+        <td style="width: 15%">
+
+         <input type="radio" name="IsPrintSumDiscount" value="1" id="IsPrintSumDiscount1"  @(Model.IsPrintSumDiscount == 1 ? "checked='checked'" : "")/>
+          <label for="IsPrintSumDiscount1">启用</label>
+          <input type="radio" name="IsPrintSumDiscount" value="0" id="IsPrintSumDiscount0"  @(Model.IsPrintSumDiscount == 0 ? "checked='checked'" : "")/>
+          <label for="IsPrintSumDiscount0">不启用</label>
+        </td>
+    
+    </tr>
+    <tr >
+
+         <th style="width: 10%">
+            <span style="color: red;">*</span>小票打印标题
+        </th>
+        <td style="width: 15%">
+            @Html.TextBoxFor(u => u.BillPrintTitle, new { @style = "width:66%" })
+        </td>
+        <th style="width: 10%; display:none" >
+            <span style="color: red;">*</span>小票打印门店信息
+        </th>
+        <td style="width: 15%;display:none">
+            @Html.TextBoxFor(u => u.BillPrintBranch, new { @style = "width:66%" })
+        </td>
+       
+    </tr>
+    <tr >
+        <th style="width: 10%; display:none">
+            <span style="color: red;">*</span>小票打印票尾信息一
+        </th>
+        <td style="width: 15%; display:none">
+            @Html.TextBoxFor(u => u.BillPrintFooter1, new { @style = "width:66%" })
+        </td>
+        <th style="width: 10%; display:none">
+            <span style="color: red;">*</span>小票打印票尾信息二
+        </th>
+        <td style="width: 15%; display:none">
+            @Html.TextBoxFor(u => u.BillPrintFooter2, new { @style = "width:66%" })
+        </td>
+    </tr>
+    <tr >
+        <th style="width: 10%">
+            <span style="color: red;">*</span>小票打印票尾信息三
+        </th>
+        <td style="width: 15%">
+            @Html.TextBoxFor(u => u.BillPrintFooter3, new { @style = "width:66%" })
+        </td>
+        <th style="width: 10%">
+            <span style="color: red;">*</span>小票打印票尾信息四
+        </th>
+        <td style="width: 15%">
+            @Html.TextBoxFor(u => u.BillPrintFooter4, new { @style = "width:66%" })
+        </td>
+    </tr>
+    <tr >
+        <th style="width: 10%">
+            <span style="color: red;">*</span>小票打印票尾信息五
+        </th>
+        <td style="width: 15%">
+            @Html.TextBoxFor(u => u.BillPrintFooter5, new { @style = "width:66%" })
+        </td>
+        <th style="width: 10%">
+            <span style="color: red;">*</span>小票打印票尾信息六
+        </th>
+        <td style="width: 15%">
+            @Html.TextBoxFor(u => u.BillPrintFooter6, new { @style = "width:66%" })
+        </td>
+    </tr>
+    <tr >
+        <th style="width: 10%">
+            <span style="color: red;">*</span>小票打印票尾信息七
+        </th>
+        <td style="width: 15%">
+            @Html.TextBoxFor(u => u.BillPrintFooter7, new { @style = "width:66%" })
+        </td>
+        <th style="width: 10%">
+            <span style="color: red;">*</span>小票打印票尾信息八
+        </th>
+        <td style="width: 15%">
+            @Html.TextBoxFor(u => u.BillPrintFooter8, new { @style = "width:66%" })
+        </td>
+    </tr>
+</table>
+<div class="ui_form_actions " style="text-align: center">
+    <button id="saveAction" type="button" onclick="saveCommonAction();" class="ui_btn" />
+    保存</button>&nbsp;&nbsp;
+</div>
+</form>
+<script>
+
+    $(document).ready(function () {
+        using(["validationengine", "select", "iframe"], function () {
+   
+          
+        });
+    });
+
+     //保存
+    function saveCommonAction() {
+
+    
+        $('#AddOrUpdateForm').ajaxSubmit({
+            type: 'POST',
+            url: '/Admin/Pos/savetb_PosSaleSetting',
+            dataType: "json",
+            contentType: "application/x-www-form-urlencoded; charset=utf-8",
+            success: function (_o) {
+              
+                 if (_o.status == '1') {
+
+                    $.ligerDialog.success('保存成功！', '提示', function () {
+
+                        window.location.href = '/admin/Pos/SaleSetting';
+                    });
+                }
+                else {
+
+                    $.ligerDialog.warn('保存失败！', '提示', function () {
+                        return;
+                    });
+                }
+
+            },
+            error: function () {
+                $.ligerDialog.warn('保存失败！', '提示', function () {
+                    return;
+                });
+            }
+        });
+
+    }
+    
+</script>
+@Html.Partial("~/Views/Shared/_LayoutLoveJs.cshtml"); 

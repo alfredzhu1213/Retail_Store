@@ -1,0 +1,351 @@
+﻿@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_LayoutAdminPage.cshtml";
+}
+@section Head{
+    <link href="/css/themes/@Common.PublicConst.TempCss/easyui.css" rel="stylesheet" type="text/css" />
+    <link href="/css/themes/icon.css" rel="stylesheet" type="text/css" />
+    <script src="/Scripts/jquery.easyui-1.3.6.min.js" type="text/javascript"></script>
+    <script src="/Scripts/easyui-lang-zh_CN.js" type="text/javascript"></script>
+}
+<div id="tb" data-options="region:'center',title:'',iconCls:'icon-book'" style="padding: 10px;
+    height: auto;">
+    <!-------------------------------搜索框----------------------------------->
+    <fieldset style="border-width: 2px; border-style: solid; padding-bottom: 5px; border-color: #95B8E7">
+        <legend>信息查询</legend>
+        <form id="ffSearch" method="post">
+        <div style="margin-bottom: 5px">
+            <label for="txtName">
+                &nbsp;&nbsp;关键字：</label>
+            <input type="text" id="KeyWord" name="KeyWord" style="width: 100px" />&nbsp;&nbsp;&nbsp;
+            <input id="Button1" type="button" value="查询" style="cursor: pointer;" class="easyui-linkbutton1"
+                onclick="search()" />
+        </div>
+        </form>
+    </fieldset>
+    <!-------------------------------详细信息展示表格----------------------------------->
+</div>
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'west',split:true">
+        <table id="dg" title="会员管理" class="easyui-datagrid" style="" url="/admin/Member/GetListtb_Member"
+            toolbar="#toolbar" pagination="true" rownumbers="true" fitcolumns="true" singleselect="true">
+            <thead>
+                <tr>
+                   
+                    <th data-options="field:'Code'" width="40">
+                        会员号
+                    </th>
+                    <th data-options="field:'CardCode'" width="40">
+                        会员卡号
+                    </th>
+                    <th data-options="field:'Pwd'" width="40">
+                        密码
+                    </th>
+                    <th data-options="field:'TrueName'" width="40">
+                        姓名
+                    </th>
+                    <th data-options="field:'MemberTypeName'" width="40">
+                        会员类别
+                    </th>
+                    <th data-options="field:'Sex'" width="40">
+                        性别
+                    </th>
+                    <th data-options="field:'Mobile'" width="40">
+                        手机号码
+                    </th>
+                     <th data-options="field:'BirthDate'" width="40">
+                        生日
+                    </th>
+                    <th data-options="field:'Email'" width="40">
+                        邮箱
+                    </th>
+                    <th data-options="field:'Status'" width="40">
+                        状态
+                    </th>
+                </tr>
+            </thead>
+        </table>
+        <div id="toolbar" style="padding-bottom: 5px;">
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+                onclick="add_fun()">添加</a><span class="datagrid-btn-separator"></span><a href="javascript:void(0)"
+                    class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="edit_fun()">修改</a>
+
+                    
+                 <span class="datagrid-btn-separator"></span>
+                <a href="javascript:void(0)"  class="easyui-linkbutton" iconcls="icon-redo" plain="true" onclick="Export_fun()">导入</a>
+
+
+                    <span   class="datagrid-btn-separator"></span> <a href="javascript:void(0)" class="easyui-linkbutton"
+                            iconcls="icon-remove" plain="true" onclick="del_fun()">删除</a>
+
+                                 <script>
+
+                                     function Export_fun() {
+
+                                         SetCommonExport('/admin/Export/MemberExport', '导入会员资料')
+                                     }
+                                
+                </script>
+        </div>
+    </div>
+</div>
+<div id="dlg" class="easyui-dialog" style="width: 480px; height: 440px; padding: 10px 20px"
+    closed="true" buttons="#dlg-buttons">
+    <div class="ftitle">
+        会员管理
+    </div>
+    <form id="fm" method="post" novalidate>
+    <input id="id" name="id" type="hidden" />
+
+
+    <div class="fitem">
+        <label>
+            会员号:</label>
+        <input id="Code" name="Code" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            会员卡号:</label>
+        <input id="CardCode" name="CardCode" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            密码:</label>
+        <input id="Pwd" name="Pwd" class="easyui-validatebox" required="true"  type="password"/>
+    </div>
+    <div class="fitem">
+        <label>
+            姓名:</label>
+        <input id="TrueName" name="TrueName" class="easyui-validatebox"   />
+    </div>
+    <div class="fitem">
+        <label>
+            会员类别:</label>
+    <select id="MemberTypeId" name="MemberTypeId" class="easyui-combobox" required="true" style="width:100px">
+     </select>
+    </div>
+
+    <div class="fitem">
+        <label>
+            性别:</label>
+          <select id="Sex" name="Sex" class="easyui-combobox" required="true">
+            <option value="先生">先生</option>
+             <option value="女士">女士</option>
+
+        </select>
+    </div>
+    <div class="fitem">
+        <label>
+            生日:</label>
+        <input id="BirthDate" name="BirthDate" class="easyui-datebox"  />
+    </div>
+    <div class="fitem">
+        <label>
+            邮箱:</label>
+        <input id="Email" name="Email" class="easyui-validatebox"  />
+    </div>
+
+    <div class="fitem">
+        <label>
+            手机号码:</label>
+        <input id="Mobile" name="Mobile" class="easyui-validatebox"  />
+    </div>
+
+        <div class="fitem">
+        <label>
+            状态:</label>
+
+
+        <select id="Status" name="Status" class="easyui-combobox" required="true">
+            <option value="正常">正常</option>
+             <option value="挂失">挂失</option>
+            <option value="停用">停用</option>
+        </select>
+    </div>
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="saveInfo()">
+        保存</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="javascript:$('#dlg').dialog('close')">取消</a>
+</div>
+<script type="text/javascript">
+
+    $(document).ready(function () {
+        $('#MemberTypeId').combobox({
+            url: '/admin/Common/GetMemberType',
+            valueField: 'id',
+            textField: 'text'
+        });
+
+        $("#dg").datagrid({
+            onDblClickRow: function (row) {  //easyui封装好的时间（被单机行的索引，被单击行的值）
+               
+            }
+        });
+    });
+
+    function search() {
+        $('#dg').datagrid('load', {
+            KeyWord: '' + $("#KeyWord").val() + ''
+        });
+
+    }
+
+
+    function add_fun() {
+
+        $('#dlg').dialog('open').dialog('setTitle', '添加');
+        $('#fm').form('clear');
+
+    }
+    function edit_fun() {
+        var row = $('#dg').datagrid('getSelected');
+        if (row) {
+            $('#dlg').dialog('open').dialog('setTitle', '修改');
+            $('#fm').form('load', row);
+
+        } else {
+            $.messager.alert("提示", "请选择你要修改的数据")
+        }
+    }
+
+
+    function saveInfo() {
+        $.ajax({
+            type: "POST",
+            url: "/admin/Member/savetb_Member",
+            dataType: "json",
+            data: $('#fm').serializeArray(), //serializeArray  serialize
+            beforeSend: function () {
+                return $('#fm').form('validate');
+            },
+            success: function (data) {
+                if (data.status == "1") {
+                    $('#dlg').dialog('close');
+                    $('#dg').datagrid('reload');
+                }
+                else {
+                    $.messager.show({
+                        title: 'Error',
+                        msg: data.msg
+                    });
+                }
+            }
+        });
+        return false;
+    }
+    function del_fun() {
+        var row = $('#dg').datagrid('getSelected');
+        if (row) {
+            $.messager.confirm('提示', '您确实要删除该数据吗?', function (r) {
+                if (r) {
+                    $.post('/admin/Member/Deltb_Member', { id: row.id }, function (result) {
+                        if (result.status == 1) {
+                            $('#dg').datagrid('reload');    // reload the user data
+                        } else {
+                            $.messager.show({    // show error message
+                                title: 'Error',
+                                msg: result.msg
+                            });
+                        }
+                    }, 'json');
+                }
+            });
+        }
+        else {
+            $.messager.alert("提示", "请选择你要删除的数据")
+        }
+    }
+</script>
+<style>
+    .ScrollBar
+    {
+        overflow: auto;
+        background: #fff;
+    }
+    .checkbuttonOk
+    {
+        margin: 5px;
+        width: auto;
+        border: solid 3px #6699cc;
+        height: 40px;
+        background: #F7F7F7;
+        float: left;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .checktext
+    {
+        width: 70px;
+    }
+    .checktext
+    {
+        float: left;
+        width: auto;
+        padding-left: 8px;
+        line-height: 40px;
+        text-align: center;
+    }
+    .checktext img
+    {
+        vertical-align: middle;
+        padding-right: 3px;
+        padding-bottom: 3px;
+    }
+    .checkbuttonOk .triangleOk
+    {
+        display: block;
+        height: 25px;
+        width: 25px;
+        float: right;
+        background: url('/Images/checkicon.png');
+    }
+    .checkbuttonOk
+    {
+        cursor: pointer;
+    }
+    .checkbuttonNo
+    {
+        margin: 5px;
+        width: auto;
+        border: solid 3px #ccc;
+        height: 40px;
+        background: #F7F7F7;
+        float: left;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    *
+    {
+        font-size: 9pt;
+    }
+    .checkbuttonNo .triangleNo
+    {
+        display: block;
+        height: 0px;
+        width: 0px;
+        border: 12.5px solid #ccc;
+        border-color: #F7F7F7 #F7F7F7 transparent transparent;
+        border-style: solid solid dashed dashed;
+        line-height: 0px;
+        float: right;
+    }
+    .checkbuttonNo
+    {
+        margin: 5px;
+        width: auto;
+        border: solid 3px #ccc;
+        height: 40px;
+        background: #F7F7F7;
+        float: left;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>

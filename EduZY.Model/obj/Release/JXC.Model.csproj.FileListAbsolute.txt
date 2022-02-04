@@ -1,0 +1,5 @@
+C:\多店进销存\Code\EduZY.Model\bin\Release\EduZY.Model.dll.config
+C:\多店进销存\Code\EduZY.Model\bin\Release\EduZY.Model.dll
+C:\多店进销存\Code\EduZY.Model\obj\Release\JXC.Model.csprojAssemblyReference.cache
+C:\多店进销存\Code\EduZY.Model\obj\Release\JXC.Model.csproj.CoreCompileInputs.cache
+C:\多店进销存\Code\EduZY.Model\obj\Release\EduZY.Model.dll

@@ -1,0 +1,313 @@
+﻿@{
+    ViewBag.Title = "List";
+    Layout = "~/Views/Shared/_LayoutAdminPage.cshtml";
+}
+@section Head{
+    <link href="/css/themes/@Common.PublicConst.TempCss/easyui.css" rel="stylesheet" type="text/css" />
+    <link href="/css/themes/icon.css" rel="stylesheet" type="text/css" />
+    <script src="/Scripts/jquery.easyui-1.3.6.min.js" type="text/javascript"></script>
+    <script src="/Scripts/easyui-lang-zh_CN.js" type="text/javascript"></script>
+     <script src="/Scripts/layer/layer.min.js"></script>
+}
+<div id="tb" data-options="region:'center',title:'',iconCls:'icon-book'" style="padding: 10px;
+    height: auto;">
+    <!-------------------------------搜索框----------------------------------->
+    <fieldset style="border-width: 2px; border-style: solid; padding-bottom: 5px; border-color: #95B8E7">
+        <legend>信息查询</legend>
+        <form id="ffSearch" method="post">
+        <div style="margin-bottom: 5px">
+            <label for="txtName">
+                &nbsp;&nbsp;关键字：</label>
+            <input type="text" id="KeyWord" name="KeyWord" style="width: 100px" />&nbsp;&nbsp;&nbsp;
+            <input id="Button1" type="button" value="查询" style="cursor: pointer;" class="easyui-linkbutton1"
+                onclick="search()" />
+        </div>
+        </form>
+    </fieldset>
+    <!-------------------------------详细信息展示表格----------------------------------->
+</div>
+<div class="easyui-layout" data-options="fit:true">
+    <div data-options="region:'west',split:true">
+        <table id="dg" title="商品档案" class="easyui-datagrid" style="" url="/admin/Member/GetListtb_MemberGift"
+            toolbar="#toolbar" pagination="true" rownumbers="true" fitcolumns="true" singleselect="true">
+            <thead>
+                <tr>
+                   
+                    <th data-options="field:'Code'" width="40">
+                        礼品编码
+                    </th>
+                    <th data-options="field:'Name'" width="40">
+                        礼品名
+                    </th>
+                    <th data-options="field:'Num'" width="40">
+                        兑换数量
+                    </th>
+                    <th data-options="field:'IntegralNum'" width="40">
+                        需要积分
+                    </th>
+                    <th data-options="field:'StartDate'" width="40">
+                        开始日期
+                    </th>
+                    <th data-options="field:'EndDate'" width="40">
+                        结束日期
+                    </th>
+                    <th data-options="field:'CreateUserName'" width="40">
+                        制单人
+                    </th>
+                    <th data-options="field:'CreateDate'"  formatter="timeTransformation"  width="40">
+                        创建日期
+                    </th>
+                </tr>
+            </thead>
+        </table>
+        <div id="toolbar" style="padding-bottom: 5px;">
+            <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-add" plain="true"
+                onclick="add_fun()">添加</a><span class="datagrid-btn-separator"></span><a href="javascript:void(0)"
+                    class="easyui-linkbutton" iconcls="icon-edit" plain="true" onclick="edit_fun()">修改</a><span
+                        class="datagrid-btn-separator"></span> <a href="javascript:void(0)" class="easyui-linkbutton"
+                            iconcls="icon-remove" plain="true" onclick="del_fun()">删除</a>
+        </div>
+    </div>
+</div>
+<div id="dlg" class="easyui-dialog" style="width: 480px; height: 440px; padding: 10px 20px"
+    closed="true" buttons="#dlg-buttons">
+    <div class="ftitle">
+        商品管理
+    </div>
+    <form id="fm" method="post" novalidate>
+    <input id="id" name="id" type="hidden" />
+    <input id="ProductId" name="ProductId" type="hidden" />
+     <input id="Code" name="Code" type="hidden" />
+  
+    <div class="fitem">
+        <label>
+            礼品名:</label>
+        <input id="Name" name="Name" class="easyui-validatebox"  onclick="SetRange()" />
+          <a href="#" style="color: blue;" title="选择"  onclick="javascript:SetRange()">选择</a> 
+    </div>
+    <div class="fitem">
+        <label>
+            兑换数量:</label>
+        <input id="Num" name="Num" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            需要积分:</label>
+        <input id="IntegralNum" name="IntegralNum" class="easyui-validatebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            开始日期:</label>
+        <input id="StartDate" name="StartDate" class="easyui-datebox" required="true" />
+    </div>
+    <div class="fitem">
+        <label>
+            结束日期:</label>
+        <input id="EndDate" name="EndDate" class="easyui-datebox" required="true" />
+    </div>
+   
+    </form>
+</div>
+<div id="dlg-buttons">
+    <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-ok" onclick="saveInfo()">
+        保存</a> <a href="javascript:void(0)" class="easyui-linkbutton" iconcls="icon-cancel"
+            onclick="javascript:$('#dlg').dialog('close')">取消</a>
+</div>
+<script type="text/javascript">
+
+
+    function search() {
+        $('#dg').datagrid('load', {
+            KeyWord: '' + $("#KeyWord").val() + ''
+        });
+
+    }
+    function SetRange(BasicRightID) {
+        $.layer({
+            type: 2,
+            maxmin: true,
+            shadeClose: true,
+            title: '选择产品',
+            shade: [0.1, '#fff'],
+            offset: ['10px', ''],
+            area: ['980px', ($(window).height() - 20) + 'px'],
+            iframe: { src: '/admin/Common/SelectProduct' }
+            , end: function () {  }
+        });
+    }
+
+    function add_fun() {
+
+        $('#dlg').dialog('open').dialog('setTitle', '添加');
+        $('#fm').form('clear');
+
+    }
+    function edit_fun() {
+        var row = $('#dg').datagrid('getSelected');
+        if (row) {
+            $('#dlg').dialog('open').dialog('setTitle', '修改');
+            $('#fm').form('load', row);
+
+        } else {
+            $.messager.alert("提示", "请选择你要修改的数据")
+        }
+    }
+
+
+    function saveInfo() {
+        $.ajax({
+            type: "POST",
+            url: "/admin/Member/savetb_MemberGift",
+            dataType: "json",
+            data: $('#fm').serializeArray(), //serializeArray  serialize
+            beforeSend: function () {
+                return $('#fm').form('validate');
+            },
+            success: function (data) {
+                if (data.status == "1") {
+                    $('#dlg').dialog('close');
+                    $('#dg').datagrid('reload');
+                }
+                else {
+                    $.messager.show({
+                        title: 'Error',
+                        msg: data.msg
+                    });
+                }
+            }
+        });
+        return false;
+    }
+    function del_fun() {
+        var row = $('#dg').datagrid('getSelected');
+        if (row) {
+            $.messager.confirm('提示', '您确实要删除该数据吗?', function (r) {
+                if (r) {
+                    $.post('/admin/Member/Deltb_MemberGift', { id: row.id }, function (result) {
+                        if (result.status == 1) {
+                            $('#dg').datagrid('reload');    // reload the user data
+                        } else {
+                            $.messager.show({    // show error message
+                                title: 'Error',
+                                msg: result.msg
+                            });
+                        }
+                    }, 'json');
+                }
+            });
+        }
+        else {
+            $.messager.alert("提示", "请选择你要删除的数据")
+        }
+    }
+
+
+    function selectCommon(url, title) {
+
+        $.ligerDialog.open({
+            className: 'dialog_style02',
+            height: 490,
+            width: 400,
+            title: title,
+            url: '' + url,
+            dialogWaiting: true,
+            buttons: [{ text: '关闭', onclick: close}]
+        });
+    }
+    function close(button, dg) {
+        $.ligerDialog.close();
+    }
+</script>
+
+
+<style>
+    .ScrollBar
+    {
+        overflow: auto;
+        background: #fff;
+    }
+    .checkbuttonOk
+    {
+        margin: 5px;
+        width: auto;
+        border: solid 3px #6699cc;
+        height: 40px;
+        background: #F7F7F7;
+        float: left;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    .checktext
+    {
+        width: 70px;
+    }
+    .checktext
+    {
+        float: left;
+        width: auto;
+        padding-left: 8px;
+        line-height: 40px;
+        text-align: center;
+    }
+    .checktext img
+    {
+        vertical-align: middle;
+        padding-right: 3px;
+        padding-bottom: 3px;
+    }
+    .checkbuttonOk .triangleOk
+    {
+        display: block;
+        height: 25px;
+        width: 25px;
+        float: right;
+        background: url('/Images/checkicon.png');
+    }
+    .checkbuttonOk
+    {
+        cursor: pointer;
+    }
+    .checkbuttonNo
+    {
+        margin: 5px;
+        width: auto;
+        border: solid 3px #ccc;
+        height: 40px;
+        background: #F7F7F7;
+        float: left;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+    *
+    {
+        font-size: 9pt;
+    }
+    .checkbuttonNo .triangleNo
+    {
+        display: block;
+        height: 0px;
+        width: 0px;
+        border: 12.5px solid #ccc;
+        border-color: #F7F7F7 #F7F7F7 transparent transparent;
+        border-style: solid solid dashed dashed;
+        line-height: 0px;
+        float: right;
+    }
+    .checkbuttonNo
+    {
+        margin: 5px;
+        width: auto;
+        border: solid 3px #ccc;
+        height: 40px;
+        background: #F7F7F7;
+        float: left;
+        -moz-border-radius: 5px;
+        -webkit-border-radius: 5px;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+</style>

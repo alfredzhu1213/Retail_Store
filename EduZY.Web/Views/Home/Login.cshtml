@@ -1,0 +1,114 @@
+﻿
+
+@{
+    ViewBag.Title = "登录";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <title>连锁店进销存管理系统-登录</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <link href="/Content/Login/css/style.css" rel="stylesheet" type="text/css" />
+
+      <script src="/Scripts/jquery-1.8.2.min.js" type="text/javascript"></script>
+
+    <script>
+        $(function () {
+            $("#btn_login").live('click', function () {
+                var user = $("#UserName").val();
+                var Password = $("#Password").val();
+                //              var VailCode = $("#VailCode").val();
+                if (user == "") {
+                    alert("用户名不能为空"); $("#UserName").focus();
+                    return false;
+                }
+                if (Password == "") {
+                    alert("密码不能为空"); $("#Password").focus();
+                    return false;
+                }
+                //                if (VailCode == "") {
+                //                    alert("验证码不能为空"); $("#VailCode").focus();
+                //                    return false;
+                //                }
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/LoginVail",
+                    dataType: "json",
+                    data: { "UserName": user, "Password": Password, "VailCode": $("#VailCode").val() },
+                    beforeSend: function () {
+                    },
+                    success: function (strjson) {
+                        if (strjson.status == 1) {
+                            location.href = "/admin";
+                        } else {
+                            alert(strjson.msg);
+                        }
+                        return false;
+                    }
+                });
+                return false;
+            });
+        });
+        function clearform() {
+            $("#UserName").val("");
+            $("#Password").val(""); $("#VailCode").val("");
+        }
+        function LoginDanDian() {
+
+
+        }
+
+    </script>
+
+</head>
+<body id="bg">
+   <form action="/" class="fm-v clearfix" id="casLoginForm" method="post" name="casLoginForm">
+    <script type="text/javascript">
+        $(function () {
+            /*获取body高度，将值赋予div元素*/
+            $(".main").height($(window).height());
+        });
+    </script>
+    <div class="auto">
+        <div class="login">
+            <div class="logo">
+                <a href="#">
+                    <img src="/Content/Login/img/logo.jpg" alt="" /></a></div>
+            <div class="login-box">
+                <ul class="login-box1">
+                    <li><a href="#"><b>用户登录</b></a></li>
+                @*    <li><a href="#"><b>用户注册</b></a></li>*@
+                </ul>
+                <ul class="login-box2">
+                    <li>
+                        <label for="">
+                            <font>*</font>账号：</label>
+                        <input type="text" name="UserName" id="UserName" class="login-int1" placeholder="请输入用户名" />
+                    </li>
+                    <li>
+                        <label for="">
+                            <font>*</font>密码：</label>
+                        <input type="password" name="Password" id="Password" class="login-int1" placeholder="请输入用户密码" />
+                    </li>
+                    <li>
+                        <label for="">
+                            &nbsp;</label>
+                        <button class="login-btn" id="btn_login">
+                            登 录</button>
+                    </li>
+                </ul>
+         @*       <div class="forget-password">
+                    <a href="#">忘记密码？</a>
+                </div>*@
+            </div>
+        </div>
+    </div>
+    <!-- footer -->
+    <div class="footer">
+        © 2016 - 北京XXXX科技有限公司 </div>
+        </form>
+</body>
+</html>

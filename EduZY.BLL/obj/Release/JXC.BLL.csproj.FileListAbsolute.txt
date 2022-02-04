@@ -1,0 +1,10 @@
+C:\多店进销存\Code\EduZY.BLL\bin\Release\EduZY.BLL.dll
+C:\多店进销存\Code\EduZY.BLL\bin\Release\EduJw.DBUtility.dll
+C:\多店进销存\Code\EduZY.BLL\bin\Release\EduZY.Model.dll
+C:\多店进销存\Code\EduZY.BLL\bin\Release\Maticsoft.Common.dll
+C:\多店进销存\Code\EduZY.BLL\bin\Release\System.Web.Extensions.dll
+C:\多店进销存\Code\EduZY.BLL\bin\Release\EduZY.Model.dll.config
+C:\多店进销存\Code\EduZY.BLL\obj\Release\JXC.BLL.csprojAssemblyReference.cache
+C:\多店进销存\Code\EduZY.BLL\obj\Release\JXC.BLL.csproj.CoreCompileInputs.cache
+C:\多店进销存\Code\EduZY.BLL\obj\Release\JXC.BLL.csproj.CopyComplete
+C:\多店进销存\Code\EduZY.BLL\obj\Release\EduZY.BLL.dll

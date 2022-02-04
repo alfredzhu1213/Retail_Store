@@ -1,0 +1,128 @@
+﻿
+@model EduJXC.Model.UserMaster
+
+@{
+    ViewBag.Title = "UpdatePwd";
+    Layout = "~/Views/Shared/_CommonPage.cshtml";
+}
+
+    <div id="content">
+        <div id="mainDiv" class="p15 ui_container_fluid pr5 pb5 ">
+            <form id="AddOrUpdateForm" method="post">
+            <table class="ui_table ui_table_bordered ui_table_condensed ui_form_style02" style="width: 100%;
+                font-size: bigger">
+                <tr>
+                    <th align="right" style="width: 25%">
+                        用户名
+                    </th>
+                    <td>
+                        @Html.TextBoxFor(m => m.UserName, new { @class = "input_large", @style = "width: 70%;", @disabled = "disabled" })
+                    </td>
+                </tr>
+
+                 <tr>
+                    <th align="right" style="width: 25%">
+                        旧密码<span style="color: red">*</span>
+                    </th>
+                    <td>
+                        @Html.PasswordFor(m => m.OldPassword, new { @class = "input_large validate[required,length[1,30]", @style = "width: 70%;" })
+                    </td>
+                </tr>
+                <tr>
+                    <th align="right" style="width: 25%">
+                        新密码<span style="color: red">*</span>
+                    </th>
+                    <td>
+                        @Html.PasswordFor(m => m.Password1, new { @class = "input_large validate[required,length[1,30]", @style = "width: 70%;" })
+                    </td>
+                </tr>
+                <tr>
+                    <th align="right" style="width: 25%">
+                        确认密码<span style="color: red">*</span>
+                    </th>
+                    <td>
+                        @Html.PasswordFor(m => m.Password2, new { @class = "input_large validate[required,length[1,30]", @style = "width: 70%;" })
+                    </td>
+                </tr>
+             
+            </table>
+            <div class="ui_form_actions" style="text-align:center">
+                <button id="saveAction" type="button" onclick="saveCommonAction();" class="ui_btn" />
+                修改密码</button>&nbsp;&nbsp;
+            </div>
+            </form>
+        </div>
+    </div>
+        <script type="text/javascript">
+            var contextPath = "";
+
+            $(document).ready(function () {
+                using(["validationengine", "select", "iframe"], function () {
+                    // 校验
+                    $("#AddOrUpdateForm").validationEngine({
+                    });
+
+                });
+            });
+
+            //保存
+            function saveCommonAction() {
+                // 校验表单
+                var flag = $.validationEngine.doValidate("#AddOrUpdateForm");
+                if (!flag)
+                    return;
+
+                $('#AddOrUpdateForm').ajaxSubmit({
+                    type: 'POST',
+                    url: '/Admin/Basic/pwdSave',
+                    dataType: "json",
+                    contentType: "application/x-www-form-urlencoded; charset=utf-8",
+                    success: function (_o) {
+                        if (_o.status == '3') {
+                            $.ligerDialog.warn('两次输入密码不一样！', '提示', function () {
+                                return;
+                            });
+                        }
+                        else if (_o.status == '2') {
+                            $.ligerDialog.warn('旧密码不正确！', '提示', function () {
+                                return;
+                            });
+                        }
+                        else if (_o.status == '1') {
+
+                            $.ligerDialog.success('修改成功！', '提示', function () {
+                                window.location.href = '/Admin/Basic/UpdatePwd';
+                            });
+                        }
+                        else if (_o.status == '-10') {
+
+                            $.ligerDialog.success('密码只能为数字！', '提示', function () {
+                                return;
+                            });
+                        }
+                        else if (_o.status == '-11') {
+
+                            $.ligerDialog.success('密码必须6数字！', '提示', function () {
+                                return;
+                            });
+                        }
+                        else {
+
+                            $.ligerDialog.warn('修改失败！', '提示', function () {
+                                return;
+                            });
+                        }
+
+                    },
+                    error: function () {
+                        $.ligerDialog.warn('保存失败！', '提示', function () {
+                            return;
+                        });
+                    }
+                });
+
+            }
+    
+    </script>
+
+ @Html.Partial("~/Views/Shared/_LayoutLoveJs.cshtml");

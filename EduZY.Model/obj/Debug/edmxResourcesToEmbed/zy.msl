@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2008/09/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="zhxy_resModelStoreContainer" CdmEntityContainer="zhxy_resEntities">
+    <EntitySetMapping Name="tb_BasicRight">
+      <EntityTypeMapping TypeName="zhxy_resModel.tb_BasicRight">
+        <MappingFragment StoreEntitySet="tb_BasicRight">
+          <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="ObjectTypeName" ColumnName="ObjectTypeName" />
+          <ScalarProperty Name="OjbectTypeID" ColumnName="OjbectTypeID" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="BasicRightName" ColumnName="BasicRightName" />
+          <ScalarProperty Name="BasicRightID" ColumnName="BasicRightID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_Button">
+      <EntityTypeMapping TypeName="zhxy_resModel.tb_Button">
+        <MappingFragment StoreEntitySet="tb_Button">
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Sort" ColumnName="Sort" />
+          <ScalarProperty Name="ButtonFun" ColumnName="ButtonFun" />
+          <ScalarProperty Name="ButtonClass" ColumnName="ButtonClass" />
+          <ScalarProperty Name="ButtonIco" ColumnName="ButtonIco" />
+          <ScalarProperty Name="ButtonName" ColumnName="ButtonName" />
+          <ScalarProperty Name="ButtonID" ColumnName="ButtonID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_Doption">
+      <EntityTypeMapping TypeName="zhxy_resModel.tb_Doption">
+        <MappingFragment StoreEntitySet="tb_Doption">
+          <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="Description" ColumnName="Description" />
+          <ScalarProperty Name="ParentID" ColumnName="ParentID" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="Sort" ColumnName="Sort" />
+          <ScalarProperty Name="ItemText" ColumnName="ItemText" />
+          <ScalarProperty Name="ItemValue" ColumnName="ItemValue" />
+          <ScalarProperty Name="MoptionID" ColumnName="MoptionID" />
+          <ScalarProperty Name="DoptionID" ColumnName="DoptionID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_Log">
+      <EntityTypeMapping TypeName="zhxy_resModel.tb_Log">
+        <MappingFragment StoreEntitySet="tb_Log">
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
+          <ScalarProperty Name="IP" ColumnName="IP" />
+          <ScalarProperty Name="PostData" ColumnName="PostData" />
+          <ScalarProperty Name="SourceUrl" ColumnName="SourceUrl" />
+          <ScalarProperty Name="RequestUrl" ColumnName="RequestUrl" />
+          <ScalarProperty Name="Browser" ColumnName="Browser" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="LogTypeName" ColumnName="LogTypeName" />
+          <ScalarProperty Name="LogTypeID" ColumnName="LogTypeID" />
+          <ScalarProperty Name="LogID" ColumnName="LogID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_MenuPage">
+      <EntityTypeMapping TypeName="zhxy_resModel.tb_MenuPage">
+        <MappingFragment StoreEntitySet="tb_MenuPage">
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="Sort" ColumnName="Sort" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="RootID" ColumnName="RootID" />
+          <ScalarProperty Name="ParentId" ColumnName="ParentId" />
+          <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+          <ScalarProperty Name="MenuICO" ColumnName="MenuICO" />
+          <ScalarProperty Name="MenuUrl" ColumnName="MenuUrl" />
+          <ScalarProperty Name="MenuShort" ColumnName="MenuShort" />
+          <ScalarProperty Name="MenuType" ColumnName="MenuType" />
+          <ScalarProperty Name="MenuName" ColumnName="MenuName" />
+          <ScalarProperty Name="MenuID" ColumnName="MenuID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_MenuPage_Fun">
+      <EntityTypeMapping TypeName="zhxy_resModel.tb_MenuPage_Fun">
+        <MappingFragment StoreEntitySet="tb_MenuPage_Fun">
+          <ScalarProperty Name="ButtonID" ColumnName="ButtonID" />
+          <ScalarProperty Name="MenuID" ColumnName="MenuID" />
+          <ScalarProperty Name="MenuPageFunID" ColumnName="MenuPageFunID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_Moption">
+      <EntityTypeMapping TypeName="zhxy_resModel.tb_Moption">
+        <MappingFragment StoreEntitySet="tb_Moption">
+          <ScalarProperty Name="IsSys" ColumnName="IsSys" />
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="OptionCode" ColumnName="OptionCode" />
+          <ScalarProperty Name="OptionName" ColumnName="OptionName" />
+          <ScalarProperty Name="MoptionID" ColumnName="MoptionID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_Role">
+      <EntityTypeMapping TypeName="zhxy_resModel.tb_Role">
+        <MappingFragment StoreEntitySet="tb_Role">
+          <ScalarProperty Name="IsSys" ColumnName="IsSys" />
+          <ScalarProperty Name="Remark" ColumnName="Remark" />
+          <ScalarProperty Name="UpdateDate" ColumnName="UpdateDate" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_RoleBasicRight">
+      <EntityTypeMapping TypeName="zhxy_resModel.tb_RoleBasicRight">
+        <MappingFragment StoreEntitySet="tb_RoleBasicRight">
+          <ScalarProperty Name="AddDate" ColumnName="AddDate" />
+          <ScalarProperty Name="ObjectStr" ColumnName="ObjectStr" />
+          <ScalarProperty Name="Objectids" ColumnName="Objectids" />
+          <ScalarProperty Name="BasicRightID" ColumnName="BasicRightID" />
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+          <ScalarProperty Name="RoleBasicRightID" ColumnName="RoleBasicRightID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_RoleData_Right">
+      <EntityTypeMapping TypeName="zhxy_resModel.tb_RoleData_Right">
+        <MappingFragment StoreEntitySet="tb_RoleData_Right">
+          <ScalarProperty Name="ButtonID" ColumnName="ButtonID" />
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+          <ScalarProperty Name="object_id" ColumnName="object_id" />
+          <ScalarProperty Name="TypeID" ColumnName="TypeID" />
+          <ScalarProperty Name="RoleData" ColumnName="RoleData" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_RoleMenu_Right">
+      <EntityTypeMapping TypeName="zhxy_resModel.tb_RoleMenu_Right">
+        <MappingFragment StoreEntitySet="tb_RoleMenu_Right">
+          <ScalarProperty Name="ButtonID" ColumnName="ButtonID" />
+          <ScalarProperty Name="MenuID" ColumnName="MenuID" />
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+          <ScalarProperty Name="RoleMenuID" ColumnName="RoleMenuID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_UserData_Right">
+      <EntityTypeMapping TypeName="zhxy_resModel.tb_UserData_Right">
+        <MappingFragment StoreEntitySet="tb_UserData_Right">
+          <ScalarProperty Name="ButtonID" ColumnName="ButtonID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="object_id" ColumnName="object_id" />
+          <ScalarProperty Name="TypeID" ColumnName="TypeID" />
+          <ScalarProperty Name="UserDataID" ColumnName="UserDataID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_UserMenu_Right">
+      <EntityTypeMapping TypeName="zhxy_resModel.tb_UserMenu_Right">
+        <MappingFragment StoreEntitySet="tb_UserMenu_Right">
+          <ScalarProperty Name="MenuID" ColumnName="MenuID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="ButtonID" ColumnName="ButtonID" />
+          <ScalarProperty Name="UserMenuID" ColumnName="UserMenuID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tb_UserRole">
+      <EntityTypeMapping TypeName="zhxy_resModel.tb_UserRole">
+        <MappingFragment StoreEntitySet="tb_UserRole">
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+          <ScalarProperty Name="UserRoleID" ColumnName="UserRoleID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="View_SelectUserList">
+      <EntityTypeMapping TypeName="zhxy_resModel.View_SelectUserList">
+        <MappingFragment StoreEntitySet="View_SelectUserList">
+          <ScalarProperty Name="BuMenId" ColumnName="BuMenId" />
+          <ScalarProperty Name="ZhiCheng" ColumnName="ZhiCheng" />
+          <ScalarProperty Name="Sex" ColumnName="Sex" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="EMail" ColumnName="EMail" />
+          <ScalarProperty Name="QQ" ColumnName="QQ" />
+          <ScalarProperty Name="Phone" ColumnName="Phone" />
+          <ScalarProperty Name="Mobile" ColumnName="Mobile" />
+          <ScalarProperty Name="TrueName" ColumnName="TrueName" />
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+          <ScalarProperty Name="RegStateDate" ColumnName="RegStateDate" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="View_userlist">
+      <EntityTypeMapping TypeName="zhxy_resModel.View_userlist">
+        <MappingFragment StoreEntitySet="View_userlist">
+          <ScalarProperty Name="ActivationDate" ColumnName="ActivationDate" />
+          <ScalarProperty Name="Status" ColumnName="Status" />
+          <ScalarProperty Name="CreateUserID" ColumnName="CreateUserID" />
+          <ScalarProperty Name="UserSource" ColumnName="UserSource" />
+          <ScalarProperty Name="LastDate" ColumnName="LastDate" />
+          <ScalarProperty Name="RegStateDate" ColumnName="RegStateDate" />
+          <ScalarProperty Name="IsDelete" ColumnName="IsDelete" />
+          <ScalarProperty Name="Password" ColumnName="Password" />
+          <ScalarProperty Name="RoleID" ColumnName="RoleID" />
+          <ScalarProperty Name="RoleName" ColumnName="RoleName" />
+          <ScalarProperty Name="TrueName" ColumnName="TrueName" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="UserID" ColumnName="UserID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>
